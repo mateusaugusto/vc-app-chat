@@ -1,0 +1,37 @@
+<div class="container" style="margin-top:60px">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong> {{room.name}} : Created: {{room.created}}</strong>
+                    <button class="btn btn-danger btn-xs" (click)="leave(room)">leave</button>
+                </div>
+                <div class="panel-body">
+                    <form role="form" action="#" method="POST" name="form">
+                        <div class="messages" #scroll>
+                            <div class="message" *ngFor="let item of messages | orderBy:'created':false">
+                                <span class="dimmed">{{item.created}}</span>
+                                &lt;{{item.from}}&gt;
+                                {{item.message}}
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top:0px">
+                            <div class="col-md-1">{{userService.nickname}}:</div>
+                            <div class="col-md-8">
+                                <input #focus class="form-control"
+                                       [(ngModel)]="message"
+                                       name="message"
+                                       autocomplete="off"
+                                       (keypress)="eventHandler($event)">
+                            </div>
+                            <div class="col-md-1">
+                                <button class="btn btn-success btn-sm" (click)="send()">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
