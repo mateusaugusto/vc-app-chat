@@ -7,8 +7,9 @@ import * as mongoose from 'mongoose';
 import * as redis from 'socket.io-redis';
 
 import {RoomSocket} from './socket';
-import {UserSocket} from "./socket/user";
-import {User} from "../models/user.model";
+import {UserSocket} from './socket/user';
+import userRouter = require("./routes/user.route");
+import roomRouter = require("./routes/room.route");
 
 declare var process, __dirname;
 
@@ -18,6 +19,7 @@ export class Backend {
     private io: any;
     private mongo: mongoose.MongooseThenable;
     private port: number;
+    private bodyParser = require('body-parser');
 
     constructor() {
 
@@ -25,6 +27,9 @@ export class Backend {
         this.app = express();
 
         this.app.enable('view cache');
+
+        this.app.use(this.bodyParser.json()); // support json encoded bodies
+        this.app.use(this.bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
         // Setup routes
         this.routes();
@@ -42,8 +47,6 @@ export class Backend {
     // Configure routes
     private routes(): void {
 
-       // var User = require('../models/user.model');
-
         // Setup router
         let router: express.Router;
         router = express.Router();
@@ -54,38 +57,15 @@ export class Backend {
         // Static assets
         this.app.use('/assets', serveStatic(path.resolve(root, 'assets')));
 
-    /*    // Set router to serve index.html (e.g. single page app)
         router.get('/', (request: express.Request, result: express.Response) => {
             result.sendFile(path.join(root, '/index.html'));
-        });*/
+        });
 
-
-        router.route('/user')
-
-        // create a bear (accessed at POST http://localhost:8080/api/bears)
-            .post(function(req, res) {
-
-                console.error('Entrou node');
-
-               // bear.name = req.body.name;
-
-                User.create("logo").subscribe(
-                    () => console.error('from node'),
-                    error => console.error('nodejs', error)
-                );
-
-
-             /*   // save the bear and check for errors
-                bear.teste(function(err) {
-                    if (err)
-                        res.send(err);
-                    res.json({ message: 'Bear created!' });
-                });*/
-
-            });
+        this.app.use('/api', userRouter);
+        this.app.use('/api', roomRouter);
 
         // Set app to use router as the default route
-        this.app.use('/api', router);
+        this.app.use('*', router);
 
     }
 

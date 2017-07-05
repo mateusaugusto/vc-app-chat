@@ -17,6 +17,7 @@ const UserSchema = new mongoose.Schema({
 
 const UserModel = mongoose.model<IUserModel>('User', UserSchema);
 
+
 export class User {
     name: string;
 

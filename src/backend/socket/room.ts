@@ -1,5 +1,6 @@
 import { Room, Message } from '../../models';
 import { MessageSocket } from './message';
+import {IRoom} from "../../models/room.model";
 
 export class RoomSocket {
   nsp: any;
@@ -34,7 +35,10 @@ export class RoomSocket {
 
   // Create a room
   private create(name: string): void {
-    Room.create(name).subscribe(
+    var room: IRoom;
+    room.name = name;
+
+    Room.create(room).subscribe(
       room => this.list(),
       error => console.error('Room creation failed', error)
     );

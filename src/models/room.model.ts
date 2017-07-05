@@ -7,29 +7,37 @@ import {IMessage, Message} from './message.model';
 export interface IRoom {
     name: string;
     created: Date;
+    domainId: Number;
+    accountId: Number;
 }
 
 interface IRoomModel extends IRoom, mongoose.Document {
 }
 
+var ObjectId = mongoose.Schema.Types.ObjectId;
+
 const RoomSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        unique: true
-    },
-    created: Date
+    name: { type: String },
+    domainId: { type: Number, unique: true },
+    accountId: { type: Number, unique: true },
+    created: Date,
 });
 
 const RoomModel = mongoose.model<IRoomModel>('Room', RoomSchema);
 
+
 export class Room {
     name: string;
     created: Date;
+    domainId: Number;
+    accountId: Number;
+
 
     constructor(room: IRoomModel) {
         this.name = room.name;
         this.created = moment(room.created).toDate();
-        console.log("setou room:");
+        this.domainId = room.domainId;
+        this.accountId = room.accountId;
     }
 
     public static find(name: string): Observable<Room> {
@@ -43,10 +51,11 @@ export class Room {
         });
     }
 
-    public static create(name: string): Observable<Room> {
+    public static create(room: IRoom): Observable<any> {
         return new Observable(observer => {
-            const created = new Date();
-            RoomModel.create({name, created}, (error, room) => {
+            room.created = new Date();
+
+            RoomModel.create(room, (error, room) => {
                 if (!error && room) {
                     observer.next(new Room(room));
                     observer.complete();
@@ -54,7 +63,7 @@ export class Room {
                     observer.error(new Error());
                 }
             });
-        });
+        })
     }
 
     public static list(): Observable<Room[]> {
