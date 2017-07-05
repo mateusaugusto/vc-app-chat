@@ -1,5 +1,6 @@
 import express = require("express");
-import {IRoom, Room} from "../../models/room.model";
+import {Room} from "../../models/model/room.model";
+import {IRoom} from "../../models/interface/room/IRoom";
 let roomRouter = express.Router();
 
 let uri = "/room"

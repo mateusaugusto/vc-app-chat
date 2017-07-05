@@ -1,6 +1,6 @@
 import {Room} from "../../models";
 import {MessageSocket} from "./message";
-import {IUser, User} from "../../models/user.model";
+import {IUser, User} from "../../models/model/user.model";
 
 export class UserSocket {
   nsp: any;

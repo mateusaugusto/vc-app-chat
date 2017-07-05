@@ -1,31 +1,10 @@
 import {Observable} from 'rxjs';
-import * as mongoose from 'mongoose';
 import * as moment from 'moment';
 
-import {IMessage, Message} from './message.model';
-
-export interface IRoom {
-    name: string;
-    created: Date;
-    domainId: Number;
-    accountId: Number;
-}
-
-interface IRoomModel extends IRoom, mongoose.Document {
-}
-
-const RoomSchema = new mongoose.Schema({
-   // _id : { type: Number },
-    name: { type: String },
-    domainId: { type: Number, unique: true },
-    accountId: { type: Number, unique: true },
-    created: Date,
-});
-
-RoomSchema.index({domainId: 1, accountId: 1}, {unique: true});
-
-const RoomModel = mongoose.model<IRoomModel>('Room', RoomSchema);
-
+import {Message} from './message.model';
+import {IRoomModel} from "../interface/room/IRoomModel";
+import {IRoom} from "../interface/room/IRoom";
+import {RoomModel} from "../schema/roomSchema";
 
 export class Room {
     name: string;

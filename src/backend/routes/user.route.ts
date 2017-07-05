@@ -1,5 +1,5 @@
 import express = require("express");
-import {IUser, User} from "../../models/user.model";
+import {IUser, User} from "../../models/model/user.model";
 let userRouter = express.Router();
 let uri = "/user"
 
@@ -16,11 +16,39 @@ userRouter.post(uri, (req, res) => {
         },
         error => {
             res.status(500);
-            res.render('error', { error: error });
+            //res.render('error', { error: error });
             console.log(error);
         }
     );
 
+});
+
+userRouter.put(uri, (req, res) => {
+    var user: IUser = <IUser>req.body;
+    User.update(user).subscribe(
+        room => {
+            res.send(room);
+        },
+        error => {
+            res.status(500);
+            //res.render('error', { error: error });
+            console.log(error);
+        }
+    );
+});
+
+userRouter.put(uri + "add/room/:roomId/domainId/:domainId/accountId/:366", (req, res) => {
+    var user: IUser = <IUser>req.body;
+    User.insertRoomToUser(user, req.params.roomId).subscribe(
+        room => {
+            res.send(room);
+        },
+        error => {
+            res.status(500);
+            //res.render('error', { error: error });
+            console.log(error);
+        }
+    );
 });
 
 export = userRouter;
