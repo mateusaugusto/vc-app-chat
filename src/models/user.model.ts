@@ -1,6 +1,5 @@
 import {Observable} from "rxjs";
 import * as mongoose from "mongoose";
-import {Schema} from "mongoose";
 
 export interface IUser {
     name: string;
@@ -13,11 +12,13 @@ interface IUserModel extends IUser, mongoose.Document {
 }
 
 const UserSchema = new mongoose.Schema({
-    name: {type: String },
-    domainId: { type: Number, unique: true },
-    accountId: { type: Number, unique: true },
+    name: {type: String, required: true},
+    domainId: { type: Number, required: true},
+    accountId: { type: Number, required: true },
     userRooms: [{ type: Number, ref: 'Room' }]
 });
+
+UserSchema.index({domainId: 1, accountId: 1}, {unique: true});
 
 const UserModel = mongoose.model<IUserModel>('User', UserSchema);
 
@@ -45,7 +46,7 @@ export class User {
                     observer.complete();
                 } else {
                     observer.error(new Error());
-                    console.log(error.stack);
+                    console.log(error);
                 }
             });
 

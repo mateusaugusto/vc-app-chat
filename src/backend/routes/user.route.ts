@@ -14,7 +14,11 @@ userRouter.post(uri, (req, res) => {
         room => {
             res.send(room);
         },
-        error => console.log(error.stack)
+        error => {
+            res.status(500);
+            res.render('error', { error: error });
+            console.log(error);
+        }
     );
 
 });
