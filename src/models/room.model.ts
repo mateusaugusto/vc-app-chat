@@ -14,9 +14,8 @@ export interface IRoom {
 interface IRoomModel extends IRoom, mongoose.Document {
 }
 
-var ObjectId = mongoose.Schema.Types.ObjectId;
-
 const RoomSchema = new mongoose.Schema({
+   // _id : { type: Number },
     name: { type: String },
     domainId: { type: Number, unique: true },
     accountId: { type: Number, unique: true },
@@ -31,7 +30,6 @@ export class Room {
     created: Date;
     domainId: Number;
     accountId: Number;
-
 
     constructor(room: IRoomModel) {
         this.name = room.name;
@@ -54,7 +52,6 @@ export class Room {
     public static create(room: IRoom): Observable<any> {
         return new Observable(observer => {
             room.created = new Date();
-
             RoomModel.create(room, (error, room) => {
                 if (!error && room) {
                     observer.next(new Room(room));
