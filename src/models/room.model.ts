@@ -22,6 +22,8 @@ const RoomSchema = new mongoose.Schema({
     created: Date,
 });
 
+RoomSchema.index({domainId: 1, accountId: 1}, {unique: true});
+
 const RoomModel = mongoose.model<IRoomModel>('Room', RoomSchema);
 
 
