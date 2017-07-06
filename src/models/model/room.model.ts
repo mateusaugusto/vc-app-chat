@@ -2,15 +2,15 @@ import {Observable} from 'rxjs';
 import * as moment from 'moment';
 
 import {Message} from './message.model';
-import {IRoomModel} from "../interface/room/IRoomModel";
-import {IRoom} from "../interface/room/IRoom";
-import {RoomModel} from "../schema/roomSchema";
+import {IRoomModel} from "../interface/room/iroom-model";
+import {IRoom} from "../interface/room/iroom";
+import {RoomModel} from "../schema/room-schema";
 
 export class Room {
     name: string;
     created: Date;
-    domainId: Number;
-    accountId: Number;
+    domainId: number;
+    accountId: number;
 
 
     constructor(room: IRoomModel) {

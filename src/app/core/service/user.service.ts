@@ -5,7 +5,7 @@ import {SocketService} from "./socket.service";
 
 @Injectable()
 export class UserService {
-  nickname: string = '';
+  nickname: string = 'mateus';
   rooms: IRoom[] = [];
 
   private socketService: SocketService;

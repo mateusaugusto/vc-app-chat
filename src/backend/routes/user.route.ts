@@ -1,5 +1,6 @@
 import express = require("express");
-import {IUser, User} from "../../models/model/user.model";
+import {User} from "../../models/model/user.model";
+import {IUser} from "../../models/interface/user/iuser";
 let userRouter = express.Router();
 let uri = "/user"
 

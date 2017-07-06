@@ -1,6 +1,6 @@
 export class BaseDomain {
     name: string;
     created: Date;
-    domainId: Number;
-    accountId: Number;
+    domainId: number;
+    accountId: number;
 }

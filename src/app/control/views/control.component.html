@@ -4,9 +4,10 @@
         <div class="navbar-header">
             <div class="navbar-form">
                 <div class="form-group">
-                    <select [(ngModel)]="room" class="form-control" name="room">
+                    <select  [(ngModel)]="room" class="form-control" name="room">
                         <option value="">Escolha a sala</option>
-                        <option *ngFor="let room of roomService.rooms | async" [value]="room.name">{{room.name}}
+                        <option *ngFor="let room of roomService.rooms | async"
+                                [value]="room.name">{{room.name}}
                         </option>
                     </select>
                 </div>
@@ -17,7 +18,7 @@
                 <div class="form-group">
                     <button class="btn btn-danger" (click)="remove()">Remove</button>
                 </div>
-                <div class="navbar-right" style="margin-left: 450px !important;">
+             <!--   <div class="navbar-right" style="margin-left: 450px !important;">
                     <div class="form-group">
                         <span>Nova Sala: </span>
                         <input [(ngModel)]="newRoom" class="form-control" (keypress)="eventHandler($event)">
@@ -25,8 +26,16 @@
                     <div class="form-group">
                         <button class="btn btn-success" (click)="create()">Create</button>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
 </nav>
+
+<!--<div class="row" >
+    <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar" [(ngModel)]="room" name="room">
+            <li *ngFor="let room of roomService.rooms | async" [value]="room.name">{{room.name}}</li>
+        </ul>
+    </div>
+</div>-->

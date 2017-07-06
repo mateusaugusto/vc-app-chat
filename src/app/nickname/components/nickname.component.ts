@@ -12,7 +12,6 @@ export class NicknameComponent implements AfterViewInit {
   nickname: string;
 
   constructor(public userService: UserService) {
-    this.userService.nickname = "mateus";
     this.nickname = userService.nickname;
 
   }

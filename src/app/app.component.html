@@ -1,14 +1,14 @@
 <header></header>
 
-<div *ngIf="userService.nickname && userService.nickname !== ''; then content else nickname"></div>
+<div *ngIf="userService.nickname !== ''; then content else content"></div>
 
 <ng-template #nickname>
-  <nickname></nickname>
+    <nickname></nickname>
 </ng-template>
 
 <router-outlet></router-outlet>
 
 <ng-template #content>
-  <control></control>
-  <rooms></rooms>
+    <control></control>
+    <rooms></rooms>
 </ng-template>

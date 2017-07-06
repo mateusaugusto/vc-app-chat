@@ -1,24 +1,8 @@
 import {Observable} from "rxjs";
-import * as mongoose from "mongoose";
+import {IUserModel} from "../interface/user/iuser-model";
+import {IUser} from "../interface/user/iuser";
+import {UserModel} from "../schema/user-schema";
 
-export interface IUser {
-    name: string;
-    domainId: number;
-    accountId: number;
-    userRooms: number[],
-}
-
-interface IUserModel extends IUser, mongoose.Document {
-}
-
-const UserSchema = new mongoose.Schema({
-    name: {type: String, required: true},
-    domainId: { type: Number, required: true},
-    accountId: { type: Number, required: true },
-    userRooms: [{ type: Number, ref: 'Room' }]
-}).index({domainId: 1, accountId: 1}, {unique: true});
-
-const UserModel = mongoose.model<IUserModel>('User', UserSchema);
 
 
 export class User {

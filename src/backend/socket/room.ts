@@ -1,6 +1,6 @@
 import { Room, Message } from '../../models';
 import { MessageSocket } from './message';
-import {IRoom} from "../../models/interface/room/IRoom";
+import {IRoom} from "../../models/interface/room/iroom";
 
 export class RoomSocket {
   nsp: any;

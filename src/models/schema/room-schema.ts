@@ -1,5 +1,5 @@
 import * as mongoose from "mongoose";
-import {IRoomModel} from "../interface/room/IRoomModel";
+import {IRoomModel} from "../interface/room/iroom-model";
 
 export const RoomSchema = new mongoose.Schema({
     // _id : { type: Number },
