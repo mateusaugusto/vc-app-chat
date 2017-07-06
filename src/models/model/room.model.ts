@@ -1,30 +1,10 @@
 import {Observable} from 'rxjs';
-import * as mongoose from 'mongoose';
 import * as moment from 'moment';
 
-import {IMessage, Message} from './message.model';
-
-export interface IRoom {
-    name: string;
-    created: Date;
-    domainId: Number;
-    accountId: Number;
-}
-
-interface IRoomModel extends IRoom, mongoose.Document {
-}
-
-var ObjectId = mongoose.Schema.Types.ObjectId;
-
-const RoomSchema = new mongoose.Schema({
-    name: { type: String },
-    domainId: { type: Number, unique: true },
-    accountId: { type: Number, unique: true },
-    created: Date,
-});Ç
-
-const RoomModel = mongoose.model<IRoomModel>('Room', RoomSchema);
-
+import {Message} from './message.model';
+import {IRoomModel} from "../interface/room/IRoomModel";
+import {IRoom} from "../interface/room/IRoom";
+import {RoomModel} from "../schema/roomSchema";
 
 export class Room {
     name: string;
@@ -54,7 +34,6 @@ export class Room {
     public static create(room: IRoom): Observable<any> {
         return new Observable(observer => {
             room.created = new Date();
-
             RoomModel.create(room, (error, room) => {
                 if (!error && room) {
                     observer.next(new Room(room));

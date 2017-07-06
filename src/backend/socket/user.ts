@@ -1,6 +1,6 @@
 import {Room} from "../../models";
 import {MessageSocket} from "./message";
-import {User} from "../../models/user.model";
+import {IUser, User} from "../../models/model/user.model";
 
 export class UserSocket {
   nsp: any;
@@ -32,7 +32,10 @@ export class UserSocket {
 
   // Create a cliet
   private create(name: string): void {
-    User.create(name).subscribe(
+    var user: IUser;
+    user.name =  name;
+
+    User.create(user).subscribe(
         () => console.error('Client created'),
       error => console.error('Room creation failed', error)
     );
