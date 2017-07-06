@@ -1,14 +1,17 @@
-<header></header>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid"></div>
+</nav>
 
-<div *ngIf="userService.nickname !== ''; then content else content"></div>
+<div class="container-fluid">
+    <div class="row">
+        <control></control>
+        <rooms></rooms>
+    </div>
 
-<ng-template #nickname>
-    <nickname></nickname>
-</ng-template>
+</div>
 
-<router-outlet></router-outlet>
 
-<ng-template #content>
-    <control></control>
-    <rooms></rooms>
-</ng-template>
+
+
+
+

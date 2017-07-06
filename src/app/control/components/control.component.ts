@@ -11,13 +11,12 @@ export class ControlComponent {
   room: string = '';
   newRoom: string = '';
 
-  constructor(public roomService: RoomService, private userService: UserService) {
-    this.userService.nickname = "lucas";
+  constructor(public roomService: RoomService) {
   }
 
   // Join room, when Join-button is pressed
-  join(): void {
-    this.roomService.join(this.room);
+  join(room): void {
+    this.roomService.join(room);
     this.room = '';
   }
 
