@@ -1,14 +1,12 @@
 <div class="col-sm-9 col-sm-offset-3">
-    <div class="row placeholders">
-        <div class="container" style="margin-top:30px">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-10">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <strong> {{room.name}} : Created: {{room.created}}</strong>
                             <button class="btn btn-danger btn-xs" (click)="leave(room)">leave</button>
                         </div>
-                        <div class="panel-body" style="height: 300px;">
+                        <div class="panel-body">
                             <form role="form" action="#" method="POST" name="form">
                                 <div class="messages" #scroll>
                                     <div class="message" *ngFor="let item of messages | orderBy:'created':false">
@@ -18,7 +16,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row" style="margin-top:70%">
+                                <div class="row" style="margin-top:50%">
                                     <div class="col-md-1">{{userService.nickname}}:</div>
                                     <div class="col-md-8">
                                         <input #focus class="form-control"
@@ -36,8 +34,4 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-    </div>
-
 </div>

@@ -3,18 +3,18 @@ import {IUserModel} from "../interface/user/iuser-model";
 import {IUser} from "../interface/user/iuser";
 import {UserModel} from "../schema/user-schema";
 
-
-
 export class User {
     name: string;
     domainId: number;
     accountId: number;
+    clientId: number;
     userRooms: number[];
 
     constructor(user: IUserModel) {
         this.name = user.name;
         this.domainId = user.domainId;
         this.accountId = user.accountId;
+        this.clientId = user.clientId;
         this.userRooms = user.userRooms;
     }
 
@@ -46,7 +46,6 @@ export class User {
                     console.log(error);
                 }
             });
-
         });
     }
 
@@ -63,7 +62,21 @@ export class User {
                     console.log(error);
                 }
             });
+        });
+    }
 
+    public static findOne(clientId: number): Observable<User> {
+        return new Observable(observer => {
+            UserModel.findOne({clientId}, (error, user) => {
+                if (!error && user) {
+                    console.log("achou" + user);
+                    observer.next(new User(user));
+                    observer.complete();
+                } else {
+                    observer.error(new Error());
+                    console.log(error);
+                }
+            });
         });
     }
 }

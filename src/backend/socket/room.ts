@@ -13,7 +13,6 @@ export class RoomSocket {
   constructor(private io: any) {
     this.nsp = this.io.of('/room');
     this.nsp.on('connection', (socket: any) => {
-      console.log('Client connected rom');
       this.socket = socket;
       this.updateMessageSockets();
       this.listen();

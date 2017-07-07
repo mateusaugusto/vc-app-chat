@@ -5,23 +5,20 @@ import {CoreModule} from "./core";
 import {SharedModule} from "./shared";
 import {RoomsComponent} from "./rooms";
 import {ControlModule} from "./control/control.module";
-import {HeaderModule} from "./header/header.module";
-import {NicknameModule} from "./nickname/nickname.module";
 import {RoomModule} from "./room/room.module";
 import {RouterModule} from "@angular/router";
-import {RoomComponent} from "./room/components/room.component";
 import {ControlComponent} from "./control/components/control.component";
+import {HttpModule} from "@angular/http";
 
 @NgModule({
   imports: [
     CoreModule,
     SharedModule,
     ControlModule,
-    HeaderModule,
-    NicknameModule,
+    HttpModule,
     RoomModule,
     RouterModule.forRoot([
-      {path: 'room', component: ControlComponent}
+      {path: 'user/:clienteId', component: ControlComponent}
     ]),
   ],
   declarations: [

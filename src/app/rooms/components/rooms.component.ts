@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
 import { UserService } from '../../core';
-import { IRoom } from '../../../models';
 
 @Component({
   selector: 'rooms',

@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 
 import { RoomService } from '../../core';
 import {UserService} from "../../core/service/user.service";
+import {ActivatedRoute} from "@angular/router";
+import {User} from "../../../models/model/user.model";
+import {UserDomain} from "../../../models/domain/user-domain";
 
 @Component({
   selector: 'control',
@@ -10,9 +13,24 @@ import {UserService} from "../../core/service/user.service";
 export class ControlComponent {
   room: string = '';
   newRoom: string = '';
+  clientId: number;
+  teste: UserDomain;
 
-  constructor(public roomService: RoomService) {
+  constructor(public roomService: RoomService,
+              private route: ActivatedRoute, private userService: UserService) {
   }
+
+  ngOnInit() {
+    this.clientId = +this.route.snapshot.params['clienteId'];
+
+    this.userService.findOne(this.clientId).subscribe(user => {
+      this.teste = user;
+    });
+
+    //console.log("ress  / " + this.teste);
+    //this.userService.nickname = "luis";
+  }
+
 
   // Join room, when Join-button is pressed
   join(room): void {

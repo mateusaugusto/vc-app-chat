@@ -22,17 +22,17 @@ export class SocketService {
     });
   }
 
-  // Request initial list when connected
   list(): void {
     this.socket.emit('list');
   }
 
-
   // Create signal
   create(params: any) {
-    console.log("criando");
     this.socket.emit('create', params);
+  }
 
+  findOne(params: any) {
+    this.socket.emit('findOne', params);
   }
 
   // Remove signal
