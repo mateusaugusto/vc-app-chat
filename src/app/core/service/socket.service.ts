@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as io from 'socket.io-client';
 
-import { IMessage } from '../../../models';
+import { IMessage } from '../../../server/src';
 
 export class SocketService {
   private host: string = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port;

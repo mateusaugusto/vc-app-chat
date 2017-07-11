@@ -1,4 +1,4 @@
-import { IMessage, Message, Room } from "../../models";
+import { IMessage, Message, Room } from "../src";
 
 export class MessageSocket {
   nsp: any;

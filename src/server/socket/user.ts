@@ -1,8 +1,6 @@
-import {Room} from "../../models";
+import {Room} from "../src";
 import {MessageSocket} from "./message";
-import {User} from "../../models/model/user.model";
-import {IUser} from "../../models/interface/user/iuser";
-import {UserDomain} from "../../models/domain/user-domain";
+import {IUser} from "../src/interface/user/iuser";
 
 export class UserSocket {
   nsp: any;
@@ -25,7 +23,7 @@ export class UserSocket {
   private listen(): void {
     this.socket.on('disconnect', () => this.disconnect());
     this.socket.on('create', (name: string) => this.create(name));
-    this.socket.on('findOne', (id: number) => this.findOne(id));
+    //this.socket.on('findOne', (id: number) => this.findOne(id));
   }
 
   // Handle disconnect
@@ -38,19 +36,19 @@ export class UserSocket {
     var user: IUser;
     user.name =  name;
 
-    User.create(user).subscribe(
+  /*  User.create(user).subscribe(
         () => console.error('Client created'),
       error => console.error('Room creation failed', error)
-    );
+    );*/
   }
 
 
-  // Create a cliet
+  /*// Create a cliet
   private findOne(id: number): void {
     User.findOne(id).subscribe(
         () => console.error('Client created'),
         error => console.error('Room creation failed', error)
     );
-  }
+  }*/
 
 }

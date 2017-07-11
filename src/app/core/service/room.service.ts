@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { SocketService } from './socket.service';
 import { UserService } from './user.service';
-import {IRoom} from "../../../models/interface/room/iroom";
+import {IRoom} from "../../../server/src/interface/room/iroom";
 
 @Injectable()
 export class RoomService {

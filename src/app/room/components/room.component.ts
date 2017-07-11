@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, AfterViewInit, OnDestroy, ElementRef, ViewChild} from '@angular/core';
 
 import {RoomService, UserService} from '../../core';
-import {IMessage, IRoom} from '../../../models';
+import {IMessage, IRoom} from '../../../server/src';
 import {MessageService} from '../service/message.service';
 
 @Component({

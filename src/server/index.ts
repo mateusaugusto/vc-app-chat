@@ -8,12 +8,14 @@ import * as redis from 'socket.io-redis';
 
 import {RoomSocket} from './socket';
 import {UserSocket} from './socket/user';
-import userRouter = require("./routes/user.route");
-import roomRouter = require("./routes/room.route");
+import userRouter = require("./src/routes/user.route");
+import roomRouter = require("./src/routes/room.route");
+import UserRoutes = require("./src/routes/user.route");
 
 declare var process, __dirname;
 
-export class Backend {
+export class Server {
+
     private app: express.Application;
     private server: any;
     private io: any;
@@ -61,7 +63,7 @@ export class Backend {
             result.sendFile(path.join(root, '/index.html'));
         });
 
-        this.app.use('/api', userRouter);
+        this.app.use('/api', UserRoutes);
         this.app.use('/api', roomRouter);
 
         // Set app to use router as the default route

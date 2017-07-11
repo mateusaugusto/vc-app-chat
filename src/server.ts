@@ -1,4 +1,5 @@
 // Instantiate server app
-import { Backend } from './backend';
-const backend = new Backend();
-backend.listen();
+import {Server} from "./server/index";
+
+const server = new Server();
+server.listen();

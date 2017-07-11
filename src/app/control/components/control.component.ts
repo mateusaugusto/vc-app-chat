@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 import { RoomService } from '../../core';
 import {UserService} from "../../core/service/user.service";
 import {ActivatedRoute} from "@angular/router";
-import {User} from "../../../models/model/user.model";
-import {UserDomain} from "../../../models/domain/user-domain";
+import {User} from "../../../server/src/model/user.model";
+import {UserDomain} from "../../../server/src/domain/user-domain";
 
 @Component({
   selector: 'control',
@@ -27,7 +27,7 @@ export class ControlComponent {
       this.teste = user;
     });
 
-    //console.log("ress  / " + this.teste);
+    console.log("ress  / " + this.teste);
     //this.userService.nickname = "luis";
   }
 

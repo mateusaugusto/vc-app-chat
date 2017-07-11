@@ -1,7 +1,7 @@
 import { ReplaySubject } from 'rxjs';
 
 import { SocketService, UserService } from '../../core';
-import { IMessage } from '../../../models';
+import { IMessage } from '../../../server/src';
 import {Injectable} from "@angular/core";
 
 @Injectable()
