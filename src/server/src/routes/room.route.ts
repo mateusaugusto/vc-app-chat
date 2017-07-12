@@ -1,26 +1,12 @@
-import express = require("express");
-import {Room} from "../model/room.model";
-import {IRoom} from "../interface/room/iroom";
+import { Router, Request, Response } from 'express';
+import {RoomController} from "../controller/room-controller";
 
+let uri = "/room";
+const roomRouter: Router = Router();
 
-let roomRouter = express.Router();
-
-let uri = "/room"
-
-roomRouter.get(uri, function (req, res) {
-    console.log("room");
-});
-
-
-roomRouter.post(uri, (req, res) => {
-    var room: IRoom = <IRoom>req.body;
-    Room.create(room).subscribe(
-        room => {
-            res.send(room);
-        },
-        error => console.log(error)
-    );
-
+roomRouter.get(uri + '/name/:name', (req: Request, res: Response) => {
+    console.log("route");
+    RoomController.find(req, res);
 });
 
 export = roomRouter;

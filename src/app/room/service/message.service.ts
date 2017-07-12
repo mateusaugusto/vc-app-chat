@@ -15,6 +15,11 @@ export class MessageService {
     // Connect to room nsp
     this.socketService = new SocketService('messages/' + encodeURIComponent(this.room));
 
+    console.log(this.socketService.list());
+
+
+    this.send(`${this.userService.nickname} joined the channel`);
+
     // Get initial items
     this.socketService.items().subscribe(message => {
           this.list.push(message);
@@ -25,7 +30,9 @@ export class MessageService {
 
     // Send user joined message
     this.socketService.onConnect().subscribe(
-      () => this.send(`${this.userService.nickname} joined the channel`)
+      () => {
+        this.send(`${this.userService.nickname} joined the channel`);
+      }
     );
 
     // Send user leave message

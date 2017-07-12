@@ -21,7 +21,7 @@ export class Message {
         this.message = message.message;
     }
 
-    public static create(message: IMessage): Observable<Message> {
+/*    public static create(message: IMessage): Observable<Message> {
         return new Observable(observer => {
             Room.find(message.room).subscribe(
                 room => {
@@ -36,12 +36,14 @@ export class Message {
                 error => observer.error(new Error())
             );
         });
-    }
+    }*/
 
     public static list(room: string): Observable<Message[]> {
+        console.log("listando banco");
         return new Observable(observer => {
             MessageModel.find({room}, (error, messages) => {
                 if (!error && messages) {
+                    console.log(messages);
                     observer.next(messages.map(message => new Message(message)));
                 } else {
                     observer.next([]);

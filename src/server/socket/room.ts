@@ -37,27 +37,27 @@ export class RoomSocket {
     var room: IRoom;
     room.name = name;
 
-    Room.create(room).subscribe(
+   /* Room.create(room).subscribe(
       room => this.list(),
       error => console.error('Room creation failed', error)
-    );
+    );*/
   }
 
   // Remove a room
   private remove(name: string): void {
-    Room.find(name).subscribe(
+  /*  Room.find(name).subscribe(
       room => room.remove().subscribe(x => {}, e => {}, () => this.list()),
       error => console.error('Room removal failed', error)
-    );
+    );*/
   }
 
   // List all rooms
   private list(): void {
-    Room.list().subscribe(rooms => {
+ /*   Room.list().subscribe(rooms => {
       this.rooms = rooms;
       this.updateMessageSockets();
       this.nsp.emit('item', rooms);
-    });
+    });*/
   }
 
   // Update message sockets

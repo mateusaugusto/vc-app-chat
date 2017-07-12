@@ -28,17 +28,19 @@ export class MessageSocket {
 
   // Create a message in a room
   private create(params: IMessage): void {
+    console.log("criou message");
     params.room = this.room.name;
-    Message.create(params).subscribe(
+   /* Message.create(params).subscribe(
       message => this.nsp.emit('item', message),
       error => console.error('Message sending failed', error)
-    );
+    );*/
   }
 
   // List all messages in a room
   private list(): void {
-    this.room.messages()
+    console.log("listando mensaagens");
+    /*this.room.messages()
       .map(messages => messages.reverse())
-      .subscribe(messages => messages.map(message => this.socket.emit(message)));
+      .subscribe(messages => messages.map(message => this.socket.emit(message)));*/
   }
 }

@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import {UserController} from "../controller/user-controller";
-let uri = "/user";
 
+let uri = "/user";
 const userRouter: Router = Router();
 
 
