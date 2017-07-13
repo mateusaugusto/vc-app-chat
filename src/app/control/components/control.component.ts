@@ -1,76 +1,47 @@
-import { Component } from '@angular/core';
-
-import { RoomService } from '../../core';
-import {UserService} from "../../core/service/user.service";
-import {ActivatedRoute} from "@angular/router";
-import {User} from "../../../server/src/model/user.model";
-import {UserDomain} from "../../../server/src/domain/user-domain";
-import {RoomsService} from "../../rooms/service/rooms.service";
-import {IRoom} from "../../../server/src/interface/room/iroom";
-import {BaseDomain} from "../../../server/src/domain/base-domain";
+import {Component} from "@angular/core";
+import {RoomService} from "../../core";
 
 @Component({
-  selector: 'control',
-  templateUrl: '../views/control.component.html'
+    selector: 'control',
+    templateUrl: '../views/control.component.html'
 })
 export class ControlComponent {
-  room: string = '';
-  newRoom: string = '';
-  clientId: number;
-  teste: UserDomain;
+    room: string = '';
+    newRoom: string = '';
+    clientId: number;
 
-  rooms: BaseDomain[] = [];
-
-
-  constructor(public roomService: RoomService,
-              private route: ActivatedRoute,
-              private userService: UserService,
-              private roomsService: RoomsService) {
-
-  }
-
-
-
-
-  ngOnInit() {
-    //this.clientId = +this.route.snapshot.params['clienteId'];
-
-    /*this.userService.findOne(this.clientId).subscribe(user => {
-      this.teste = user;
-    });*/
-
-    this.roomsService.listbyUser("postman2").subscribe(rooms => {
-      this.rooms = rooms;
-      console.log("aqui control" + rooms);
-    });
-
-    //console.log("ress  / " + this.teste);
-    //this.userService.nickname = "luis";
-  }
-
-
-  // Join room, when Join-button is pressed
-  join(room): void {
-    this.roomService.join(room);
-    this.room = '';
-  }
-
-  // Create room, when Create-button is pressed and empty newRoom text input
-  create(): void {
-    this.roomService.create(this.newRoom);
-    this.newRoom = '';
-  }
-
-  // Remove room, when Remove-button is pressed and unset selected room
-  remove(): void {
-    this.roomService.remove(this.room);
-    this.room = '';
-  }
-
-  // Handle keypress event (for creating a new room)
-  eventHandler(event: KeyboardEvent): void {
-    if (event.key === 'Enter') {
-      this.create();
+    constructor(public roomService: RoomService,) {
     }
-  }
+
+
+    ngOnInit() {
+        //this.clientId = +this.route.snapshot.params['clienteId'];
+
+        /*this.userService.findOne(this.clientId).subscribe(user => {
+         this.teste = user;
+         });*/
+
+        this.roomService.lisRoomsByUser("postman2").subscribe(rooms => {
+            // this.rooms = rooms;
+            this.roomService.list = rooms;
+            console.log("aqui control" + rooms);
+        });
+
+        //console.log("ress  / " + this.teste);
+        //this.userService.nickname = "luis";
+    }
+
+
+    // Join room, when Join-button is pressed
+    join(room): void {
+        this.roomService.join(room);
+        this.room = '';
+    }
+
+    // Remove room, when Remove-button is pressed and unset selected room
+    remove(): void {
+        this.roomService.remove(this.room);
+        this.room = '';
+    }
+
 }

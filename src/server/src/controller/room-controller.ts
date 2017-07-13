@@ -2,6 +2,7 @@ import {IUser} from "../interface/user/iuser";
 import {UserModel} from "../schema/user-schema";
 import express = require("express");
 import {RoomModel} from "../schema/room-schema";
+import {IRoom} from "../index";
 
 export class RoomController {
 
@@ -17,6 +18,16 @@ export class RoomController {
             }
         });
     };
+
+    public static create(req: express.Request, res: express.Response): void {
+        var room: IRoom = <IRoom>req.body;
+        RoomModel.create(room, (error, result) => {
+            if (error) res.send({"error": "error"});
+            else {
+                res.send(result);
+            }
+        });
+    }
 
 /*    public static find(name: string): Observable<Room> {
         return new Observable(observer => {

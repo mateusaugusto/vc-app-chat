@@ -5,28 +5,21 @@ let uri = "/user";
 const userRouter: Router = Router();
 
 
-userRouter.get(uri + '/domainId/:domainId/accountId/:accountId/clienteId/:clientId', (req: Request, res: Response) => {
+userRouter.get(uri + '/domainId/:domainId/accountId/:accountId/clientId/:clientId', (req, res) => {
+    console.log("route findClient");
     UserController.findOneByDomainIdAndAccountIdAndClientId(req, res);
 });
 
-/*userRouter.get("/user/:id",
-});*/
-/*
 userRouter.post(uri, (req, res) => {
-    var user: IUser = <IUser>req.body;
-    User.create(user).subscribe(
-        room => {
-            res.send(room);
-        },
-        error => {
-            res.status(500);
-            //res.render('error', { error: error });
-            console.log(error);
-        }
-    );
+    UserController.create(req, res);
 });
 
-userRouter.put(uri, (req, res) => {
+userRouter.put(uri + "/add/room/:roomId", (req, res) => {
+    console.log("route insertRoomToUser");
+    UserController.insertRoomToUser(req, res);
+});
+
+/*userRouter.put(uri, (req, res) => {
     var user: IUser = <IUser>req.body;
     User.update(user).subscribe(
         room => {
@@ -40,18 +33,7 @@ userRouter.put(uri, (req, res) => {
     );
 });
 
-userRouter.put(uri + "add/room/:roomId/domainId/:domainId/accountId/:366", (req, res) => {
-    var user: IUser = <IUser>req.body;
-    User.insertRoomToUser(user, req.params.roomId).subscribe(
-        room => {
-            res.send(room);
-        },
-        error => {
-            res.status(500);
-            //res.render('error', { error: error });
-            console.log(error);
-        }
-    );
+
 });*/
 
 export = userRouter;

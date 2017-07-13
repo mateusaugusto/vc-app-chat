@@ -35,7 +35,7 @@ export class Message {
                 },
                 error => observer.error(new Error())
             );
-        });
+
     }*/
 
     public static list(room: string): Observable<Message[]> {

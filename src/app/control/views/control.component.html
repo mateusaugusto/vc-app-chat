@@ -2,14 +2,13 @@
     <ul class="nav nav-sidebar" [(ngModel)]="room" name="room" ngDefaultControl>
         <li (click)="join(room.name)"
             style="margin-left: 10px;"
-            *ngFor="let room of rooms"
+            *ngFor="let room of roomService.list"
             [value]="room.name"
             role="button"
             data-toggle="popover"
         >{{room.name}}
         </li>
     </ul>
-    <pre>{{teste | json}}</pre>
 </div>
 
 

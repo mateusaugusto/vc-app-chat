@@ -1,13 +1,12 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
-import {RoomsService} from "../service/rooms.service";
-import {BaseDomain} from "../../../server/src/domain/base-domain";
+import { UserService } from '../../core';
 
 @Component({
-    selector: 'rooms',
-    templateUrl: '../views/rooms.component.html'
+  selector: 'rooms',
+  templateUrl: '../views/rooms.component.html'
 })
 
 export class RoomsComponent {
-
+  constructor(public userService: UserService) {}
 }
