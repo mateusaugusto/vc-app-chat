@@ -15,7 +15,7 @@ userRouter.post(uri, (req, res) => {
 });
 
 userRouter.put(uri + "/add/room/:roomId", (req, res) => {
-    console.log("route insertRoomToUser");
+    console.log("route insertRoom To User");
     UserController.insertRoomToUser(req, res);
 });
 
