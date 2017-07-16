@@ -6,21 +6,25 @@ import {Injectable} from "@angular/core";
 import {RoomDomain} from "../../../server/src/domain/room-domain";
 import {Observable} from "rxjs/Observable";
 import {Http, Response} from "@angular/http";
+import {BaseUrl} from "../../infra/base-url";
 
 @Injectable()
-export class MessageService {
+export class MessageService extends BaseUrl {
     messages: ReplaySubject<any> = new ReplaySubject(1);
     private list: IMessage[] = [];
     private socketService: SocketService;
 
-    constructor(private userService: UserService, private room: RoomDomain) {
+    constructor(private userService: UserService,
+                private room: RoomDomain,
+                private http: Http) {
+        super();
         // Connect to room nsp
         this.socketService = new SocketService('messages/' + encodeURIComponent(this.room.name));
 
         // Get initial items
         this.socketService.items().subscribe(message => {
-                this.list.push(message);
-                this.messages.next(this.list);
+                //this.list.push(message);
+                this.messages.next(message);
                 console.log("message service list" + this.list);
             },
             error => console.log(error)
@@ -37,10 +41,10 @@ export class MessageService {
         );
     }
 
- /*   findOne(name: string) : Observable<IMessage[]>{
-        return this.http.get('http://localhost:5000/api/message/name'+ name)
+    findOne(name: string): Observable<IMessage[]> {
+        return this.http.get(this.getBaseUrl() + 'message/name/' + name)
             .map((response: Response) => response.json());
-    }*/
+    }
 
 
     // Emit message using socket service

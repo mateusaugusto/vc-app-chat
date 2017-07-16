@@ -10,7 +10,7 @@ export class MessageController {
         MessageModel.find({room: name}, (error, result) => {
             if (error) res.send({"error": "error"});
             else res.send(result)
-        });
+        }).populate("user");
     };
 
 }

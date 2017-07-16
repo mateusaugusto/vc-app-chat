@@ -1,10 +1,8 @@
-import {Component, Input, OnInit, AfterViewInit, OnDestroy, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from "@angular/core";
 
-import {RoomService, UserService} from '../../core';
-import {IMessage, IRoom} from '../../../server/src';
-import {MessageService} from '../service/message.service';
-import {Message} from "../../../server/src/model/message.model";
-import {UserDomain} from "../../../server/src/domain/user-domain";
+import {RoomService, UserService} from "../../core";
+import {IMessage, IRoom} from "../../../server/src";
+import {MessageService} from "../service/message.service";
 import * as http from "http";
 import {Http} from "@angular/http";
 
@@ -22,24 +20,24 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     messages: IMessage[];
 
     private messageService: MessageService;
-    private http: Http;
     private alreadyLeftChannel: boolean = false;
 
     constructor(private roomService: RoomService,
-                public userService: UserService) {
+                public userService: UserService,
+                private http: Http) {
     }
 
     // Handle keypress event, for saving nickname
     ngOnInit(): void {
 
-        this.userService.findOne2(this.room.name).subscribe(message => {
+        this.messageService = new MessageService(this.userService, this.room, this.http);
+
+        this.messageService.findOne(this.room.name).subscribe(message => {
             this.messages = message;
         });
 
-        this.messageService = new MessageService(this.userService, this.room);
-
         this.messageService.messages.subscribe(messages => {
-            this.messages = messages;
+            this.messages.push(messages);
             setTimeout(() => {
                 this.scrollToBottom();
             }, 200);
