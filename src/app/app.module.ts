@@ -11,25 +11,29 @@ import {ControlComponent} from "./control/components/control.component";
 import {HttpModule} from "@angular/http";
 
 @NgModule({
-  imports: [
-    CoreModule,
-    SharedModule,
-    ControlModule,
-    HttpModule,
-    RoomModule,
-    RouterModule.forRoot([
-      {path: 'user/:clienteId', component: ControlComponent}
-    ]),
-  ],
-  declarations: [
-    AppComponent,
-    RoomsComponent
-  ],
-  exports: [
-    CoreModule
-  ],
-  bootstrap: [
-    AppComponent
-  ]
+    imports: [
+        CoreModule,
+        SharedModule,
+        ControlModule,
+        HttpModule,
+        RoomModule,
+        RouterModule.forRoot([
+            {
+                path: 'user/domainId/:domainId/accountId/:accountId/clientId/:clientId',
+                component: ControlComponent
+            }
+        ]),
+    ],
+    declarations: [
+        AppComponent,
+        RoomsComponent
+    ],
+    exports: [
+        CoreModule
+    ],
+    bootstrap: [
+        AppComponent
+    ]
 })
-export class AppModule {}
+export class AppModule {
+}

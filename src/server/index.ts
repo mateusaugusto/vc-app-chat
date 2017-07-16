@@ -92,7 +92,6 @@ export class Server {
 
         // Set room socket
         let roomSocket = new RoomSocket(this.io);
-
         let userSocket = new UserSocket(this.io);
     }
 

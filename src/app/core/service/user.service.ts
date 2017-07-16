@@ -1,22 +1,22 @@
-import { IRoom } from '../../../server/src';
-import { Injectable } from '@angular/core';
-import { Http, Response} from '@angular/http';
+import {Injectable} from "@angular/core";
+import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {UserDomain} from "../../../server/src/domain/user-domain";
 import {BaseUrl} from "../../infra/base-url";
+import {RoomDomain} from "../../../server/src/domain/room-domain";
 
 @Injectable()
 export class UserService extends BaseUrl{
-  nickname: string;
-  rooms: IRoom[] = [];
+  user: UserDomain;
+  rooms: RoomDomain[] = [];
 
   constructor(private http: Http) {
     super();
   }
 
   // Get all posts from the API
-  findOne(id: number) : Observable<UserDomain>{
-    return this.http.get(this.getBaseUrl() + 'user/'+ id)
+  findOne(user: UserDomain) : Observable<UserDomain>{
+    return this.http.get(this.getBaseUrl() + `user/domainId/${user.domainId}/accountId/${user.accountId}/clientId/${user.clientId}`)
         .map((response: Response) => response.json());
   }
 

@@ -1,18 +1,19 @@
 import {IUserModel} from "../interface/user/iuser-model";
+import {RoomDomain} from "../domain/room-domain";
 
 export class User {
     name: string;
     domainId: number;
     accountId: number;
     clientId: number;
-    userRooms: number[];
+    room: RoomDomain[];
 
     constructor(user: IUserModel) {
         this.name = user.name;
         this.domainId = user.domainId;
         this.accountId = user.accountId;
         this.clientId = user.clientId;
-        this.userRooms = user.userRooms;
+        this.room = user.room;
     }
 }
 

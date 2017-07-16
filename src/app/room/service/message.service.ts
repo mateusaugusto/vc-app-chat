@@ -25,12 +25,12 @@ export class MessageService {
 
     // Send user joined message
     this.socketService.onConnect().subscribe(
-      () => this.send(`${this.userService.nickname} joined the channel`)
+      () => this.send(`${this.userService.user.name} joined the channel`)
     );
 
     // Send user leave message
     this.socketService.onDisconnect().subscribe(
-      () => this.send(`${this.userService.nickname} left the channel`)
+      () => this.send(`${this.userService.user.name} left the channel`)
     );
   }
 
@@ -39,7 +39,7 @@ export class MessageService {
     this.socketService.create({
       room: this.room,
       created: new Date(),
-      from: this.userService.nickname,
+      from: this.userService.user.name,
       to: '',
       message: message
     });

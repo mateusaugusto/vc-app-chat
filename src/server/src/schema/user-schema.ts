@@ -1,12 +1,13 @@
 import * as mongoose from "mongoose";
 import {IUserModel} from "../interface/user/iuser-model";
+import {Schema} from "mongoose";
 
 const UserSchema = new mongoose.Schema({
     name: {type: String, required: true},
-    domainId: { type: Number, required: true},
-    accountId: { type: Number, required: true },
-    clientId: { type: Number, required: true },
-    userRooms: [{ type: Number, ref: 'Room' }],
+    domainId: { type: Number},
+    accountId: { type: Number},
+    clientId: { type: Number},
+    room: [{ type: Schema.Types.ObjectId, ref: 'Room'}]
 
 }).index({domainId: 1, accountId: 1, clientId: 1}, {unique: true});
 
