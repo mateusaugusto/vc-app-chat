@@ -47,7 +47,7 @@ export class UserController {
         UserModel.findOne({domainId: domainId, accountId: accountId, clientId: clientId}, (error, result) => {
             if (error) res.send({"error": "error"});
             else res.send(result)
-        });
+        }).populate("room");
     };
 
 }
