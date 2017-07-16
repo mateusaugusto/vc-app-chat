@@ -10,9 +10,6 @@ import {UserDomain} from "../../../server/src/domain/user-domain";
 })
 export class ControlComponent{
   room: string = '';
-  newRoom: string = '';
-  clientId: number;
-  //user: User;
 
   constructor(private roomService: RoomService,
               private route: ActivatedRoute,
@@ -31,7 +28,6 @@ export class ControlComponent{
       this.roomService.list = user.room;
     });
   }
-
 
   // Join room, when Join-button is pressed
   join(room): void {

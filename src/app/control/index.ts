@@ -1,1 +1,1 @@
-//export * from './components/control.component';
+export * from './components/control.component';

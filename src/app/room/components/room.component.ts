@@ -3,12 +3,15 @@ import {Component, Input, OnInit, AfterViewInit, OnDestroy, ElementRef, ViewChil
 import {RoomService, UserService} from '../../core';
 import {IMessage, IRoom} from '../../../server/src';
 import {MessageService} from '../service/message.service';
+import {Message} from "../../../server/src/model/message.model";
+import {UserDomain} from "../../../server/src/domain/user-domain";
+import * as http from "http";
+import {Http} from "@angular/http";
 
 @Component({
     selector: 'room',
     templateUrl: '../views/room.component.html'
 })
-
 export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('scroll') private scroll: ElementRef;
     @ViewChild('focus') private focus: ElementRef;
@@ -19,17 +22,21 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     messages: IMessage[];
 
     private messageService: MessageService;
+    private http: Http;
     private alreadyLeftChannel: boolean = false;
 
-    constructor(private roomService: RoomService, public userService: UserService) {
+    constructor(private roomService: RoomService,
+                public userService: UserService) {
     }
 
     // Handle keypress event, for saving nickname
     ngOnInit(): void {
 
-        console.log(this.room);
+        this.userService.findOne2(this.room.name).subscribe(message => {
+            this.messages = message;
+        });
 
-        this.messageService = new MessageService(this.userService, this.room.name);
+        this.messageService = new MessageService(this.userService, this.room);
 
         this.messageService.messages.subscribe(messages => {
             this.messages = messages;
@@ -37,6 +44,8 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.scrollToBottom();
             }, 200);
         });
+
+
     }
 
     // After view initialized, focus on chat message text input
@@ -53,7 +62,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Send chat message, and reset message text input
     send(): void {
-        if(this.message !== ''){
+        if (this.message !== '') {
             this.messageService.send(this.message);
             this.message = '';
         }
@@ -74,6 +83,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log('ERROR:', error);
         }
     }
+
     // Handle keypress event, for sending chat message
     eventHandler(event: KeyboardEvent): void {
         if (event.key === 'Enter') {

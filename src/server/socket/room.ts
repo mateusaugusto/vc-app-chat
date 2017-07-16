@@ -45,10 +45,10 @@ export class RoomSocket {
 
   // Remove a room
   private remove(name: string): void {
-    Room.find(name).subscribe(
+  /*  Room.find(name).subscribe(
       room => room.remove().subscribe(x => {}, e => {}, () => this.list()),
       error => console.error('Room removal failed', error)
-    );
+    );*/
   }
 
   // List all rooms

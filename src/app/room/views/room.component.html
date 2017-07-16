@@ -11,7 +11,7 @@
                                 <div class="messages" #scroll>
                                     <div class="message" *ngFor="let item of messages | orderBy:'created':false">
                                         <span class="dimmed">{{item.created}}</span>
-                                        &lt;{{item.from}}&gt;
+                                        &lt;{{item.user[0].name}}&gt;
                                         {{item.message}}
                                     </div>
                                 </div>

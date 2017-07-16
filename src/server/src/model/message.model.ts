@@ -1,40 +1,50 @@
-import {Observable} from 'rxjs';
-import * as moment from 'moment';
-import {Room} from './room.model';
+import {Observable} from "rxjs";
+import * as moment from "moment";
 import {IMessageModel} from "../interface/message/imessage-model";
 import {IMessage} from "../interface/message/imessage";
 import {MessageModel} from "../schema/message-schema";
-
+import {UserDomain} from "../domain/user-domain";
 
 export class Message {
     room: string;
+   // room: RoomDomain;
+    // user: UserDomain;
     created: Date;
-    from: string;
+    user: UserDomain;
     to: string;
     message: string;
 
     constructor(message: IMessageModel) {
         this.room = message.room;
+        this.user = message.user;
         this.created = moment(message.created).toDate();
-        this.from = message.from;
+        this.user = message.user;
         this.to = message.to;
         this.message = message.message;
     }
 
     public static create(message: IMessage): Observable<Message> {
         return new Observable(observer => {
-            Room.find(message.room).subscribe(
-                room => {
-                    message.created = new Date();
-                    MessageModel.create(message, (error, message) => {
-                        if (!error && message) {
-                            observer.next(new Message(message));
-                        }
-                        observer.complete();
-                    });
-                },
-                error => observer.error(new Error())
-            );
+            message.created = new Date();
+            console.log("criando msg:" + message);
+            MessageModel.create(message, (error, message) => {
+                if (!error && message) {
+                    observer.next(new Message(message));
+                }
+                observer.complete();
+            });
+        });
+    }
+
+    public static findOne(message: IMessage): Observable<Message> {
+        return new Observable(observer => {
+            console.log("finding:" + message);
+            MessageModel.findOne(message, (error, message) => {
+                if (!error && message) {
+                    observer.next(new Message(message));
+                }
+                observer.complete();
+            }).populate("user");
         });
     }
 
@@ -47,7 +57,7 @@ export class Message {
                     observer.next([]);
                 }
                 observer.complete();
-            });
+            }).populate("User");
         });
     }
 

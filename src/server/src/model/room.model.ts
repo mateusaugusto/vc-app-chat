@@ -5,6 +5,7 @@ import {Message} from './message.model';
 import {IRoomModel} from "../interface/room/iroom-model";
 import {IRoom} from "../interface/room/iroom";
 import {RoomModel} from "../schema/room-schema";
+import {RoomDomain} from "../domain/room-domain";
 
 export class Room {
     name: string;
@@ -20,9 +21,10 @@ export class Room {
         this.accountId = room.accountId;
     }
 
-    public static find(name: string): Observable<Room> {
+    public static find(room: RoomDomain): Observable<Room> {
         return new Observable(observer => {
-            RoomModel.findOne({name}, (error, room) => {
+            console.log("find room:" + room);
+            RoomModel.findOne({room}, (error, room) => {
                 if (!error && room) {
                     observer.next(new Room(room));
                 }

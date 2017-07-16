@@ -10,7 +10,7 @@ import {RoomSocket} from './socket';
 import {UserSocket} from './socket/user';
 import userRouter = require("./src/routes/user.route");
 import roomRouter = require("./src/routes/room.route");
-import UserRoutes = require("./src/routes/user.route");
+import messageRouter = require("./src/routes/message.route");
 
 declare var process, __dirname;
 
@@ -63,8 +63,9 @@ export class Server {
             result.sendFile(path.join(root, '/index.html'));
         });
 
-        this.app.use('/api', UserRoutes);
+        this.app.use('/api', userRouter);
         this.app.use('/api', roomRouter);
+        this.app.use('/api', messageRouter);
 
         // Set app to use router as the default route
         this.app.use('*', router);
