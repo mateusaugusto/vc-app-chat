@@ -14,7 +14,7 @@ export class RoomService {
     // Open room socket
     this.socketService = new SocketService('room');
 
- /*   // Subscribe to room list updates
+    // Subscribe to room list updates
     this.socketService.items().subscribe(
       rooms => {
         this.list = rooms;
@@ -24,7 +24,7 @@ export class RoomService {
     );
 
     // Get initial list
-    this.socketService.list();*/
+    this.socketService.list();
   }
 
   // Join room

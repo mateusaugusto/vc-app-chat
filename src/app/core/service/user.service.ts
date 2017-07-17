@@ -21,9 +21,4 @@ export class UserService extends BaseUrl{
         .map((response: Response) => response.json());
   }
 
-  findOne2(name: string) : Observable<IMessage[]>{
-    return this.http.get(this.getBaseUrl() + 'message/name/'+ name)
-        .map((response: Response) => response.json());
-  }
-
 }

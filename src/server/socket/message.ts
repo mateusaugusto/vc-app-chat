@@ -6,6 +6,7 @@ export class MessageSocket {
     socket: any;
 
     constructor(io: any, public room: Room) {
+        console.log("tentando connectar no socker message");
         this.nsp = io.of("/messages/" + encodeURIComponent(this.room.name));
         this.nsp.on("connection", (socket: any) => {
             console.log("Client connected to room:", this.room.name);
