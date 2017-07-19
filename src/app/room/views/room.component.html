@@ -9,7 +9,7 @@
                         <div class="panel-body">
                             <form role="form" action="#" method="POST" name="form">
                                 <div class="messages" #scroll>
-                                    <div class="message" *ngFor="let item of messages | orderBy:'created':false">
+                                    <div class="message" *ngFor="let item of messages">
                                         <span class="dimmed">{{item.created}}</span>
                                         &lt;{{item.user[0].name}}&gt;
                                         {{item.message}}

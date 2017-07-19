@@ -4,10 +4,11 @@ import {IMessageModel} from "../interface/message/imessage-model";
 import {IMessage} from "../interface/message/imessage";
 import {MessageModel} from "../schema/message-schema";
 import {UserDomain} from "../domain/user-domain";
+import {RoomDomain} from "../domain/room-domain";
 
 export class Message {
-    room: string;
-   // room: RoomDomain;
+    //room: string;
+    room: RoomDomain;
     // user: UserDomain;
     created: Date;
     user: UserDomain;

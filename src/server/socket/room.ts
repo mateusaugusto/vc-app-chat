@@ -11,6 +11,7 @@ export class RoomSocket {
   messageSockets: MessageSocket[] = [];
 
   constructor(private io: any) {
+    console.log("conectado a sala");
     this.nsp = this.io.of('/room');
     this.nsp.on('connection', (socket: any) => {
       this.socket = socket;

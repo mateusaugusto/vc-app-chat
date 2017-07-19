@@ -32,7 +32,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.messageService = new MessageService(this.userService, this.room, this.http);
 
-        this.messageService.findOne(this.room.name).subscribe(message => {
+        this.messageService.findOne(this.room._id).subscribe(message => {
             this.messages = message;
         });
 

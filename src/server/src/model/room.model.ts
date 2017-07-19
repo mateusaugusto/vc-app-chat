@@ -12,6 +12,7 @@ export class Room {
     created: Date;
     domainId: number;
     accountId: number;
+    _id: string;
 
 
     constructor(room: IRoomModel) {
@@ -19,6 +20,7 @@ export class Room {
         this.created = moment(room.created).toDate();
         this.domainId = room.domainId;
         this.accountId = room.accountId;
+        this._id = room._id;
     }
 
     public static find(room: RoomDomain): Observable<Room> {

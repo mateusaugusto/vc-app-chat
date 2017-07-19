@@ -2,11 +2,13 @@ import {Injectable} from "@angular/core";
 import {ReplaySubject} from "rxjs";
 import {SocketService} from "./socket.service";
 import {UserService} from "./user.service";
+import {IRoom} from "../../../server/src/interface/room/iroom";
+import {RoomDomain} from "../../../server/src/domain/room-domain";
 
 @Injectable()
 export class RoomService {
   rooms: ReplaySubject<any> = new ReplaySubject(1);
-  list: any;
+  list: RoomDomain[];
 
   private socketService: SocketService;
 

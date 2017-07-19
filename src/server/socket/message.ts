@@ -29,7 +29,7 @@ export class MessageSocket {
 
     // Create a message in a room
     private create(params: IMessage): void {
-        params.room = this.room.name;
+       // params.room = this.room.name;
         Message.create(params).subscribe(
             message => {
                 Message.findOne(message).subscribe(result => {

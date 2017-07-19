@@ -1,4 +1,5 @@
-import {BaseDomain} from "../../domain/base-domain";
+import {RoomDomain} from "../../domain/room-domain";
 
-export interface IRoom extends BaseDomain{
+export interface IRoom extends RoomDomain{
+    _id: string;
 }

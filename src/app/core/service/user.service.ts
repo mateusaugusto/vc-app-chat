@@ -4,7 +4,6 @@ import {Observable} from "rxjs/Observable";
 import {UserDomain} from "../../../server/src/domain/user-domain";
 import {BaseUrl} from "../../infra/base-url";
 import {RoomDomain} from "../../../server/src/domain/room-domain";
-import {IMessage} from "../../../server/src/interface/message/imessage";
 
 @Injectable()
 export class UserService extends BaseUrl{
