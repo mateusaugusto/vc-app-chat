@@ -2,7 +2,6 @@ import {Injectable} from "@angular/core";
 import {ReplaySubject} from "rxjs";
 import {SocketService} from "./socket.service";
 import {UserService} from "./user.service";
-import {IRoom} from "../../../server/src/interface/room/iroom";
 import {RoomDomain} from "../../../server/src/domain/room-domain";
 
 @Injectable()
@@ -16,17 +15,6 @@ export class RoomService {
     // Open room socket
     this.socketService = new SocketService('room');
 
-    // Subscribe to room list updates
-    this.socketService.items().subscribe(
-      rooms => {
-        this.list = rooms;
-        this.rooms.next(this.list);
-      },
-      error => console.log(error)
-    );
-
-    // Get initial list
-    this.socketService.list();
   }
 
   // Join room

@@ -42,7 +42,12 @@ export class MessageService extends BaseUrl {
     }
 
     findOne(room: string): Observable<IMessage[]> {
-        return this.http.get(this.getBaseUrl() + 'message/room/' + room)
+        return this.http.get(this.getBaseUrl() + `message/room/${room}`)
+            .map((response: Response) => response.json());
+    }
+
+    findMessages(room: string, text: string): Observable<IMessage[]> {
+        return this.http.get(this.getBaseUrl() + `message/room/${room}/text/${text}`)
             .map((response: Response) => response.json());
     }
 

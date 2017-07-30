@@ -1,11 +1,12 @@
 <div class="col-sm-9 col-sm-offset-3">
             <div class="row">
-                <div class="col-md-10">
+                <div class="col-md-8">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <strong> {{room.name}} : Created: {{room.created}}</strong>
                             <button class="btn btn-danger btn-xs" (click)="leave(room)">leave</button>
                         </div>
+
                         <div class="panel-body">
                             <form role="form" action="#" method="POST" name="form">
                                 <div class="messages" #scroll>
@@ -31,6 +32,19 @@
                                 </div>
                             </form>
                         </div>
+                    </div>
+                </div>
+                <div class="col-md-4" style="margin-top:1%">
+                    <div>
+                        <input [(ngModel)]="search">
+                        <button class="btn btn-danger btn-xs" (click)="searchMessage()">pesquisa</button>
+
+                        <div class="message" *ngFor="let item of listSearchMessage">
+                            <small>{{item.created | date : 'shortDate' }}</small>
+                            <small>&lt;{{item.user[0].name}}&gt;</small>
+                            {{item.message}}
+                        </div>
+
                     </div>
                 </div>
             </div>

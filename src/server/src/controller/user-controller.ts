@@ -14,12 +14,6 @@ export class UserController {
 
     public static insertRoomToUser(req: express.Request, res: express.Response): void {
         var user: IUser = <IUser>req.body;
-
-        console.log("req.params.roomId" + req.params.roomId);
-        console.log("clientId" + user.clientId);
-        console.log("domainId" + user.domainId);
-        console.log("accountId" + user.accountId);
-
         UserModel.findOneAndUpdate({domainId: user.domainId, accountId: user.accountId, clientId: user.clientId},
             {$push: {"room": req.params.roomId}}, (error, result) => {
                 if (error) res.send({"error": "error"});

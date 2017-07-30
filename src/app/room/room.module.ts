@@ -1,6 +1,6 @@
 import {NgModule} from "@angular/core";
 import {FormsModule} from "@angular/forms";
-import {CommonModule} from "@angular/common";
+import {CommonModule, DatePipe} from "@angular/common";
 import {RoomComponent} from "./components/room.component";
 import {SharedModule} from "../shared/shared.module";
 import {MessageService} from "./service/message.service";
@@ -19,7 +19,8 @@ import {HttpModule} from "@angular/http";
         RoomComponent
     ],
     providers: [
-        MessageService
+        MessageService,
+        DatePipe
     ],
     exports: [
         RoomComponent

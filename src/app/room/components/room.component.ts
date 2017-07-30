@@ -3,7 +3,6 @@ import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChil
 import {RoomService, UserService} from "../../core";
 import {IMessage, IRoom} from "../../../server/src";
 import {MessageService} from "../service/message.service";
-import * as http from "http";
 import {Http} from "@angular/http";
 
 @Component({
@@ -17,7 +16,9 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() room: IRoom;
 
     message: string = '';
+    search: string = '';
     messages: IMessage[];
+    listSearchMessage: IMessage[];
 
     private messageService: MessageService;
     private alreadyLeftChannel: boolean = false;
@@ -43,7 +44,12 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
             }, 200);
         });
 
+    }
 
+    searchMessage(){
+        this.messageService.findMessages(this.room._id, this.search).subscribe(message => {
+            this.listSearchMessage = message;
+        });
     }
 
     // After view initialized, focus on chat message text input
