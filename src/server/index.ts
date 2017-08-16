@@ -11,8 +11,14 @@ import {UserSocket} from './socket/user';
 import userRouter = require("./src/routes/user.route");
 import roomRouter = require("./src/routes/room.route");
 import messageRouter = require("./src/routes/message.route");
+import * as fs from "fs";
+
+var jwt = require('express-jwt');
 
 declare var process, __dirname;
+
+var publicKey = fs.readFileSync('/home/mateus/Documents/public.txt');
+
 
 export class Server {
 
@@ -58,6 +64,8 @@ export class Server {
 
         // Static assets
         this.app.use('/assets', serveStatic(path.resolve(root, 'assets')));
+
+        this.app.use(jwt({ secret: publicKey, credentialsRequired: true }));
 
         router.get('/', (request: express.Request, result: express.Response) => {
             result.sendFile(path.join(root, '/index.html'));
