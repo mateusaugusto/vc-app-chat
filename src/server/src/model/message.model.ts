@@ -7,9 +7,7 @@ import {UserDomain} from "../domain/user-domain";
 import {RoomDomain} from "../domain/room-domain";
 
 export class Message {
-    //room: string;
     room: RoomDomain;
-    // user: UserDomain;
     created: Date;
     user: UserDomain;
     to: string;

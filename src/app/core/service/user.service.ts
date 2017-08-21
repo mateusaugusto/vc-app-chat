@@ -9,6 +9,7 @@ import {RoomDomain} from "../../../server/src/domain/room-domain";
 export class UserService extends BaseUrl{
   user: UserDomain;
   rooms: RoomDomain[] = [];
+  privateList: UserDomain[];
 
   constructor(private http: Http) {
     super();
@@ -17,6 +18,12 @@ export class UserService extends BaseUrl{
   // Get all posts from the API
   findOne(user: UserDomain) : Observable<UserDomain>{
     return this.http.get(this.getBaseUrl() + `user/domainId/${user.domainId}/accountId/${user.accountId}/clientId/${user.clientId}`)
+        .map((response: Response) => response.json());
+  }
+
+  findPrivateUsers(user: UserDomain) : Observable<UserDomain[]>{
+    let privateUsers = eval(user['privateUsers']);
+    return this.http.get(this.getBaseUrl() + `user/domainId/${user.domainId}/accountId/${user.accountId}/privateusers/${privateUsers}`)
         .map((response: Response) => response.json());
   }
 

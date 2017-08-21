@@ -37,8 +37,34 @@ export class UserController {
         let clientId = req.params.clientId;
         let domainId = req.params.domainId;
         let accountId = req.params.accountId;
+        let listPrivateUsers;
+
+        if(req.headers['private-users']){
+            console.log(req.headers['private-users']);
+            listPrivateUsers = req.headers['private-users'];
+        }
 
         UserModel.findOne({domainId: domainId, accountId: accountId, clientId: clientId}, (error, result) => {
+            if (error) res.send({"error": "error"});
+            else {
+                var obj = result.toObject();
+                obj['privateUsers'] = listPrivateUsers;
+                res.send(obj);
+            }
+        }).populate("room");
+
+
+
+    };
+
+    public static findAllByDomainIdAndAccountId(req: express.Request, res: express.Response) {
+        let domainId = req.params.domainId;
+        let accountId = req.params.accountId;
+        let listPrivateUsers = req.params.privateusers;
+
+        console.log(listPrivateUsers);
+
+        UserModel.find({domainId: domainId, accountId: accountId, 'clientId': { $in: [10,11,9] }}, (error, result) => {
             if (error) res.send({"error": "error"});
             else res.send(result)
         }).populate("room");

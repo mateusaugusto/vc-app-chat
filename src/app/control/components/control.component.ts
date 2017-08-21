@@ -10,6 +10,7 @@ import {UserDomain} from "../../../server/src/domain/user-domain";
 })
 export class ControlComponent{
   room: string = '';
+  user: UserDomain;
 
   constructor(private roomService: RoomService,
               private route: ActivatedRoute,
@@ -24,9 +25,18 @@ export class ControlComponent{
     userParams.clientId = +this.route.snapshot.params['clientId'];
 
     this.userService.findOne(userParams).subscribe(user => {
+      this.user = user;
       this.userService.user = user;
       this.roomService.list = user.room;
+
+      if(user['privateUsers']){
+        this.userService.findPrivateUsers(user).subscribe(privateUsers => {
+          this.userService.privateList = privateUsers;
+        });
+      };
+
     });
+
   }
 
   // Join room, when Join-button is pressed
@@ -35,10 +45,22 @@ export class ControlComponent{
     this.room = '';
   }
 
+  joinPrivateRoom(userRoom): void {
+
+    this.roomService.findPrivateRoom(userRoom._id, this.user).subscribe(privateRoom => {
+      if(privateRoom){
+        this.roomService.joinPrivate(privateRoom);
+        this.room = '';
+      }
+
+    });
+
+
+  }
+
   // Remove room, when Remove-button is pressed and unset selected room
   remove(): void {
     this.roomService.remove(this.room);
     this.room = '';
   }
-
 }

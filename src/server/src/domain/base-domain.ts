@@ -3,4 +3,5 @@ export class BaseDomain {
     created: Date;
     domainId: number;
     accountId: number;
+    isEnabled: boolean;
 }

@@ -7,6 +7,8 @@ export class User {
     accountId: number;
     clientId: number;
     room: RoomDomain[];
+    isEnabled: boolean;
+    _id: string;
 
     constructor(user: IUserModel) {
         this.name = user.name;
@@ -14,13 +16,7 @@ export class User {
         this.accountId = user.accountId;
         this.clientId = user.clientId;
         this.room = user.room;
+        this.isEnabled = user.isEnabled;
+        this._id = user._id;
     }
 }
-
-/*
- {
- "name": "oi",
- "domainId": 1,
- "accountId": 5,
- "userRooms": [8,7]
- }*/

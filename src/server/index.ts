@@ -17,8 +17,7 @@ var jwt = require('express-jwt');
 
 declare var process, __dirname;
 
-var publicKey = fs.readFileSync('/home/mateus/Documents/public.txt');
-
+var publicKey = fs.readFileSync(process.env.PATH_PUBLIC_KEY);
 
 export class Server {
 
@@ -83,7 +82,7 @@ export class Server {
     // Configure databases
     private databases(): void {
         // MongoDB URL
-        const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/chat';
+        const MONGODB_URI = 'mongodb://localhost/chat';
 
         // Get MongoDB handle
         this.mongo = mongoose.connect(MONGODB_URI);
@@ -96,7 +95,7 @@ export class Server {
         this.io = socket(this.server);
 
         // Set Redis adapter
-        const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
+        const REDIS_URL =  'redis://localhost:6379';
         this.io.adapter(redis(REDIS_URL));
 
         // Set room socket
@@ -106,7 +105,7 @@ export class Server {
 
     public listen(): void {
         // Get port
-        const port = process.env.PORT || 5000;
+        const port =  5000;
 
         // Start listening
         this.server.listen(port);

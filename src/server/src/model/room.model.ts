@@ -6,6 +6,7 @@ import {IRoomModel} from "../interface/room/iroom-model";
 import {IRoom} from "../interface/room/iroom";
 import {RoomModel} from "../schema/room-schema";
 import {RoomDomain} from "../domain/room-domain";
+import {UserDomain} from "../domain/user-domain";
 
 export class Room {
     name: string;
@@ -13,7 +14,9 @@ export class Room {
     domainId: number;
     accountId: number;
     _id: string;
-
+    privateRoom: boolean;
+    usersRoom: String[];
+    isEnabled: boolean;
 
     constructor(room: IRoomModel) {
         this.name = room.name;
@@ -21,11 +24,13 @@ export class Room {
         this.domainId = room.domainId;
         this.accountId = room.accountId;
         this._id = room._id;
+        this.privateRoom = room.privateRoom;
+        this.usersRoom = room.usersRoom;
+        this.isEnabled = room.isEnabled;
     }
 
     public static find(room: RoomDomain): Observable<Room> {
         return new Observable(observer => {
-            console.log("find room:" + room);
             RoomModel.findOne({room}, (error, room) => {
                 if (!error && room) {
                     observer.next(new Room(room));
