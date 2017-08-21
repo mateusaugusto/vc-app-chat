@@ -22,7 +22,7 @@ export class UserService extends BaseUrl{
   }
 
   findPrivateUsers(user: UserDomain) : Observable<UserDomain[]>{
-    let privateUsers = eval(user['privateUsers']);
+    let privateUsers =  user['privateUsers'];
     return this.http.get(this.getBaseUrl() + `user/domainId/${user.domainId}/accountId/${user.accountId}/privateusers/${privateUsers}`)
         .map((response: Response) => response.json());
   }

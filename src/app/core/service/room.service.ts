@@ -22,6 +22,18 @@ export class RoomService extends BaseUrl {
     // Open room socket
     this.socketService = new SocketService('room');
 
+ /*   // Subscribe to room list updates
+    this.socketService.items().subscribe(
+        rooms => {
+          this.list = rooms;
+          this.rooms.next(this.list);
+        },
+        error => console.log(error)
+    );*/
+
+    // Get initial list
+    this.socketService.list();
+
   }
 
   // Get all posts from the API
@@ -29,6 +41,7 @@ export class RoomService extends BaseUrl {
     return this.http.get(this.getBaseUrl() + `room/domainId/${user.domainId}/accountId/${user.accountId}/userRoom/${idUserRoom}/user/${user['_id']}`)
         .map((response: Response) => response.json());
   }
+
 
   // Join room
   join(name: string): void {

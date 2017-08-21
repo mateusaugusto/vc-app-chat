@@ -1,8 +1,6 @@
-import {IUser} from "../interface/user/iuser";
-import {UserModel} from "../schema/user-schema";
-import express = require("express");
 import {RoomModel} from "../schema/room-schema";
 import {IRoom} from "../index";
+import express = require("express");
 
 export class RoomController {
 
@@ -40,7 +38,7 @@ export class RoomController {
 
         RoomModel.find({
             domainId: domainId, accountId: accountId,
-            '$or': [
+            $or: [
                 {usersRoom: [userRom, user]},
                 {usersRoom: [user, userRom]}
             ]}, (error, result) => {

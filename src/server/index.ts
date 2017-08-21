@@ -17,7 +17,7 @@ var jwt = require('express-jwt');
 
 declare var process, __dirname;
 
-var publicKey = fs.readFileSync(process.env.PATH_PUBLIC_KEY);
+//var publicKey = fs.readFileSync(process.env.PATH_PUBLIC_KEY);
 
 export class Server {
 
@@ -64,7 +64,7 @@ export class Server {
         // Static assets
         this.app.use('/assets', serveStatic(path.resolve(root, 'assets')));
 
-        this.app.use(jwt({ secret: publicKey, credentialsRequired: true }));
+       // this.app.use(jwt({ secret: publicKey, credentialsRequired: true }));
 
         router.get('/', (request: express.Request, result: express.Response) => {
             result.sendFile(path.join(root, '/index.html'));

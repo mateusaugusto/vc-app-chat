@@ -36,7 +36,6 @@ export class ControlComponent{
       };
 
     });
-
   }
 
   // Join room, when Join-button is pressed
