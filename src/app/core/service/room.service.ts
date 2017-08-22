@@ -42,6 +42,16 @@ export class RoomService extends BaseUrl {
         .map((response: Response) => response.json());
   }
 
+  create(room : RoomDomain) : Observable<RoomDomain>{
+    return this.http.post(this.getBaseUrl() + `room`, room)
+        .map((response: Response) => response.json());
+  }
+
+  addUserToPrivateRoom(room : RoomDomain, user: String, userRoom: String) : Observable<RoomDomain>{
+    return this.http.post(this.getBaseUrl() + `room/user/add/private/userRoom/${userRoom}/user/${user}`, room)
+        .map((response: Response) => response.json());
+  }
+
 
   // Join room
   join(name: string): void {
@@ -53,7 +63,7 @@ export class RoomService extends BaseUrl {
   }
 
   joinPrivate(room: RoomDomain): void {
-      this.userService.rooms.push(room[0]);
+      this.userService.rooms.push(room);
   }
 
   // Leave room
@@ -61,10 +71,10 @@ export class RoomService extends BaseUrl {
     this.userService.rooms = this.userService.rooms.filter(room => room.name !== name);
   }
 
-  // Create room
+ /* // Create room
   create(name: string) {
     this.socketService.create(name);
-  }
+  }*/
 
   // Remove room
   remove(name: string) {

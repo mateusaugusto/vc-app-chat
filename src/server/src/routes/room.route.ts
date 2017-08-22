@@ -18,4 +18,9 @@ roomRouter.post(uri, (req, res) => {
     RoomController.create(req, res);
 });
 
+roomRouter.post(uri + '/user/add/private/userRoom/:userRoom/user/:user', (req, res) => {
+    console.log("add private toom");
+    RoomController.insertUserToPrivateRoom(req, res);
+});
+
 export = roomRouter;

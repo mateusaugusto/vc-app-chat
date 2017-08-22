@@ -3,6 +3,7 @@ import {RoomService} from "../../core";
 import {UserService} from "../../core/service/user.service";
 import {ActivatedRoute, Route} from "@angular/router";
 import {UserDomain} from "../../../server/src/domain/user-domain";
+import {RoomDomain} from "../../../server/src/domain/room-domain";
 
 @Component({
   selector: 'control',
@@ -38,24 +39,44 @@ export class ControlComponent{
     });
   }
 
-  // Join room, when Join-button is pressed
-  join(room): void {
-    this.roomService.join(room);
-    this.room = '';
-  }
-
   joinPrivateRoom(userRoom): void {
-
     this.roomService.findPrivateRoom(userRoom._id, this.user).subscribe(privateRoom => {
-      if(privateRoom){
-        this.roomService.joinPrivate(privateRoom);
-        this.room = '';
+      if(Object.keys(privateRoom).length != 0){
+          this.joinPrivate(privateRoom[0]);
+      }else{
+          let room = this.buildRoom(userRoom);
+          this.roomService.create(room).subscribe(newRoom => {
+              // Add user to new private room
+              this.roomService.addUserToPrivateRoom(newRoom, userRoom._id, this.user['_id']).subscribe(newPrivateRoom => {
+                  this.joinPrivate(newRoom);
+              });
+
+          });
       }
 
     });
-
-
   }
+
+   buildRoom(user: UserDomain): RoomDomain{
+       let room = new RoomDomain();
+       room.privateRoom = true;
+       room.name = user.name;
+       room.accountId = user.accountId;
+       room.domainId = user.domainId;
+       return room;
+   }
+
+    // Join room, when Join-button is pressed
+    join(room): void {
+        this.roomService.join(room);
+        this.room = '';
+    }
+
+    // Join room, when Join-button is pressed
+    joinPrivate(room): void {
+        this.roomService.joinPrivate(room);
+        this.room = '';
+    }
 
   // Remove room, when Remove-button is pressed and unset selected room
   remove(): void {
