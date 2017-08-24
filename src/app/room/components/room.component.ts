@@ -4,6 +4,7 @@ import {RoomService, UserService} from "../../core";
 import {IMessage, IRoom} from "../../../server/src";
 import {MessageService} from "../service/message.service";
 import {Http} from "@angular/http";
+import {SecureHttpService} from "../../oauth2/service/secure-httpservice";
 
 @Component({
     selector: 'room',
@@ -25,13 +26,14 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
 
     constructor(private roomService: RoomService,
                 public userService: UserService,
-                private http: Http) {
+                private http: Http,
+                private secureHttpService: SecureHttpService) {
     }
 
     // Handle keypress event, for saving nickname
     ngOnInit(): void {
 
-        this.messageService = new MessageService(this.userService, this.room, this.http);
+        this.messageService = new MessageService(this.userService, this.room, this.http, this.secureHttpService);
 
         this.messageService.findOne(this.room._id).subscribe(message => {
             this.messages = message;

@@ -3,7 +3,8 @@
                 <div class="col-md-8">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <strong> {{room.name}} : Created: {{room.created}}</strong>
+                            <pre>{{room | json}}</pre>
+                            <strong> {{room.nickName}} : Created: {{room.created}}</strong>
                             <button class="btn btn-danger btn-xs" (click)="leave(room)">leave</button>
                         </div>
 

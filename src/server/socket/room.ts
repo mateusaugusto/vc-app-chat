@@ -35,13 +35,13 @@ export class RoomSocket {
 
   // Create a room
   private create(name: string): void {
-    var room: IRoom;
-    room.name = name;
+    this.list();
 
+   /* var room: IRoom;
     Room.create(room).subscribe(
       room => this.list(),
       error => console.error('Room creation failed', error)
-    );
+    );*/
   }
 
   // Remove a room
@@ -54,16 +54,18 @@ export class RoomSocket {
 
   // List all rooms
   private list(): void {
+ /*   console.log("list room socket");
     Room.list().subscribe(rooms => {
       this.rooms = rooms;
       this.updateMessageSockets();
       this.nsp.emit('item', rooms);
-    });
+    });*/
   }
 
   // Update message sockets
   private updateMessageSockets(): void {
     // Add message sockets for new rooms
+    console.log('updateMessageSockets');
     let validRooms = {};
     for (const room of this.rooms) {
       validRooms[room.name] = true;

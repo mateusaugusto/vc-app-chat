@@ -29,7 +29,7 @@ export class MessageSocket {
 
     // Create a message in a room
     private create(params: IMessage): void {
-       // params.room = this.room.name;
+        console.log("criando socker message" + params);
         Message.create(params).subscribe(
             message => {
                 Message.findOne(message).subscribe(result => {
@@ -42,6 +42,7 @@ export class MessageSocket {
 
     // List all messages in a room
     private list(): void {
+        console.log("listando socker message" );
         this.room.messages()
             .map(messages => messages.reverse())
             .subscribe(messages => messages.map(message => this.socket.emit(message)));

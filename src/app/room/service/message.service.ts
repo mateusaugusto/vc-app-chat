@@ -7,6 +7,7 @@ import {RoomDomain} from "../../../server/src/domain/room-domain";
 import {Observable} from "rxjs/Observable";
 import {Http, Response} from "@angular/http";
 import {BaseUrl} from "../../infra/base-url";
+import {SecureHttpService} from "../../oauth2/service/secure-httpservice";
 
 @Injectable()
 export class MessageService extends BaseUrl {
@@ -16,9 +17,10 @@ export class MessageService extends BaseUrl {
 
     constructor(private userService: UserService,
                 private room: RoomDomain,
-                private http: Http) {
+                private http: Http,
+                private secureHttpService: SecureHttpService) {
         super();
-        // Connect to room nsp
+        console.log("connecta na room" + this.room.name);
         this.socketService = new SocketService('messages/' + encodeURIComponent(this.room.name));
 
         // Get initial items
@@ -42,12 +44,12 @@ export class MessageService extends BaseUrl {
     }
 
     findOne(room: string): Observable<IMessage[]> {
-        return this.http.get(this.getBaseUrl() + `message/room/${room}`)
+        return this.http.get(this.getBaseUrl() + `message/room/${room}`, this.secureHttpService.getRequestOptions())
             .map((response: Response) => response.json());
     }
 
     findMessages(room: string, text: string): Observable<IMessage[]> {
-        return this.http.get(this.getBaseUrl() + `message/room/${room}/text/${text}`)
+        return this.http.get(this.getBaseUrl() + `message/room/${room}/text/${text}`, this.secureHttpService.getRequestOptions())
             .map((response: Response) => response.json());
     }
 

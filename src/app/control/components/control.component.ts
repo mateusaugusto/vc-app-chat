@@ -4,6 +4,7 @@ import {UserService} from "../../core/service/user.service";
 import {ActivatedRoute, Route} from "@angular/router";
 import {UserDomain} from "../../../server/src/domain/user-domain";
 import {RoomDomain} from "../../../server/src/domain/room-domain";
+import {TokenStoreService} from "../../oauth2/service/tokenstore.service";
 
 @Component({
   selector: 'control',
@@ -15,7 +16,8 @@ export class ControlComponent{
 
   constructor(private roomService: RoomService,
               private route: ActivatedRoute,
-              private userService: UserService) {
+              private userService: UserService,
+              private tokenStoreService: TokenStoreService) {
   }
 
   ngOnInit() {
@@ -30,6 +32,13 @@ export class ControlComponent{
       this.userService.user = user;
       this.roomService.list = user.room;
 
+      if(user['token']){
+          this.tokenStoreService.setToken(user['token']);
+      }else{
+          alert('Permission denied');
+          return false;
+      }
+
       if(user['privateUsers']){
         this.userService.findPrivateUsers(user).subscribe(privateUsers => {
           this.userService.privateList = privateUsers;
@@ -42,15 +51,17 @@ export class ControlComponent{
   joinPrivateRoom(userRoom): void {
     this.roomService.findPrivateRoom(userRoom._id, this.user).subscribe(privateRoom => {
       if(Object.keys(privateRoom).length != 0){
-          this.joinPrivate(privateRoom[0]);
+          // Seta o nome do user para a sala
+          privateRoom[0].nickName = userRoom.name;
+          this.join(privateRoom[0]);
       }else{
           let room = this.buildRoom(userRoom);
           this.roomService.create(room).subscribe(newRoom => {
               // Add user to new private room
               this.roomService.addUserToPrivateRoom(newRoom, userRoom._id, this.user['_id']).subscribe(newPrivateRoom => {
-                  this.joinPrivate(newRoom);
+                  this.roomService.privateList = newRoom[0];
+                  this.join(newRoom);
               });
-
           });
       }
 
@@ -67,14 +78,11 @@ export class ControlComponent{
    }
 
     // Join room, when Join-button is pressed
-    join(room): void {
+    join(room: RoomDomain): void {
+        if(!room.privateRoom){
+            room.nickName = room.name;
+        }
         this.roomService.join(room);
-        this.room = '';
-    }
-
-    // Join room, when Join-button is pressed
-    joinPrivate(room): void {
-        this.roomService.joinPrivate(room);
         this.room = '';
     }
 

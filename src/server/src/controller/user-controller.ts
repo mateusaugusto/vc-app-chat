@@ -38,10 +38,14 @@ export class UserController {
         let domainId = req.params.domainId;
         let accountId = req.params.accountId;
         let listPrivateUsers;
+        let token;
 
         if(req.headers['private-users']){
-            console.log(req.headers['private-users']);
             listPrivateUsers = req.headers['private-users'];
+        }
+
+        if(req.headers['authorization']){
+            token = req.headers['authorization'];
         }
 
         UserModel.findOne({domainId: domainId, accountId: accountId, clientId: clientId}, (error, result) => {
@@ -49,6 +53,7 @@ export class UserController {
             else {
                 var obj = result.toObject();
                 obj['privateUsers'] = listPrivateUsers;
+                obj['token'] = token;
                 res.send(obj);
             }
         }).populate("room");

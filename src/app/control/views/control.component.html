@@ -3,7 +3,7 @@
         <strong>Salas</strong>
     </div>
     <ul class="nav nav-sidebar" [(ngModel)]="room" name="room" ngDefaultControl>
-        <li (click)="join(room.name)"
+        <li (click)="join(room)"
             style="margin-left: 10px;"
             *ngFor="let room of roomService.list"
             [value]="room.name"

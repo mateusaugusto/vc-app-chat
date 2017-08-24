@@ -9,6 +9,7 @@ import {RoomModule} from "./room/room.module";
 import {RouterModule} from "@angular/router";
 import {ControlComponent} from "./control/components/control.component";
 import {HttpModule} from "@angular/http";
+import {OAuth2Module} from "./oauth2/oauth2.module";
 
 @NgModule({
     imports: [
@@ -17,6 +18,7 @@ import {HttpModule} from "@angular/http";
         ControlModule,
         HttpModule,
         RoomModule,
+        OAuth2Module,
         RouterModule.forRoot([
             {
                 path: 'user/domainId/:domainId/accountId/:accountId/clientId/:clientId',
