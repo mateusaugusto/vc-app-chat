@@ -24,7 +24,7 @@ export class UserService extends BaseUrl{
   }
 
   findPrivateUsers(user: UserDomain) : Observable<UserDomain[]>{
-    let privateUsers =  user['privateUsers'];
+    let privateUsers = user['privateUsers'];
     return this.http.get(this.getBaseUrl() + `user/domainId/${user.domainId}/accountId/${user.accountId}/privateusers/${privateUsers}`, this.secureHttpService.getRequestOptions())
         .map((response: Response) => response.json());
   }

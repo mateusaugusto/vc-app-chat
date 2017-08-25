@@ -12,7 +12,6 @@ import {SecureHttpService} from "../../oauth2/service/secure-httpservice";
 @Injectable()
 export class MessageService extends BaseUrl {
     messages: ReplaySubject<any> = new ReplaySubject(1);
-    private list: IMessage[] = [];
     private socketService: SocketService;
 
     constructor(private userService: UserService,
@@ -20,14 +19,12 @@ export class MessageService extends BaseUrl {
                 private http: Http,
                 private secureHttpService: SecureHttpService) {
         super();
-        console.log("connecta na room" + this.room.name);
         this.socketService = new SocketService('messages/' + encodeURIComponent(this.room.name));
 
         // Get initial items
         this.socketService.items().subscribe(message => {
                 //this.list.push(message);
                 this.messages.next(message);
-                console.log("message service list" + this.list);
             },
             error => console.log(error)
         );
@@ -60,7 +57,7 @@ export class MessageService extends BaseUrl {
             room: this.room,
             created: new Date(),
             user: this.userService.user,
-            to: '',
+            to:  this.room.privateRoom ? this.room.nickName: '',
             message: message
         });
     }

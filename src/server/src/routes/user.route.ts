@@ -12,12 +12,16 @@ userRouter.get(uri + '/domainId/:domainId/accountId/:accountId/privateusers/:pri
     UserController.findAllByDomainIdAndAccountId(req, res);
 });
 
-userRouter.post(uri, (req, res) => {
+userRouter.put(uri, (req, res) => {
     UserController.create(req, res);
 });
 
 userRouter.put(uri + "/add/room/:roomId", (req, res) => {
     UserController.insertUserToRoom(req, res);
+});
+
+userRouter.post(uri, (req, res) => {
+    UserController.update(req, res);
 });
 
 export = userRouter;

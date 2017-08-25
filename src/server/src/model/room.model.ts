@@ -29,18 +29,20 @@ export class Room {
         this.isEnabled = room.isEnabled;
     }
 
-    public static find(room: RoomDomain): Observable<Room> {
+    public static findOne(room: RoomDomain): Observable<Room[]> {
         return new Observable(observer => {
-            RoomModel.findOne({room}, (error, room) => {
-                if (!error && room) {
-                    observer.next(new Room(room));
+            RoomModel.find({_id: room._id}, (error, rooms) => {
+                if (!error && rooms) {
+                    observer.next(rooms.map(room => new Room(room)));
+                } else {
+                    observer.next([]);
                 }
                 observer.complete();
             });
         });
     }
 
-    public static create(room: IRoom): Observable<any> {
+ /*   public static create(room: IRoom): Observable<any> {
         return new Observable(observer => {
             room.created = new Date();
             RoomModel.create(room, (error, room) => {
@@ -52,9 +54,9 @@ export class Room {
                 }
             });
         })
-    }
+    }*/
 
-    public static list(): Observable<Room[]> {
+  /*  public static list(): Observable<Room[]> {
         return new Observable(observer => {
             RoomModel.find({}, (error, rooms) => {
                 if (!error && rooms) {
@@ -65,9 +67,9 @@ export class Room {
                 observer.complete();
             });
         });
-    }
+    }*/
 
-    remove(): Observable<any> {
+/*    remove(): Observable<any> {
         return new Observable(observer => {
             RoomModel.remove({name: this.name}).exec();
             Message.remove(this.name).subscribe(
@@ -77,7 +79,7 @@ export class Room {
                 () => observer.complete()
             );
         });
-    }
+    }*/
 
     messages() {
         return Message.list(this.name);

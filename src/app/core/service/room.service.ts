@@ -8,7 +8,6 @@ import {BaseUrl} from "../../infra/base-url";
 import {Http, Response} from "@angular/http";
 import {UserDomain} from "../../../server/src/domain/user-domain";
 import {SecureHttpService} from "../../oauth2/service/secure-httpservice";
-import {MessageService} from "../../room/service/message.service";
 
 @Injectable()
 export class RoomService extends BaseUrl {
@@ -22,12 +21,15 @@ export class RoomService extends BaseUrl {
                 private http: Http,
                 private secureHttpService: SecureHttpService) {
         super();
+
         // Open room socket
         this.socketService = new SocketService('room');
+    }
 
-        // Get initial list
-        this.socketService.list();
-
+    addRoomToSocket(room: RoomDomain): Observable<any> {
+        return new Observable(observer => {
+            this.socketService.findOne(room);
+        })
     }
 
     // Get all posts from the API
@@ -63,11 +65,6 @@ export class RoomService extends BaseUrl {
     leave(name: string) {
         this.userService.rooms = this.userService.rooms.filter(room => room.name !== name);
     }
-
-   /* // Create room
-    createSocket(name: string) {
-        this.socketService.create(name);
-    }*/
 
     // Remove room
     remove(name: string) {

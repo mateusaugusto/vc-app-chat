@@ -6,9 +6,7 @@ export class SocketService {
   socket: SocketIOClient.Socket;
 
   constructor(private name: string) {
-    console.log("nameSocket" + name);
     let socketUrl = this.host + '/' + this.name;
-    console.log("sockerUrl" + socketUrl);
     this.socket = io.connect(socketUrl);
   }
 
@@ -29,6 +27,7 @@ export class SocketService {
   }
 
   findOne(params: any) {
+    console.log("socket find one" + params.name);
     this.socket.emit('findOne', params);
   }
 
@@ -38,7 +37,6 @@ export class SocketService {
   }
 
   onConnect(): Observable<any> {
-    console.log("tentando connectar no socket");
     return new Observable(observer => {
       this.socket.on('connect', () => observer.complete());
     })

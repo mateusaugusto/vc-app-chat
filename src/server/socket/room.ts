@@ -1,6 +1,7 @@
 import { Room, Message } from '../src';
 import { MessageSocket } from './message';
 import {IRoom} from "../src/interface/room/iroom";
+import {RoomDomain} from "../src/domain/room-domain";
 
 export class RoomSocket {
   nsp: any;
@@ -23,9 +24,9 @@ export class RoomSocket {
   // Add signal
   private listen(): void {
     this.socket.on('disconnect', () => this.disconnect());
-    this.socket.on('create', (name: string) => this.create(name));
-    this.socket.on('remove', (name: string) => this.remove(name));
-    this.socket.on('list', () => this.list());
+    //this.socket.on('remove', (name: string) => this.remove(name));
+    //this.socket.on('list', () => this.list());
+    this.socket.on('findOne', (room: IRoom) => this.findOne(room));
   }
 
   // Handle disconnect
@@ -33,45 +34,44 @@ export class RoomSocket {
     console.log('Client disconnected');
   }
 
-  // Create a room
-  private create(name: string): void {
-    this.list();
-
-   /* var room: IRoom;
-    Room.create(room).subscribe(
-      room => this.list(),
-      error => console.error('Room creation failed', error)
-    );*/
-  }
-
   // Remove a room
-  private remove(name: string): void {
-  /*  Room.find(name).subscribe(
+  private remove(room: IRoom): void {
+/*    Room.find(name).subscribe(
       room => room.remove().subscribe(x => {}, e => {}, () => this.list()),
       error => console.error('Room removal failed', error)
     );*/
   }
 
   // List all rooms
-  private list(): void {
- /*   console.log("list room socket");
+ /* private list(): void {
+    console.log("list room socket");
+
     Room.list().subscribe(rooms => {
       this.rooms = rooms;
       this.updateMessageSockets();
       this.nsp.emit('item', rooms);
-    });*/
+    });
+  }*/
+
+  // List all rooms
+  private findOne(room: RoomDomain): void {
+    Room.findOne(room).subscribe(rooms => {
+      this.rooms = rooms;
+      this.updateMessageSockets();
+      this.nsp.emit('item', rooms);
+    });
+
   }
 
   // Update message sockets
   private updateMessageSockets(): void {
     // Add message sockets for new rooms
-    console.log('updateMessageSockets');
     let validRooms = {};
     for (const room of this.rooms) {
       validRooms[room.name] = true;
       const matches = this.messageSockets.filter(messageSocket => messageSocket.room.name === room.name);
       if (matches.length == 0) {
-        console.log('creating new namespace for', room.name);
+        console.log('inserindo no socket', room.name);
         this.messageSockets.push(new MessageSocket(this.io, room));
       }
     }

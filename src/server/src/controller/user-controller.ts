@@ -24,10 +24,12 @@ export class UserController {
             });
     };
 
-    update(req: express.Request, res: express.Response): void {
+    public static update(req: express.Request, res: express.Response): void {
         var user: IUser = <IUser>req.body;
-        UserModel.update(user, (error, result) => {
+        UserModel.findOneAndUpdate({_id: user._id}, req.body, (error, result) => {
             if (error) res.send({"error": "error"});
+            else if(null === result )
+                res.status(400).send('not found');
             else res.send(result);
         });
     };
@@ -50,13 +52,15 @@ export class UserController {
 
         UserModel.findOne({domainId: domainId, accountId: accountId, clientId: clientId}, (error, result) => {
             if (error) res.send({"error": "error"});
+            else if(null === result )
+                res.status(400).send('Client not found');
             else {
                 var obj = result.toObject();
                 obj['privateUsers'] = listPrivateUsers;
                 obj['token'] = token;
                 res.send(obj);
             }
-        }).populate("room");
+        }).populate("room").where({isEnabled: true});
 
     };
 
@@ -65,12 +69,12 @@ export class UserController {
         let accountId = req.params.accountId;
         let listPrivateUsers = JSON.parse(req.params.privateusers);
 
-        console.log(req.params);
-
         UserModel.find({domainId: domainId, accountId: accountId, clientId: { $in: listPrivateUsers }}, (error, result) => {
             if (error) res.send({"error": "error"});
+            else if(null === result )
+                res.status(400).send('not found');
             else res.send(result)
-        }).populate("room");
+        }).where({isEnabled: true}).populate("room");
     };
 
 }

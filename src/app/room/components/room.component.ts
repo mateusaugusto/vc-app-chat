@@ -30,7 +30,6 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
                 private secureHttpService: SecureHttpService) {
     }
 
-    // Handle keypress event, for saving nickname
     ngOnInit(): void {
 
         this.messageService = new MessageService(this.userService, this.room, this.http, this.secureHttpService);
@@ -43,7 +42,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
             this.messages.push(messages);
             setTimeout(() => {
                 this.scrollToBottom();
-            }, 200);
+            }, 500);
         });
 
     }

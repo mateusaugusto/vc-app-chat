@@ -4,4 +4,5 @@ export class BaseDomain {
     domainId: number;
     accountId: number;
     isEnabled: boolean;
+    _id: String;
 }
