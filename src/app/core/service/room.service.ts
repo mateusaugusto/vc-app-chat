@@ -39,7 +39,7 @@ export class RoomService extends BaseUrl {
     }
 
     create(room: RoomDomain): Observable<RoomDomain> {
-        return this.http.post(this.getBaseUrl() + `room`, room, this.secureHttpService.getRequestOptions())
+        return this.http.put(this.getBaseUrl() + `room`, room, this.secureHttpService.getRequestOptions())
             .map((response: Response) => response.json());
     }
 

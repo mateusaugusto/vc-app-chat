@@ -78,10 +78,14 @@ export class RoomSocket {
 
     // Destroy sockets for removed rooms
     for (const index in this.messageSockets) {
-      const messageSocket = this.messageSockets[index];
+      console.log(this.messageSockets[index].room.name);
+
+   /*   const messageSocket = this.messageSockets[index];
       if (!validRooms[messageSocket.room.name]) {
         this.messageSockets.splice(parseInt(index, 10), 1);
-      }
+      }*/
+
+
     }
   }
 }

@@ -1,14 +1,18 @@
-import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from "@angular/core";
+import {
+    AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild,
+    ViewEncapsulation
+} from "@angular/core";
 
 import {RoomService, UserService} from "../../core";
 import {IMessage, IRoom} from "../../../server/src";
 import {MessageService} from "../service/message.service";
 import {Http} from "@angular/http";
 import {SecureHttpService} from "../../oauth2/service/secure-httpservice";
+import {UserDomain} from "../../../server/src/domain/user-domain";
 
 @Component({
     selector: 'room',
-    templateUrl: '../views/room.component.html'
+    templateUrl: '../views/room.component.html',
 })
 export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('scroll') private scroll: ElementRef;
@@ -18,6 +22,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
 
     message: string = '';
     search: string = '';
+    user: UserDomain;
     messages: IMessage[];
     listSearchMessage: IMessage[];
 
@@ -31,6 +36,8 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit(): void {
+
+        this.user = this.userService.user;
 
         this.messageService = new MessageService(this.userService, this.room, this.http, this.secureHttpService);
 

@@ -17,7 +17,7 @@ var jwt = require('express-jwt');
 
 declare var process, __dirname;
 
-var publicKey = fs.readFileSync(process.env.PATH_PUBLIC_KEY);
+//var publicKey = fs.readFileSync(process.env.PATH_PUBLIC_KEY);
 
 export class Server {
 
@@ -91,6 +91,8 @@ export class Server {
 
     // Configure sockets
     private sockets(): void {
+
+
         // Get socket.io handle
         this.io = socket(this.server);
 
@@ -115,9 +117,13 @@ export class Server {
             console.log('ERROR', error);
         });
 
+
+
         // start listening on port
         this.server.on('listening', () => {
             console.log(`==> Listening on port ${port}. Open up http://localhost:${port}/ in your browser.`);
         });
+
+
     }
 }

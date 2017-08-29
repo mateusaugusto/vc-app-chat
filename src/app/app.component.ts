@@ -5,7 +5,7 @@ import { UserService } from './core';
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'app',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
 })
 
 export class AppComponent {

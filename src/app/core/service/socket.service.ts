@@ -3,7 +3,8 @@ import * as io from "socket.io-client";
 
 export class SocketService {
   private host: string = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port;
-  socket: SocketIOClient.Socket;
+
+  socket: io;
 
   constructor(private name: string) {
     let socketUrl = this.host + '/' + this.name;
