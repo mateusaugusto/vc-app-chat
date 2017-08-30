@@ -17,7 +17,6 @@ import {OAuth2Module} from "./oauth2/oauth2.module";
         SharedModule,
         ControlModule,
         HttpModule,
-        RoomModule,
         OAuth2Module,
         RouterModule.forRoot([
             {
@@ -28,7 +27,6 @@ import {OAuth2Module} from "./oauth2/oauth2.module";
     ],
     declarations: [
         AppComponent,
-        RoomsComponent
     ],
     exports: [
         CoreModule

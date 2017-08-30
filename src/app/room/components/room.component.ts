@@ -49,7 +49,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
             this.messages.push(messages);
             setTimeout(() => {
                 this.scrollToBottom();
-            }, 500);
+            }, 200);
         });
 
     }
@@ -63,6 +63,10 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     // After view initialized, focus on chat message text input
     ngAfterViewInit(): void {
         this.focus.nativeElement.focus();
+    }
+
+    ngAfterViewChecked() {
+        this.scrollToBottom();
     }
 
     // When component is destroyed, ensure that leave message is sent

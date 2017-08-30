@@ -1,174 +1,299 @@
 <style type="text/css">
-    .chat
-    {
-        list-style: none;
+    #custom-search-input {
+        background: #e8e6e7 none repeat scroll 0 0;
         margin: 0;
+        padding: 10px;
+    }
+
+    #custom-search-input .search-query {
+        background: #fff none repeat scroll 0 0 !important;
+        border-radius: 4px;
+        height: 33px;
+        margin-bottom: 0;
+        padding-left: 7px;
+        padding-right: 7px;
+    }
+
+    #custom-search-input button {
+        background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+        border: 0 none;
+        border-radius: 3px;
+        color: #666666;
+        left: auto;
+        margin-bottom: 0;
+        margin-top: 7px;
+        padding: 2px 5px;
+        position: absolute;
+        right: 0;
+        z-index: 9999;
+    }
+
+    .search-query:focus + button {
+        z-index: 3;
+    }
+
+    .all_conversation button {
+        background: #f5f3f3 none repeat scroll 0 0;
+        border: 1px solid #dddddd;
+        height: 38px;
+        text-align: left;
+        width: 100%;
+    }
+
+    .all_conversation i {
+        background: #e9e7e8 none repeat scroll 0 0;
+        border-radius: 100px;
+        color: #636363;
+        font-size: 17px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        width: 30px;
+    }
+
+    .all_conversation .caret {
+        bottom: 0;
+        margin: auto;
+        position: absolute;
+        right: 15px;
+        top: 0;
+    }
+
+    .all_conversation .dropdown-menu {
+        background: #f5f3f3 none repeat scroll 0 0;
+        border-radius: 0;
+        margin-top: 0;
         padding: 0;
+        width: 100%;
     }
 
-    .chat li
-    {
-        margin-bottom: 10px;
-        padding-bottom: 5px;
-        border-bottom: 1px dotted #B3A9A9;
+    .all_conversation ul li {
+        border-bottom: 1px solid #dddddd;
+        line-height: normal;
+        width: 100%;
     }
 
-    .chat li.left .chat-body
-    {
-        margin-left: 60px;
+    .all_conversation ul li a:hover {
+        background: #dddddd none repeat scroll 0 0;
+        color: #333;
     }
 
-    .chat li.right .chat-body
-    {
-        margin-right: 60px;
+    .all_conversation ul li a {
+        color: #333;
+        line-height: 30px;
+        padding: 3px 20px;
     }
 
+    .member_list .chat-body {
+        margin-left: 47px;
+        margin-top: 0;
+    }
 
-    .chat li .chat-body p
-    {
-        margin: 0;
+    .top_nav {
+        overflow: visible;
+    }
+
+    .member_list .contact_sec {
+        margin-top: 3px;
+    }
+
+    .member_list li {
+        padding: 6px;
+    }
+
+    .member_list ul {
+        border: 1px solid #dddddd;
+    }
+
+    .chat-img img {
+        height: 34px;
+        width: 34px;
+    }
+
+    .member_list li {
+        border-bottom: 1px solid #dddddd;
+        padding: 6px;
+    }
+
+    .member_list li:last-child {
+        border-bottom: none;
+    }
+
+    .member_list {
+        height: 380px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .sub_menu_ {
+        background: #e8e6e7 none repeat scroll 0 0;
+        left: 100%;
+        max-width: 233px;
+        position: absolute;
+        width: 100%;
+    }
+
+    .sub_menu_ {
+        background: #f5f3f3 none repeat scroll 0 0;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        display: none;
+        left: 100%;
+        margin-left: 0;
+        max-width: 233px;
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+
+    .all_conversation ul li:hover .sub_menu_ {
+        display: block;
+    }
+
+    .new_message_head button {
+        background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+        border: medium none;
+    }
+
+    .new_message_head {
+        background: #f5f3f3 none repeat scroll 0 0;
+        float: left;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 18px 10px;
+        width: 100%;
+    }
+
+    .message_section {
+        border: 1px solid #dddddd;
+    }
+
+    .chat_area {
+        float: left;
+        height: 300px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    .chat_area li {
+        padding: 14px 14px 0;
+    }
+
+    .chat_area li .chat-img1 img {
+        height: 40px;
+        width: 40px;
+    }
+
+    .chat_area .chat-body1 {
+        margin-left: 50px;
+    }
+
+    .chat-body1 p {
+        background: #fbf9fa none repeat scroll 0 0;
+        padding: 10px;
+    }
+
+    .chat_area .admin_chat .chat-body1 {
+        margin-left: 0;
+        margin-right: 50px;
+    }
+
+    .chat_area li:last-child {
+        padding-bottom: 10px;
+    }
+
+    .message_write {
+        background: #f5f3f3 none repeat scroll 0 0;
+        float: left;
+        padding: 15px;
+        width: 100%;
+    }
+
+    .message_write textarea.form-control {
+        height: 70px;
+        padding: 10px;
+    }
+
+    .chat_bottom {
+        float: left;
+        margin-top: 13px;
+        width: 100%;
+    }
+
+    .upload_btn {
         color: #777777;
     }
 
-    .panel .slidedown .glyphicon, .chat .glyphicon
-    {
-        margin-right: 5px;
+    .sub_menu_ > li a, .sub_menu_ > li {
+        float: left;
+        width: 100%;
     }
 
-    .panel-body
-    {
-        overflow-y: scroll;
-        height: 250px;
-    }
-
-    ::-webkit-scrollbar-track
-    {
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-        background-color: #F5F5F5;
-    }
-
-    ::-webkit-scrollbar
-    {
-        width: 12px;
-        background-color: #F5F5F5;
-    }
-
-    ::-webkit-scrollbar-thumb
-    {
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-        background-color: #555;
+    .member_list li:hover {
+        background: #428bca none repeat scroll 0 0;
+        color: #fff;
+        cursor: pointer;
     }
 
 </style>
 
-<div class="col-sm-9 col-sm-offset-3">
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-5">
-                <div class="panel panel-primary">
-                    <div class="panel-heading" id="accordion">
-                        <span class="glyphicon glyphicon-comment">cuurent user = {{user._id}}</span> {{room.nickName}}
-                        <div class="btn-group pull-right">
-                            <a type="button" class="btn btn-default btn-xs" data-toggle="collapse"
-                               data-parent="#accordion" href="#collapseOne">
-                                <span class="glyphicon glyphicon-chevron-down"></span>
-                            </a>
-                        </div>
+<div class="col-sm-9 message_section">
+    <div class="row">
+        <div class="new_message_head">
+            <div class="pull-left">
+                <button><i class="fa fa-plus-square-o" aria-hidden="true"></i>{{room.nickName}}</button>
+            </div>
+            <div class="pull-right">
+                <div class="dropdown">
+
+                    <input [(ngModel)]="search">
+                    <button class="dropdown-toggle" type="button" (click)="searchMessage()">pesquisa</button>
+
+                    <div class="message" *ngFor="let item of listSearchMessage">
+                        <small>{{item.created | date : 'shortDate' }}</small>
+                        <small>&lt;{{item.user[0].name}}&gt;</small>
+                        {{item.message}}
                     </div>
-                    <div class="panel-collapse collapse in" id="collapseOne">
-                        <div class="panel-body">
-                            <ul class="chat">
-                                <form role="form" action="#" method="POST" name="form">
-                                    <div #scroll>
 
-                                        <li [ngClass]="{'left clearfix': item.user[0]._id === user._id, 'right clearfix': item.user[0]._id != user._id   }"
-                                            *ngFor="let item of messages"><span class="chat-img pull-left">
-                                            <img src="http://placehold.it/50/55C1E7/fff&amp;text=U" alt="User Avatar" class="img-circle">
-                                          </span>
-                                            <div class="chat-body clearfix">
-                                                <div class="header">
-                                                    <strong class="primary-font">{{item.user[0].name}}</strong> <small class="pull-right text-muted">
-                                                    <span class="glyphicon glyphicon-time"></span>{{item.created | date:'shortTime'}}</small>
-                                                </div>
-                                                <p>{{item.message | json}}</p>
-                                            </div>
-                                        </li>
-                                    </div>
-                                </form>
-                            </ul>
-                        </div>
 
-                        <div class="panel-footer">
-                            <div class="input-group">
-                                <input #focus [(ngModel)]="message" name="message" autocomplete="off"
-                                       (keypress)="eventHandler($event)" id="btn-input" type="text"
-                                       class="form-control input-sm" placeholder="Type your message here...">
-                                <span class="input-group-btn">
-                            <button class="btn btn-warning btn-sm" id="btn-chat" (click)="send()">   Send</button>
-                        </span>
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
             </div>
         </div>
+
+
+        <div class="chat_area" #scroll>
+            <ul class="list-unstyled">
+
+                <form role="form" action="#" method="POST" name="form">
+                    <div >
+
+                        <div class="message" *ngFor="let item of messages">
+                            <li class="left clearfix">
+                     <span class="chat-img1 pull-left">
+                    <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
+                     </span>
+                                <strong class="primary-font" style="margin-left: 11px;">{{item.user[0].name}}:</strong>
+                                <div class="chat-body1 clearfix">
+                                    <p>{{item.message}}</p>
+                                    <div class="chat_time pull-right">{{item.created | date:'shortTime'}}</div>
+                                </div>
+                            </li>
+                        </div>
+
+                    </div>
+
+                </form>
+            </ul>
+        </div>
+
+
+        <div class="message_write">
+            <textarea class="form-control" placeholder="type a message" #focus
+                      [(ngModel)]="message" name="message" autocomplete="off" (keypress)="eventHandler($event)"></textarea>
+            <div class="clearfix"></div>
+            <div class="chat_bottom"><a href="#" class="pull-left upload_btn"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Add Files</a>
+                <button class="pull-right btn btn-success" (click)="send()"> Send</button></div>
+        </div>
     </div>
 </div>
-
-
-<!--<div class="col-sm-9 col-sm-offset-3">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <strong> {{room.nickName}} : Created: {{room.created}}</strong>
-                            <button class="btn btn-danger btn-xs" (click)="leave(room)">leave</button>
-                        </div>
-
-                        <div class="panel-body">
-                            <form role="form" action="#" method="POST" name="form">
-                                <div class="messages" #scroll>
-
-                                    <div class="message" *ngFor="let item of messages">
-                                        <span class="dimmed">{{item.created}}</span>
-                                        &lt;{{item.user[0].name}}&gt;
-                                        {{item.message}}
-                                    </div>
-
-                                </div>
-
-                                <div class="row" style="margin-top:50%">
-                                    <div class="col-md-1">{{userService.user.name}}:</div>
-                                    <div class="col-md-8">
-                                        <input #focus class="form-control"
-                                               [(ngModel)]="message"  name="message"  autocomplete="off" (keypress)="eventHandler($event)">
-                                    </div>
-                                    <div class="col-md-1">
-                                        <button class="btn btn-success btn-sm" (click)="send()">Send</button>
-                                    </div>
-                                </div>
-                            </form>
-
-
-
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4" style="margin-top:1%">
-                    <div>
-                        <input [(ngModel)]="search">
-                        <button class="btn btn-danger btn-xs" (click)="searchMessage()">pesquisa</button>
-
-                        <div class="message" *ngFor="let item of listSearchMessage">
-                            <small>{{item.created | date : 'shortDate' }}</small>
-                            <small>&lt;{{item.user[0].name}}&gt;</small>
-                            {{item.message}}
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-</div>-->
