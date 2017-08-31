@@ -17,7 +17,7 @@ var jwt = require('express-jwt');
 
 declare var process, __dirname;
 
-//var publicKey = fs.readFileSync(process.env.PATH_PUBLIC_KEY);
+var publicKey = fs.readFileSync(process.env.PATH_PUBLIC_KEY);
 
 export class Server {
 
@@ -82,22 +82,20 @@ export class Server {
     // Configure databases
     private databases(): void {
         // MongoDB URL
-        const MONGODB_URI = 'mongodb://localhost/chat';
+        const MONGODB_URI = process.env.MONGODB_URI;
 
         // Get MongoDB handle
-        this.mongo = mongoose.connect(MONGODB_URI);
+        this.mongo = mongoose.connect(MONGODB_URI, { useMongoClient: true });
         (<any>mongoose).Promise = global.Promise;
     }
 
     // Configure sockets
     private sockets(): void {
-
-
         // Get socket.io handle
         this.io = socket(this.server);
 
         // Set Redis adapter
-        const REDIS_URL =  'redis://localhost:6379';
+        const REDIS_URL = process.env.REDIS_URL;
         this.io.adapter(redis(REDIS_URL));
 
         // Set room socket
@@ -107,7 +105,7 @@ export class Server {
 
     public listen(): void {
         // Get port
-        const port =  5000;
+        const port = process.env.VC_APP_CHAT_PORT;
 
         // Start listening
         this.server.listen(port);
@@ -117,13 +115,9 @@ export class Server {
             console.log('ERROR', error);
         });
 
-
-
         // start listening on port
         this.server.on('listening', () => {
             console.log(`==> Listening on port ${port}. Open up http://localhost:${port}/ in your browser.`);
         });
-
-
     }
 }

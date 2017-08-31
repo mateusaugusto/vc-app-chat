@@ -247,15 +247,21 @@
             <div class="pull-right">
                 <div class="dropdown">
 
-                    <input [(ngModel)]="search">
-                    <button class="dropdown-toggle" type="button" (click)="searchMessage()">pesquisa</button>
+                    <div id="custom-search-input">
+                        <div class="input-group col-md-12">
+                            <input type="text" class="  search-query form-control" placeholder="Conversation" [(ngModel)]="search">
+                            <button class="btn btn-danger" type="button" (click)="searchMessage()">
+                                <span class=" glyphicon glyphicon-search"></span>
+                            </button>
 
-                    <div class="message" *ngFor="let item of listSearchMessage">
-                        <small>{{item.created | date : 'shortDate' }}</small>
-                        <small>&lt;{{item.user[0].name}}&gt;</small>
-                        {{item.message}}
+                            <div class="message" *ngFor="let item of listSearchMessage">
+                                <small>{{item.created | date : 'shortDate' }}</small>
+                                <small>&lt;{{item.user[0].name}}&gt;</small>
+                                {{item.message}}
+                            </div>
+
+                        </div>
                     </div>
-
 
                 </div>
             </div>

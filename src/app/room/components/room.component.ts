@@ -1,6 +1,5 @@
 import {
-    AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild,
-    ViewEncapsulation
+    AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild
 } from "@angular/core";
 
 import {RoomService, UserService} from "../../core";
@@ -32,7 +31,8 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(private roomService: RoomService,
                 public userService: UserService,
                 private http: Http,
-                private secureHttpService: SecureHttpService) {
+                private secureHttpService: SecureHttpService,
+                private cdr: ChangeDetectorRef) {
     }
 
     ngOnInit(): void {
@@ -67,6 +67,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewChecked() {
         this.scrollToBottom();
+        this.cdr.detectChanges();
     }
 
     // When component is destroyed, ensure that leave message is sent

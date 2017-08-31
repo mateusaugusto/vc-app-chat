@@ -3,14 +3,12 @@ import * as moment from 'moment';
 
 import {Message} from './message.model';
 import {IRoomModel} from "../interface/room/iroom-model";
-import {IRoom} from "../interface/room/iroom";
 import {RoomModel} from "../schema/room-schema";
 import {RoomDomain} from "../domain/room-domain";
-import {UserDomain} from "../domain/user-domain";
 
 export class Room {
     name: string;
-    created: Date;
+    created: string;
     domainId: number;
     accountId: number;
     _id: string;
@@ -20,7 +18,7 @@ export class Room {
 
     constructor(room: IRoomModel) {
         this.name = room.name;
-        this.created = moment(room.created).toDate();
+        this.created = moment.utc().format();
         this.domainId = room.domainId;
         this.accountId = room.accountId;
         this._id = room._id;

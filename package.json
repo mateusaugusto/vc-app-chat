@@ -62,7 +62,7 @@
     "json-loader": "^0.5.4",
     "jsonwebtoken": "^7.4.2",
     "moment": "^2.18.1",
-    "mongoose": "^4.10.7",
+    "mongoose": "^4.11.10",
     "ng2-completer": "^1.4.0",
     "node-sass": "^4.5.3",
     "postcss-loader": "^2.0.6",
