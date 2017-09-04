@@ -29,8 +29,6 @@ export class MessageSocket {
 
     // Create a message in a room
     private create(params: IMessage): void {
-        console.log("criando socker message" + params);
-
         Message.create(params).subscribe(
             message => {
                 Message.findOne(message).subscribe(result => {

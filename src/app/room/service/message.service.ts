@@ -12,22 +12,28 @@ import {SecureHttpService} from "../../oauth2/service/secure-httpservice";
 @Injectable()
 export class MessageService extends BaseUrl {
     messages: ReplaySubject<any> = new ReplaySubject(1);
+    env: ReplaySubject<any> = new ReplaySubject(1);
+
     private socketService: SocketService;
+    private socketServiceControl: SocketService;
 
     constructor(private userService: UserService,
                 private room: RoomDomain,
                 private http: Http,
                 private secureHttpService: SecureHttpService) {
         super();
+
+        this.socketServiceControl = new SocketService('control');
+
         this.socketService = new SocketService('messages/' + encodeURIComponent(this.room.name));
 
-        // Get initial items
+        // Escuta as mesnagens no socket e envia para messagens variavel
         this.socketService.items().subscribe(message => {
-                //this.list.push(message);
                 this.messages.next(message);
             },
             error => console.log(error)
         );
+
 
         // Send user joined message
         this.socketService.onConnect().subscribe(
@@ -59,6 +65,14 @@ export class MessageService extends BaseUrl {
             user: this.userService.user,
             to:  this.room.privateRoom ? this.room.nickName: '',
             message: message
+        });
+    }
+
+    sendControl() : void {
+        //this.socketServiceControl.set();
+        this.socketServiceControl.set({
+            room: this.room,
+            user: this.userService.user,
         });
     }
 

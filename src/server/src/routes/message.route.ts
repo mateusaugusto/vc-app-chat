@@ -6,7 +6,6 @@ const messageRouter: Router = Router();
 
 
 messageRouter.get(uri + '/room/:room', (req, res) => {
-    console.log("route find message");
     MessageController.findOne(req, res);
 });
 

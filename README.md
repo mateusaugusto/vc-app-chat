@@ -68,7 +68,7 @@ localhost:5000/api/user/add/room/idSala -> PUT ex: localhost:5000/api/user/add/r
 
 PATH_PUBLIC_KEY="/home/mateus/Documents/public.txt" -> chave publica do pair do jwt
 
-MONGODB_URI="mongodb://localhost/chat";
+MONGODB_URI="mongodb://localhost/chat"
 
 REDIS_URL="redis://localhost:6379"
 

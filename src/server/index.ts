@@ -6,8 +6,7 @@ import * as socket from 'socket.io';
 import * as mongoose from 'mongoose';
 import * as redis from 'socket.io-redis';
 
-import {RoomSocket} from './socket';
-import {UserSocket} from './socket/user';
+import {RoomSocket, ControlSocket, UserSocket } from './socket';
 import userRouter = require("./src/routes/user.route");
 import roomRouter = require("./src/routes/room.route");
 import messageRouter = require("./src/routes/message.route");
@@ -64,7 +63,8 @@ export class Server {
         // Static assets
         this.app.use('/assets', serveStatic(path.resolve(root, 'assets')));
 
-      //  this.app.use(jwt({ secret: publicKey, credentialsRequired: true }));
+        //Enable oauth 2 security
+        //  this.app.use(jwt({ secret: publicKey, credentialsRequired: true }));
 
         router.get('/', (request: express.Request, result: express.Response) => {
             result.sendFile(path.join(root, '/index.html'));
@@ -101,6 +101,7 @@ export class Server {
         // Set room socket
         let roomSocket = new RoomSocket(this.io);
         let userSocket = new UserSocket(this.io);
+        let control = new ControlSocket(this.io);
     }
 
     public listen(): void {

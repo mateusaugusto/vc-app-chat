@@ -6,23 +6,40 @@ import {UserDomain} from "../../../server/src/domain/user-domain";
 import {RoomDomain} from "../../../server/src/domain/room-domain";
 import {TokenStoreService} from "../../oauth2/service/tokenstore.service";
 import {SocketService} from "../../core/service/socket.service";
+import {ReplaySubject} from "rxjs/ReplaySubject";
 
 @Component({
     selector: 'control',
+    styleUrls: ['../../css/style.scss'],
     templateUrl: '../views/control.component.html'
 })
 export class ControlComponent implements OnInit {
     room: string = '';
     user: UserDomain;
 
+    private socketService: SocketService;
+
     constructor(private roomService: RoomService,
                 private route: ActivatedRoute,
                 private userService: UserService,
                 private tokenStoreService: TokenStoreService) {
-
     }
 
     ngOnInit() {
+        this.socketService = new SocketService('control');
+        this.socketService.getControl().subscribe(message => {
+
+            let userIsconnetedInRoom = this.roomService.isConected(message);
+
+            if(!userIsconnetedInRoom){
+                this.roomService.list = this.roomService.list.filter(room => room.name === message.room.name);
+                this.roomService.list[0].name = "mudaa";
+
+            }
+
+        });
+
+
         let userParams: UserDomain = new UserDomain();
 
         userParams.accountId = +this.route.snapshot.params['accountId'];
@@ -33,6 +50,8 @@ export class ControlComponent implements OnInit {
             this.user = user;
             this.userService.user = user;
             this.roomService.list = user.room.filter(room => room.isEnabled === true);
+
+            //this.join(this.roomService.list[0]);
 
             if (user['token']) {
                 this.tokenStoreService.setToken(user['token']);
@@ -53,6 +72,7 @@ export class ControlComponent implements OnInit {
             ;
 
         });
+
 
     }
 
@@ -91,7 +111,6 @@ export class ControlComponent implements OnInit {
         if (!room.privateRoom) {
             room.nickName = room.name;
         }
-
         // Send user joined message
         this.roomService.addRoomToSocket(room).subscribe(message => {
             console.log("conected to socket" + message)
@@ -99,6 +118,8 @@ export class ControlComponent implements OnInit {
 
         this.roomService.join(room);
         this.room = '';
+
+        //this.socketService.set();
     }
 
     // Remove room, when Remove-button is pressed and unset selected room

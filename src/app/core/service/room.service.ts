@@ -21,15 +21,20 @@ export class RoomService extends BaseUrl {
                 private http: Http,
                 private secureHttpService: SecureHttpService) {
         super();
-
         // Open room socket
         this.socketService = new SocketService('room');
+
     }
+
+    isConected(params: any): boolean{
+        return this.socketService.isConected(params);
+    };
+
 
     addRoomToSocket(room: RoomDomain): Observable<any> {
         return new Observable(observer => {
             this.socketService.findOne(room);
-        })
+        });
     }
 
     // Get all posts from the API

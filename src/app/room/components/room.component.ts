@@ -11,6 +11,7 @@ import {UserDomain} from "../../../server/src/domain/user-domain";
 
 @Component({
     selector: 'room',
+    styleUrls: ['../../css/style.scss'],
     templateUrl: '../views/room.component.html',
 })
 export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -41,12 +42,15 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.messageService = new MessageService(this.userService, this.room, this.http, this.secureHttpService);
 
+
         this.messageService.findOne(this.room._id).subscribe(message => {
             this.messages = message;
         });
 
+        //Preenche a lista com as mensagens no socket
         this.messageService.messages.subscribe(messages => {
             this.messages.push(messages);
+            //alert('vc recebeu uma msg');
             setTimeout(() => {
                 this.scrollToBottom();
             }, 200);
@@ -81,6 +85,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     send(): void {
         if (this.message !== '') {
             this.messageService.send(this.message);
+            this.messageService.sendControl();
             this.message = '';
         }
     }

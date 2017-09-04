@@ -5,8 +5,6 @@ export class MessageController {
 
     public static findOne(req: express.Request, res: express.Response) {
         let room = req.params.room;
-        console.log("findone message" + room);
-
         MessageModel.find({room}, (error, result) => {
             if (error) res.send({"error": "error"});
             else if(null === result )
