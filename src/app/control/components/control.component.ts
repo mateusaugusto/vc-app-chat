@@ -32,7 +32,7 @@ export class ControlComponent implements OnInit {
             let userIsconnetedInRoom = this.roomService.isConected(message);
 
             if(!userIsconnetedInRoom){
-                this.roomService.list = this.roomService.list.filter(room => room.name === message.room.name);
+                //this.roomService.list = this.roomService.list.filter(room => room.name === message.room.name);
                 this.roomService.list[0].name = "mudaa";
 
             }

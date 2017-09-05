@@ -77,4 +77,6 @@ export class UserController {
         }).where({isEnabled: true}).populate("room");
     };
 
+    //db.getCollection('users').find({domainId: 2, room: { $in: [ ObjectId("599b0e776d87ae6e806f4fc3")] } })
+
 }

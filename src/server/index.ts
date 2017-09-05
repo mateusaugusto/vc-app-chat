@@ -6,17 +6,19 @@ import * as socket from 'socket.io';
 import * as mongoose from 'mongoose';
 import * as redis from 'socket.io-redis';
 
-import {RoomSocket, ControlSocket, UserSocket } from './socket';
+import {RoomSocket} from './socket';
+import {UserSocket} from './socket/user';
 import userRouter = require("./src/routes/user.route");
 import roomRouter = require("./src/routes/room.route");
 import messageRouter = require("./src/routes/message.route");
 import * as fs from "fs";
+import {ControlSocket} from "./socket/control";
 
 var jwt = require('express-jwt');
 
 declare var process, __dirname;
 
-var publicKey = fs.readFileSync(process.env.PATH_PUBLIC_KEY);
+//var publicKey = fs.readFileSync(process.env.PATH_PUBLIC_KEY);
 
 export class Server {
 
@@ -82,10 +84,10 @@ export class Server {
     // Configure databases
     private databases(): void {
         // MongoDB URL
-        const MONGODB_URI = process.env.MONGODB_URI;
+        const MONGODB_URI = 'mongodb://localhost/chat';
 
         // Get MongoDB handle
-        this.mongo = mongoose.connect(MONGODB_URI, { useMongoClient: true });
+        this.mongo = mongoose.connect(MONGODB_URI);
         (<any>mongoose).Promise = global.Promise;
     }
 
@@ -95,7 +97,7 @@ export class Server {
         this.io = socket(this.server);
 
         // Set Redis adapter
-        const REDIS_URL = process.env.REDIS_URL;
+        const REDIS_URL =  'redis://localhost:6379';
         this.io.adapter(redis(REDIS_URL));
 
         // Set room socket
@@ -106,7 +108,7 @@ export class Server {
 
     public listen(): void {
         // Get port
-        const port = process.env.VC_APP_CHAT_PORT;
+        const port =  5000;
 
         // Start listening
         this.server.listen(port);
