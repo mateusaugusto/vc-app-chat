@@ -9,7 +9,6 @@ const UserSchema = new mongoose.Schema({
     clientId: { type: Number},
     isEnabled: {type: Boolean, default: true},
     room: [{ type: Schema.Types.ObjectId, ref: 'Room'}]
-
 }).index({domainId: 1, accountId: 1, clientId: 1, room: 1}, {unique: true});
 
 export const UserModel = mongoose.model<IUserModel>('User', UserSchema);

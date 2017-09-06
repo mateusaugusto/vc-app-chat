@@ -1,5 +1,12 @@
 import {
-    AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    Input,
+    OnDestroy,
+    OnInit,
+    ViewChild
 } from "@angular/core";
 
 import {RoomService, UserService} from "../../core";
@@ -8,6 +15,10 @@ import {MessageService} from "../service/message.service";
 import {Http} from "@angular/http";
 import {SecureHttpService} from "../../oauth2/service/secure-httpservice";
 import {UserDomain} from "../../../server/src/domain/user-domain";
+import {UnreadMessagesService} from "../../core/service/unreadmessages.service";
+import {MessageDomain} from "../../../server/src/domain/message-domain";
+import {UnreadMessages} from "../../../server/src/model/unreadmessages.model";
+import {UnreadMessagesDomain} from "../../../server/src/domain/unreadmessages-domain";
 
 @Component({
     selector: 'room',
@@ -30,8 +41,9 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     private alreadyLeftChannel: boolean = false;
 
     constructor(private roomService: RoomService,
-                public userService: UserService,
+                private userService: UserService,
                 private http: Http,
+                private unreadMessagesService: UnreadMessagesService,
                 private secureHttpService: SecureHttpService,
                 private cdr: ChangeDetectorRef) {
     }
@@ -42,7 +54,6 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.messageService = new MessageService(this.userService, this.room, this.http, this.secureHttpService);
 
-
         this.messageService.findOne(this.room._id).subscribe(message => {
             this.messages = message;
         });
@@ -50,7 +61,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
         //Preenche a lista com as mensagens no socket
         this.messageService.messages.subscribe(messages => {
             this.messages.push(messages);
-            //alert('vc recebeu uma msg');
+      //      this.createUnreadMessages(messages);
             setTimeout(() => {
                 this.scrollToBottom();
             }, 200);
@@ -85,7 +96,6 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     send(): void {
         if (this.message !== '') {
             this.messageService.send(this.message);
-            this.messageService.sendControl();
             this.message = '';
         }
     }
@@ -111,5 +121,20 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
         if (event.key === 'Enter') {
             this.send();
         }
+    }
+
+    createUnreadMessages(message: MessageDomain): void {
+        // Retrieve all user in room
+        this.userService.findAllUsersInRoom(message.room, message.user).subscribe(result => {
+            let unread = new UnreadMessagesDomain();
+            unread.user = result;
+            unread.message = message;
+            // Create unread Message
+            this.unreadMessagesService.create(unread).subscribe(result => {
+                console.log("created unread msg");
+                //Send socket
+                this.messageService.sendControl(result);
+            });
+        });
     }
 }

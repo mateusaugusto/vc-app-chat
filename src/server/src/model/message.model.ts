@@ -12,6 +12,7 @@ export class Message {
     user: UserDomain;
     to: string;
     message: string;
+    _id: string;
 
     constructor(message: IMessageModel) {
         this.room = message.room;
@@ -20,6 +21,7 @@ export class Message {
         this.user = message.user;
         this.to = message.to;
         this.message = message.message;
+        this._id = message._id;
     }
 
     public static create(message: IMessage): Observable<Message> {

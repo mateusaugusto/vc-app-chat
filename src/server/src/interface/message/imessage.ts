@@ -1,4 +1,5 @@
-import {Message} from "../../model/message.model";
+import {MessageDomain} from "../../domain/message-domain";
 
-export interface IMessage extends Message{
+export interface IMessage extends MessageDomain {
+    _id: string;
 }

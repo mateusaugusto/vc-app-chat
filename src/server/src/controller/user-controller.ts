@@ -1,7 +1,7 @@
 import {IUser} from "../interface/user/iuser";
 import {UserModel} from "../schema/user-schema";
 import express = require("express");
-
+var mongoose = require('mongoose');
 export class UserController {
 
     public static create(req: express.Request, res: express.Response): void {
@@ -75,6 +75,19 @@ export class UserController {
                 res.status(400).send('not found');
             else res.send(result)
         }).where({isEnabled: true}).populate("room");
+    };
+
+    public static findAllUsersInRoom(req: express.Request, res: express.Response) {
+        let domainId = req.params.domainId;
+        let accountId = req.params.accountId;
+        let roomId = mongoose.Types.ObjectId(req.params.roomId);
+
+        UserModel.find({domainId: domainId, accountId: accountId, room: roomId}, (error, result) => {
+            if (error) res.send({"error": "error"});
+            else if(null === result )
+                res.status(400).send('not found');
+            else res.send(result)
+        });
     };
 
 }

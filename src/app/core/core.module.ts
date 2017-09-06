@@ -3,6 +3,7 @@ import {BrowserModule} from "@angular/platform-browser";
 
 import {RoomService} from "./service/room.service";
 import {UserService} from "./service/user.service";
+import {UnreadMessagesService} from "./service/unreadmessages.service";
 
 @NgModule({
   imports: [
@@ -10,7 +11,8 @@ import {UserService} from "./service/user.service";
   ],
   providers: [
     RoomService,
-    UserService
+    UserService,
+    UnreadMessagesService
   ]
 })
 export class CoreModule {}

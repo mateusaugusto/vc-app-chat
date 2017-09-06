@@ -29,4 +29,9 @@ export class UserService extends BaseUrl{
         .map((response: Response) => response.json());
   }
 
+  findAllUsersInRoom(room: RoomDomain, user: UserDomain): Observable<UserDomain[]> {
+    return this.http.get(this.getBaseUrl() + `user/domainId/${user.domainId}/accountId/${user.accountId}/roomId/${room}`, this.secureHttpService.getRequestOptions())
+        .map((response: Response) => response.json());
+  }
+
 }

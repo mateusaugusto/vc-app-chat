@@ -68,11 +68,12 @@ export class MessageService extends BaseUrl {
         });
     }
 
-    sendControl() : void {
+    sendControl(params: any) : void {
         //this.socketServiceControl.set();
         this.socketServiceControl.set({
             room: this.room,
             user: this.userService.user,
+            unread: params
         });
     }
 

@@ -12,6 +12,10 @@ userRouter.get(uri + '/domainId/:domainId/accountId/:accountId/privateusers/:pri
     UserController.findAllByDomainIdAndAccountId(req, res);
 });
 
+userRouter.get(uri + '/domainId/:domainId/accountId/:accountId/roomId/:roomId', (req, res) => {
+    UserController.findAllUsersInRoom(req, res);
+});
+
 userRouter.put(uri, (req, res) => {
     UserController.create(req, res);
 });

@@ -11,6 +11,7 @@ import userRouter = require("./src/routes/user.route");
 import roomRouter = require("./src/routes/room.route");
 import messageRouter = require("./src/routes/message.route");
 import * as fs from "fs";
+import unreadRouter = require("./src/routes/unreadmessages.route");
 
 var jwt = require('express-jwt');
 
@@ -73,6 +74,7 @@ export class Server {
         this.app.use('/api', userRouter);
         this.app.use('/api', roomRouter);
         this.app.use('/api', messageRouter);
+        this.app.use('/api', unreadRouter);
 
         // Set app to use router as the default route
         this.app.use('*', router);
