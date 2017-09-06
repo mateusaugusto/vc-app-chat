@@ -1,4 +1,6 @@
 import {IMessage} from "../src/interface/message/imessage";
+
+
 export class ControlSocket {
   nsp: any;
   socket: any;
@@ -21,6 +23,11 @@ export class ControlSocket {
   }
 
   sent(params: IMessage): void{
+
+    this.socket.adapter.clients((err, clients) => {
+      console.log("aqui" + clients); // an array containing all connected socket ids
+    });
+
     this.nsp.emit('control', params);
   }
 
