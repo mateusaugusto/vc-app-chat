@@ -1,6 +1,7 @@
 import {UnreadMessagesModel} from "../schema/unreadmessages-schema";
 import express = require("express");
 import {IUnreadMessageModel} from "../interface/unreadmessages/iunreadmessages-model";
+import {IUser} from "../interface/user/iuser";
 var mongoose = require('mongoose');
 
 export class UnreadMessagesController {
@@ -14,8 +15,8 @@ export class UnreadMessagesController {
     };
 
     public static removeUserFromList(req: express.Request, res: express.Response): void {
-        var unread: IUnreadMessageModel = <IUnreadMessageModel>req.body;
-        var user = mongoose.Types.ObjectId(req.params.user);
+        var unread: IUnreadMessageModel = <IUnreadMessageModel>req.body.unreadmessages;
+        var user: IUser = <IUser>req.body.user;
 
         console.log(unread);
         console.log(user);

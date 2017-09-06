@@ -16,8 +16,6 @@ import {Http} from "@angular/http";
 import {SecureHttpService} from "../../oauth2/service/secure-httpservice";
 import {UserDomain} from "../../../server/src/domain/user-domain";
 import {UnreadMessagesService} from "../../core/service/unreadmessages.service";
-import {MessageDomain} from "../../../server/src/domain/message-domain";
-import {UnreadMessages} from "../../../server/src/model/unreadmessages.model";
 import {UnreadMessagesDomain} from "../../../server/src/domain/unreadmessages-domain";
 
 @Component({
@@ -61,7 +59,6 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
         //Preenche a lista com as mensagens no socket
         this.messageService.messages.subscribe(messages => {
             this.messages.push(messages);
-      //      this.createUnreadMessages(messages);
             setTimeout(() => {
                 this.scrollToBottom();
             }, 200);
@@ -96,6 +93,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     send(): void {
         if (this.message !== '') {
             this.messageService.send(this.message);
+            this.createUnreadMessages();
             this.message = '';
         }
     }
@@ -123,12 +121,12 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    createUnreadMessages(message: MessageDomain): void {
+    createUnreadMessages(): void {
         // Retrieve all user in room
-        this.userService.findAllUsersInRoom(message.room, message.user).subscribe(result => {
+        this.userService.findAllUsersInRoom(this.room, this.user).subscribe(result => {
             let unread = new UnreadMessagesDomain();
-            unread.user = result;
-            unread.message = message;
+            unread.user = result.filter(r => r._id != this.user._id );
+            //unread.message = message;
             // Create unread Message
             this.unreadMessagesService.create(unread).subscribe(result => {
                 console.log("created unread msg");

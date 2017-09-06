@@ -18,8 +18,8 @@ export class UnreadMessagesService extends BaseUrl {
             .map((response: Response) => response.json());
     }
 
-    removeUserFromList(params: any, userId: String): Observable<any> {
-        return this.http.post(this.getBaseUrl() + 'unreadmessages/user/' + userId, params.unread, this.secureHttpService.getRequestOptions())
+    removeUserFromList(params: any): Observable<any> {
+        return this.http.post(this.getBaseUrl() + 'unreadmessages/', params, this.secureHttpService.getRequestOptions())
             .map((response: Response) => response.json());
     }
 

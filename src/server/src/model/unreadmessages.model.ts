@@ -3,16 +3,17 @@ import {MessageDomain} from "../domain/message-domain";
 import {IUnreadMessageModel} from "../interface/unreadmessages/iunreadmessages-model";
 import {UnreadMessagesModel} from "../schema/unreadmessages-schema";
 import {Observable} from "rxjs/Observable";
+import {RoomDomain} from "../domain/room-domain";
 
 export class UnreadMessages {
     user: UserDomain[];
-    message: MessageDomain;
+    room: RoomDomain;
     _id: string;
 
     constructor(unreadMessage: IUnreadMessageModel) {
         this._id = unreadMessage._id;
         this.user = unreadMessage.user;
-        this.message = unreadMessage.message;
+        this.room = unreadMessage.room;
     }
 
     public static list(room: string): Observable<IUnreadMessageModel[]> {

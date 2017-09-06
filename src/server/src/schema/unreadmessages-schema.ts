@@ -4,6 +4,6 @@ import {IUnreadMessageModel} from "../interface/unreadmessages/iunreadmessages-m
 
 export const UnreadMessagesSchema = new mongoose.Schema({
     user: [{type: Schema.Types.ObjectId, ref: 'User',  index: true}],
-    message: { type: Schema.Types.ObjectId, ref: 'Message' }
+    room: { type: Schema.Types.ObjectId, ref: 'Room' }
 });
 export const UnreadMessagesModel = mongoose.model<IUnreadMessageModel>('UnreadMessages', UnreadMessagesSchema);

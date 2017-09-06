@@ -1,12 +1,11 @@
 import {Component, OnInit} from "@angular/core";
 import {RoomService} from "../../core";
 import {UserService} from "../../core/service/user.service";
-import {ActivatedRoute, Route} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {UserDomain} from "../../../server/src/domain/user-domain";
 import {RoomDomain} from "../../../server/src/domain/room-domain";
 import {TokenStoreService} from "../../oauth2/service/tokenstore.service";
 import {SocketService} from "../../core/service/socket.service";
-import {ReplaySubject} from "rxjs/ReplaySubject";
 import {UnreadMessagesService} from "../../core/service/unreadmessages.service";
 
 @Component({
@@ -68,15 +67,14 @@ export class ControlComponent implements OnInit {
 
             let userIsconnetedInRoom = this.roomService.isConected(message);
 
-            if(!userIsconnetedInRoom){
+            if (!userIsconnetedInRoom) {
                 this.unreadMensagens = true;
-            }else{
-                this.unreadMessagesService.removeUserFromList(message, this.user._id).subscribe(result => {
+            } else {
+                this.unreadMessagesService.removeUserFromList(this.buildObject(message)).subscribe(result => {
                     console.log("created unread msg");
                 });
             }
         });
-
     }
 
     joinPrivateRoom(userRoom): void {
@@ -107,6 +105,13 @@ export class ControlComponent implements OnInit {
         room.accountId = user.accountId;
         room.domainId = user.domainId;
         return room;
+    }
+
+    buildObject(message: any) {
+        return {
+            user: this.user,
+            unreadmessages: message
+        }
     }
 
     // Join room, when Join-button is pressed

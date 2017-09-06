@@ -1,7 +1,8 @@
 import {UserDomain} from "./user-domain";
 import {MessageDomain} from "./message-domain";
+import {RoomDomain} from "./room-domain";
 
 export class UnreadMessagesDomain{
-    message: MessageDomain;
+    room: RoomDomain;
     user: UserDomain[];
 }

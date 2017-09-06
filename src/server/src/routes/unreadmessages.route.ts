@@ -8,7 +8,7 @@ unreadRouter.put(uri, (req, res) => {
     UnreadMessagesController.create(req, res);
 });
 
-unreadRouter.post(uri + "/user/:user", (req, res) => {
+unreadRouter.post(uri, (req, res) => {
     console.log("removendo");
     UnreadMessagesController.removeUserFromList(req, res);
 });
