@@ -20,7 +20,7 @@ export class UnreadController {
         UnreadModel.findOneAndUpdate({_id: unread._id},
             {$pull: {user: user._id}}, (error, result) => {
                 if (error) res.send({"error": "error"});
-                else if(null === result )
+                else if (null === result)
                     res.status(400).send('not found');
                 else {
                     res.send(result);
@@ -32,14 +32,16 @@ export class UnreadController {
         let userId = new ObjectId(req.params.userId);
         let roomId = new ObjectId(req.params.roomId);
 
+        console.log("userId" + userId);
+        console.log("roomId" + roomId);
+
         UnreadModel.count({room: roomId, user: { $in: [userId] }}, (error, result) => {
-                if (error) res.send({"error": "error"});
-                else if(null === result )
-                    res.status(400).send('not found');
-                else {
-                    res.send(result);
-                }
-            });
+            if (error) res.send({"error": "error"});
+            else {
+                console.log("total" + result);
+                res.send({count: result});
+            }
+        });
     };
 
 

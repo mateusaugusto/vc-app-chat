@@ -13,9 +13,9 @@ unreadRouter.post(uri, (req, res) => {
     UnreadController.removeUserFromList(req, res);
 });
 
-unreadRouter.get(uri + "/room/:room/user/:user", (req, res) => {
-    console.log("deletando");
-    UnreadController.removeUserFromList(req, res);
+unreadRouter.get(uri + "/room/:roomId/user/:userId", (req, res) => {
+    console.log("contando");
+    UnreadController.contByRoomAdnUser(req, res);
 });
 
 export = unreadRouter;

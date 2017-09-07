@@ -10,7 +10,7 @@ import {UnreadMessagesService} from "../../core/service/unreadmessages.service";
 
 @Component({
     selector: 'control',
-    styleUrls: ['../../css/style.scss'],
+    //styleUrls: ['../css/control.scss'],
     templateUrl: '../views/control.component.html'
 })
 export class ControlComponent implements OnInit {
@@ -29,7 +29,6 @@ export class ControlComponent implements OnInit {
 
     ngOnInit() {
         this.socketService = new SocketService('control');
-
         let userParams: UserDomain = new UserDomain();
 
         userParams.accountId = +this.route.snapshot.params['accountId'];
@@ -40,6 +39,8 @@ export class ControlComponent implements OnInit {
             this.user = user;
             this.userService.user = user;
             this.roomService.list = user.room.filter(room => room.isEnabled === true);
+
+            //this.buildMessagesUnread(this.user);
 
             if (user['token']) {
                 this.tokenStoreService.setToken(user['token']);
@@ -61,6 +62,7 @@ export class ControlComponent implements OnInit {
 
         });
 
+        // Socket que controla o envio de mensagens não lidas
         this.socketService.getControl().subscribe(message => {
             let userIsConnectedInRoom = this.roomService.isConected(message);
             if (!userIsConnectedInRoom) {
@@ -73,6 +75,19 @@ export class ControlComponent implements OnInit {
                 }
             }
         });
+    }
+
+    buildMessagesUnread(user: UserDomain): void {
+        let roomList = user.room.filter(room => room.isEnabled === true);
+        for (const room of roomList) {
+            this.unreadMessagesService.countByRoomAndUser(room._id, this.user._id).subscribe(count => {
+                if(count > 0){
+                    room.isUnread = true;
+                    room.countMessage = count;
+                }
+                this.roomService.list.push(room);
+            });
+        }
     }
 
     joinPrivateRoom(userRoom): void {

@@ -12,8 +12,8 @@ import {SecureHttpService} from "../../oauth2/service/secure-httpservice";
 @Injectable()
 export class RoomService extends BaseUrl {
     rooms: ReplaySubject<any> = new ReplaySubject(1);
-    list: RoomDomain[];
-    privateList: RoomDomain[];
+    list: RoomDomain[] = [];
+    privateList: RoomDomain[] = [];
 
     private socketService: SocketService;
 
