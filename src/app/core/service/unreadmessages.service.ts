@@ -23,4 +23,9 @@ export class UnreadMessagesService extends BaseUrl {
             .map((response: Response) => response.json());
     }
 
+    countByRoomAndUser(roomId: String, userId: String): Observable<Number> {
+        return this.http.get(this.getBaseUrl() + `unreadmessages/room/${roomId}/accountId/${userId}`, this.secureHttpService.getRequestOptions())
+            .map((response: Response) => response.json());
+    }
+
 }

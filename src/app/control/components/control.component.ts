@@ -41,8 +41,6 @@ export class ControlComponent implements OnInit {
             this.userService.user = user;
             this.roomService.list = user.room.filter(room => room.isEnabled === true);
 
-            //this.join(this.roomService.list[0]);
-
             if (user['token']) {
                 this.tokenStoreService.setToken(user['token']);
             } else {
@@ -64,15 +62,15 @@ export class ControlComponent implements OnInit {
         });
 
         this.socketService.getControl().subscribe(message => {
-
-            let userIsconnetedInRoom = this.roomService.isConected(message);
-
-            if (!userIsconnetedInRoom) {
+            let userIsConnectedInRoom = this.roomService.isConected(message);
+            if (!userIsConnectedInRoom) {
                 this.unreadMensagens = true;
             } else {
-                this.unreadMessagesService.removeUserFromList(this.buildObject(message)).subscribe(result => {
-                    console.log("created unread msg");
-                });
+                if (this.user._id != message['user']._id) {
+                    this.unreadMessagesService.removeUserFromList(this.buildObject(message)).subscribe(result => {
+                        console.log("created unread msg");
+                    });
+                }
             }
         });
     }

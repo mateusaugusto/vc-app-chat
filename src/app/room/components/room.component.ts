@@ -126,7 +126,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
         this.userService.findAllUsersInRoom(this.room, this.user).subscribe(result => {
             let unread = new UnreadMessagesDomain();
             unread.user = result.filter(r => r._id != this.user._id );
-            //unread.message = message;
+            unread.room = this.room;
             // Create unread Message
             this.unreadMessagesService.create(unread).subscribe(result => {
                 console.log("created unread msg");

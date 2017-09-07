@@ -10,10 +10,10 @@ import {RoomSocket, ControlSocket, UserSocket } from './socket';
 import userRouter = require("./src/routes/user.route");
 import roomRouter = require("./src/routes/room.route");
 import messageRouter = require("./src/routes/message.route");
-import * as fs from "fs";
-import unreadRouter = require("./src/routes/unreadmessages.route");
+import unreadRouter = require("./src/routes/unreadmessage.route");
 
 var jwt = require('express-jwt');
+var bodyParser = require('body-parser');
 
 declare var process, __dirname;
 
@@ -26,17 +26,16 @@ export class Server {
     private io: any;
     private mongo: mongoose.MongooseThenable;
     private port: number;
-    private bodyParser = require('body-parser');
 
     constructor() {
 
         // Create expressjs application
         this.app = express();
 
-        this.app.enable('view cache');
+        this.app.use(bodyParser.json()); // support json encoded bodies
+        this.app.use(bodyParser.urlencoded({ extended: false })); // support encoded bodies
 
-        this.app.use(this.bodyParser.json()); // support json encoded bodies
-        this.app.use(this.bodyParser.urlencoded({ extended: true })); // support encoded bodies
+        this.app.enable('view cache');
 
         // Setup routes
         this.routes();
