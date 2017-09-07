@@ -16,7 +16,7 @@ import {Http} from "@angular/http";
 import {SecureHttpService} from "../../oauth2/service/secure-httpservice";
 import {UserDomain} from "../../../server/src/domain/user-domain";
 import {UnreadMessagesService} from "../../core/service/unreadmessages.service";
-import {UnreadMessagesDomain} from "../../../server/src/domain/unreadmessages-domain";
+import {UnreadMessagesDomain} from "../../../server/src/domain/unread-domain";
 
 @Component({
     selector: 'room',

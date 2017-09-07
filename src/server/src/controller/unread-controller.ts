@@ -1,7 +1,7 @@
 import express = require("express");
 var ObjectId = require('mongoose').Types.ObjectId;
-import {IUnreadModel} from "../interface/unreadmessage/iunreadmessage-model";
-import {UnreadModel} from "../schema/unreadmessage-schema";
+import {IUnreadModel} from "../interface/unread/iunread-model";
+import {UnreadModel} from "../schema/unread-schema";
 
 export class UnreadController {
 

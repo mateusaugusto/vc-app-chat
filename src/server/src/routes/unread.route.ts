@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {UnreadController} from "../controller/unreadmessage-controller";
+import {UnreadController} from "../controller/unread-controller";
 
 let uri = "/unreadmessages";
 const unreadRouter: Router = Router();

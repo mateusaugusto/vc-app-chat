@@ -1,6 +1,6 @@
 import * as mongoose from "mongoose";
 import {Schema} from "mongoose";
-import {IUnreadModel} from "../interface/unreadmessage/iunreadmessage-model";
+import {IUnreadModel} from "../interface/unread/iunread-model";
 
 export const UnreadSchema = new mongoose.Schema({
     user: [{type: Schema.Types.ObjectId, ref: 'User', index: true}],

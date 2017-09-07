@@ -1,6 +1,6 @@
 import {UserDomain} from "../domain/user-domain";
-import {IUnreadModel} from "../interface/unreadmessage/iunreadmessage-model";
-import {UnreadModel} from "../schema/unreadmessage-schema";
+import {IUnreadModel} from "../interface/unread/iunread-model";
+import {UnreadModel} from "../schema/unread-schema";
 import {Observable} from "rxjs/Observable";
 import {RoomDomain} from "../domain/room-domain";
 

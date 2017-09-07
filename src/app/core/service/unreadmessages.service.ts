@@ -3,7 +3,7 @@ import {Observable} from "rxjs/Observable";
 import {BaseUrl} from "../../infra/base-url";
 import {Http, Response} from "@angular/http";
 import {SecureHttpService} from "../../oauth2/service/secure-httpservice";
-import {UnreadMessagesDomain} from "../../../server/src/domain/unreadmessages-domain";
+import {UnreadMessagesDomain} from "../../../server/src/domain/unread-domain";
 
 @Injectable()
 export class UnreadMessagesService extends BaseUrl {

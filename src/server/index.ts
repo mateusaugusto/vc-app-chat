@@ -10,7 +10,7 @@ import {RoomSocket, ControlSocket, UserSocket } from './socket';
 import userRouter = require("./src/routes/user.route");
 import roomRouter = require("./src/routes/room.route");
 import messageRouter = require("./src/routes/message.route");
-import unreadRouter = require("./src/routes/unreadmessage.route");
+import unreadRouter = require("./src/routes/unread.route");
 
 var jwt = require('express-jwt');
 var bodyParser = require('body-parser');
