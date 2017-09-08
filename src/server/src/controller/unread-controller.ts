@@ -2,12 +2,22 @@ import express = require("express");
 var ObjectId = require('mongoose').Types.ObjectId;
 import {IUnreadModel} from "../interface/unread/iunread-model";
 import {UnreadModel} from "../schema/unread-schema";
+import {UnreadMessagesDomain} from "../domain/unread-domain";
+import {UserDomain} from "../domain/user-domain";
 
 export class UnreadController {
 
     public static create(req: express.Request, res: express.Response): void {
-        var unread: IUnreadModel = <IUnreadModel>req.body;
-        UnreadModel.create(unread, (error, result) => {
+        var result =  req.body;
+    /*    var unread = new UnreadMessagesDomain();
+        unread.room = result.room;
+        unread.user = [];
+
+        for(let user of result.user){
+            unread.user.push(user);
+        }*/
+
+        UnreadModel.create(result, (error, result) => {
             if (error) res.send({"error": "error"});
             else res.send(result);
         });

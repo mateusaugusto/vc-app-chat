@@ -10,7 +10,7 @@ import {UnreadMessagesService} from "../../core/service/unreadmessages.service";
 
 @Component({
     selector: 'control',
-    //styleUrls: ['../css/control.scss'],
+    styleUrls: ['../../css/style.scss'],
     templateUrl: '../views/control.component.html'
 })
 export class ControlComponent implements OnInit {
