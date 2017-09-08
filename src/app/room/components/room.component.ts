@@ -16,7 +16,6 @@ import {Http} from "@angular/http";
 import {SecureHttpService} from "../../oauth2/service/secure-httpservice";
 import {UserDomain} from "../../../server/src/domain/user-domain";
 import {UnreadMessagesService} from "../../core/service/unreadmessages.service";
-import {UnreadMessagesDomain} from "../../../server/src/domain/unread-domain";
 
 @Component({
     selector: 'room',
@@ -66,7 +65,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
 
-    searchMessage(){
+    searchMessage() {
         this.messageService.findMessages(this.room._id, this.search).subscribe(message => {
             this.listSearchMessage = message;
         });
@@ -124,9 +123,11 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     createUnreadMessages(): void {
         // Retrieve all user in room
         this.userService.findAllUsersInRoom(this.room, this.user).subscribe(result => {
-            let unread = new UnreadMessagesDomain();
-            unread.user = result.filter(r => r._id != this.user._id );
-            unread.room = this.room;
+            let unread = {
+                    user: result.filter(r => r._id != this.user._id),
+                    room: this.room
+                };
+
             // Create unread Message
             this.unreadMessagesService.create(unread).subscribe(result => {
                 console.log("created unread msg");
@@ -136,14 +137,17 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-    removeUnreadMessage(): void {
-        let params = {
+  cleanUnreadMessage(): void {
+        this.unreadMessagesService.removeUserByRoom(this.buildObjectRoom()).subscribe(result => {
+            this.room.isUnread = false;
+            this.room.countMessage = 0;
+        });
+    }
+
+    buildObjectRoom() {
+        return {
             user: this.user,
             room: this.room
         }
-        // Retrieve all user in room
-        this.unreadMessagesService.removeByUserAndRoom(params).subscribe(result => {
-            console.log("removeu");
-        });
-    }
+    };
 }

@@ -19,16 +19,6 @@
                             <span class="caret pull-right"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu2" >
-                            <li><a href="#"> All Conversation </a>  <ul class="sub_menu_ list-unstyled">
-                                <li><a href="#"> All Conversation </a> </li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                            </li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li><a href="#">Separated link</a></li>
                         </ul>
                     </div>
                     <div class="member_list">
@@ -39,10 +29,10 @@
                       </span>
                                 <div class="chat-body clearfix">
                                     <div class="header_sec" >
-                                        <span class="primary-font">{{room.name}}</span>
+                                        <span class="primary-font" [ngClass]="{'unread-message': room.isUnread}">{{room.name}}</span>
                                     </div>
-                                    <div class="contact_sec" *ngIf="unreadMensagens" >
-                                        <span class="badge pull-right">3</span>
+                                    <div class="contact_sec" *ngIf="room.isUnread" >
+                                        <span class="badge pull-right">{{room.countMessage}}</span>
                                     </div>
                                 </div>
                             </li>
@@ -64,11 +54,11 @@
                      <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
                       </span>
                                 <div class="chat-body clearfix">
-                                    <div class="header_sec">
-                                        <strong class="primary-font">{{user.name}}</strong>
+                                    <div class="header_sec" >
+                                        <span class="primary-font" [ngClass]="{'unread-message': room.isUnread}">{{user.name}}</span>
                                     </div>
-                                    <div class="contact_sec">
-                                        <span class="badge pull-right">3</span>
+                                    <div class="contact_sec" *ngIf="room.isUnread" >
+                                        <span class="badge pull-right">{{room.countMessage}}</span>
                                     </div>
                                 </div>
                             </li>

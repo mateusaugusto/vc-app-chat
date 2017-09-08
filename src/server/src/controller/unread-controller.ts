@@ -54,6 +54,8 @@ export class UnreadController {
         });
     };
 
+
+
     public static removeByRoomAndUser(req: express.Request, res: express.Response): void {
         var room = req.body.room;
         var user = req.body.user;

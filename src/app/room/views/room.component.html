@@ -6,7 +6,6 @@
             </div>
             <div class="pull-right">
                 <div class="dropdown">
-
                     <div id="custom-search-input">
                         <div class="input-group col-md-12">
                             <input type="text" class="  search-query form-control" placeholder="Conversation" [(ngModel)]="search">
@@ -27,6 +26,11 @@
             </div>
         </div>
 
+        <div class="alert alert-purple alert-dismissable" style="margin-top: 12% !important;">
+            <span class="glyphicon glyphicon-certificate"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="cleanUnreadMessage()">×</button>
+            <strong>{{room.countMessage}}</strong> novas mensagens
+        </div>
 
         <div class="chat_area" #scroll>
             <ul class="list-unstyled">

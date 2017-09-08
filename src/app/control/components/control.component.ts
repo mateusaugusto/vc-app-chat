@@ -7,6 +7,7 @@ import {RoomDomain} from "../../../server/src/domain/room-domain";
 import {TokenStoreService} from "../../oauth2/service/tokenstore.service";
 import {SocketService} from "../../core/service/socket.service";
 import {UnreadMessagesService} from "../../core/service/unreadmessages.service";
+import {count} from "rxjs/operator/count";
 
 @Component({
     selector: 'control',
@@ -16,7 +17,6 @@ import {UnreadMessagesService} from "../../core/service/unreadmessages.service";
 export class ControlComponent implements OnInit {
     room: string = '';
     user: UserDomain;
-    unreadMensagens: boolean = false;
 
     private socketService: SocketService;
 
@@ -38,9 +38,7 @@ export class ControlComponent implements OnInit {
         this.userService.findOne(userParams).subscribe(user => {
             this.user = user;
             this.userService.user = user;
-            this.roomService.list = user.room.filter(room => room.isEnabled === true);
-
-            //this.buildMessagesUnread(this.user);
+            this.buildMessagesUnread(this.user);
 
             if (user['token']) {
                 this.tokenStoreService.setToken(user['token']);
@@ -65,10 +63,11 @@ export class ControlComponent implements OnInit {
         this.socketService.getControl().subscribe(message => {
             let userIsConnectedInRoom = this.roomService.isConected(message);
             if (!userIsConnectedInRoom) {
-                this.unreadMensagens = true;
+                this.roomService.list
+                    .filter(room => room._id === message['room']._id ? this.buildRoomUnread(room) : room);
             } else {
                 if (this.user._id != message['user']._id) {
-                    this.unreadMessagesService.removeUserFromList(this.buildObject(message)).subscribe(result => {
+                    this.unreadMessagesService.removeUserFromList(this.buildObjectUnread(message)).subscribe(result => {
                         console.log("created unread msg");
                     });
                 }
@@ -76,13 +75,23 @@ export class ControlComponent implements OnInit {
         });
     }
 
+    buildRoomUnread(room: RoomDomain) : RoomDomain{
+        if(room.countMessage == null){
+            room.countMessage = 0;
+        }
+        room.countMessage++;
+        room.isUnread = true;
+        return room;
+    }
+
     buildMessagesUnread(user: UserDomain): void {
         let roomList = user.room.filter(room => room.isEnabled === true);
         for (const room of roomList) {
             this.unreadMessagesService.countByRoomAndUser(room._id, this.user._id).subscribe(count => {
-                if(count > 0){
+                let countMessages = count['count'];
+                if(countMessages > 0){
                     room.isUnread = true;
-                    room.countMessage = count;
+                    room.countMessage = countMessages;
                 }
                 this.roomService.list.push(room);
             });
@@ -119,12 +128,12 @@ export class ControlComponent implements OnInit {
         return room;
     }
 
-    buildObject(message: any) {
+    buildObjectUnread(message: any) {
         return {
             user: this.user,
             unreadmessages: message
         }
-    }
+    };
 
     // Join room, when Join-button is pressed
     join(room: RoomDomain): void {
@@ -147,4 +156,5 @@ export class ControlComponent implements OnInit {
         this.roomService.remove(this.room);
         this.room = '';
     }
+
 }

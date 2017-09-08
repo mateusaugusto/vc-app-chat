@@ -13,13 +13,18 @@ export class UnreadMessagesService extends BaseUrl {
         super();
     }
 
-    create(unread: UnreadMessagesDomain): Observable<any> {
-        return this.http.put(this.getBaseUrl() + 'unreadmessages', unread, this.secureHttpService.getRequestOptions())
+    create(params: any): Observable<any> {
+        return this.http.put(this.getBaseUrl() + 'unreadmessages', params, this.secureHttpService.getRequestOptions())
             .map((response: Response) => response.json());
     }
 
     removeUserFromList(params: any): Observable<any> {
         return this.http.post(this.getBaseUrl() + 'unreadmessages/', params, this.secureHttpService.getRequestOptions())
+            .map((response: Response) => response.json());
+    }
+
+    removeUserByRoom(params: any): Observable<any> {
+        return this.http.post(this.getBaseUrl() + 'unreadmessages/room', params, this.secureHttpService.getRequestOptions())
             .map((response: Response) => response.json());
     }
 
