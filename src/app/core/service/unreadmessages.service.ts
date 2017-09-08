@@ -28,4 +28,9 @@ export class UnreadMessagesService extends BaseUrl {
             .map((response: Response) => response.json());
     }
 
+    removeByUserAndRoom(params: any): Observable<any> {
+        return this.http.post(this.getBaseUrl() + `unreadmessages/room/`, params, this.secureHttpService.getRequestOptions())
+            .map((response: Response) => response.json());
+    }
+
 }

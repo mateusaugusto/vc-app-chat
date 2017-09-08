@@ -54,5 +54,18 @@ export class UnreadController {
         });
     };
 
+    public static removeByRoomAndUser(req: express.Request, res: express.Response): void {
+        var room = req.body.room;
+        var user = req.body.user;
 
+        UnreadModel.update({room: room._id},
+            {$pull: {user: { $in: [user._id]}}},  { multi: true } , (error, result) => {
+                if (error) res.send({"error": "error"});
+                else if (null === result)
+                    res.status(400).send('not found');
+                else {
+                    res.send(result);
+                }
+            });
+    };
 }

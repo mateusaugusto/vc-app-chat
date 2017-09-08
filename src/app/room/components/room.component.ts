@@ -135,4 +135,15 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
             });
         });
     }
+
+    removeUnreadMessage(): void {
+        let params = {
+            user: this.user,
+            room: this.room
+        }
+        // Retrieve all user in room
+        this.unreadMessagesService.removeByUserAndRoom(params).subscribe(result => {
+            console.log("removeu");
+        });
+    }
 }

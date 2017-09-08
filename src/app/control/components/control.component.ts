@@ -57,8 +57,7 @@ export class ControlComponent implements OnInit {
                 this.userService.findPrivateUsers(user).subscribe(privateUsers => {
                     this.userService.privateList = privateUsers;
                 });
-            }
-            ;
+            };
 
         });
 

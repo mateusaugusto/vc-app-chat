@@ -39,7 +39,7 @@
                      <span class="chat-img1 pull-left">
                     <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
                      </span>
-                                <strong class="primary-font" style="margin-left: 11px;">{{item.user.name}}:</strong>
+                                <strong class="primary-font" (click)="removeUnreadMessage()" style="margin-left: 11px;">{{item.user.name}}:</strong>
                                 <div class="chat-body1 clearfix">
                                     <p>{{item.message}}</p>
                                     <div class="chat_time pull-right">{{item.created | date:'shortTime'}}</div>
