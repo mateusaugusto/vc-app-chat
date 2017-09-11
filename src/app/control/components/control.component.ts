@@ -8,6 +8,7 @@ import {TokenStoreService} from "../../oauth2/service/tokenstore.service";
 import {SocketService} from "../../core/service/socket.service";
 import {UnreadMessagesService} from "../../core/service/unreadmessages.service";
 import {count} from "rxjs/operator/count";
+import {BaseDomain} from "../../../server/src/domain/base-domain";
 
 @Component({
     selector: 'control',
@@ -17,6 +18,7 @@ import {count} from "rxjs/operator/count";
 export class ControlComponent implements OnInit {
     room: string = '';
     user: UserDomain;
+    privateRooms: RoomDomain[];
 
     private socketService: SocketService;
 
@@ -38,7 +40,15 @@ export class ControlComponent implements OnInit {
         this.userService.findOne(userParams).subscribe(user => {
             this.user = user;
             this.userService.user = user;
-            this.buildMessagesUnread(this.user);
+
+            // Pesquisa todas as salas privadas do usuario
+            this.roomService.findAllPrivateRoom(this.user).subscribe(result => {
+                this.privateRooms = result;
+
+            });
+
+            //Constroi lista e numero de mesnagens nao lidas por sala
+            this.buildMessagesUnread();
 
             if (user['token']) {
                 this.tokenStoreService.setToken(user['token']);
@@ -47,10 +57,7 @@ export class ControlComponent implements OnInit {
                 // return false;
             }
 
-            this.userService.findPrivateUsers(user).subscribe(privateUsers => {
-                this.userService.privateList = privateUsers;
-            });
-
+            // recupera os cliente privados que vem no header
             if (user['privateUsers']) {
                 this.userService.findPrivateUsers(user).subscribe(privateUsers => {
                     this.userService.privateList = privateUsers;
@@ -62,34 +69,62 @@ export class ControlComponent implements OnInit {
         // Socket que controla o envio de mensagens não lidas
         this.socketService.getControl().subscribe(message => {
             let userIsConnectedInRoom = this.roomService.isConected(message);
-            if (!userIsConnectedInRoom) {
-                this.roomService.list
-                    .filter(room => room._id === message['room']._id ? this.buildRoomUnread(room) : room);
+
+            if (message['room'].privateRoom) {
+                this.controlListPrivateRoom(userIsConnectedInRoom, message);
             } else {
-                if (this.user._id != message['user']._id) {
-                    this.unreadMessagesService.removeUserFromList(this.buildObjectUnread(message)).subscribe(result => {
-                        console.log("created unread msg");
-                    });
-                }
+                this.controlListRoom(userIsConnectedInRoom, message);
             }
         });
     }
 
-    buildRoomUnread(room: RoomDomain) : RoomDomain{
-        if(room.countMessage == null){
-            room.countMessage = 0;
+    controlListRoom(userIsConnectedInRoom: boolean, message: any): void {
+        if (!userIsConnectedInRoom) {
+            this.roomService.list
+                .filter(room => room._id === message['room']._id ? this.buildUnreadMessage(room) : room);
+        } else {
+            if (this.isUserSentMessage(message['user']._id)) {
+                this.unreadMessagesService.removeUserFromList(this.buildObjectUnread(message)).subscribe(result => {
+                    console.log("created unread msg");
+                });
+            }
         }
-        room.countMessage++;
-        room.isUnread = true;
-        return room;
     }
 
-    buildMessagesUnread(user: UserDomain): void {
-        let roomList = user.room.filter(room => room.isEnabled === true);
+    controlListPrivateRoom(userIsConnectedInRoom: boolean, message: any): void {
+        if (!userIsConnectedInRoom) {
+            if (this.isUserSentMessage(message['user']._id)) {
+                this.userService.privateList
+                    .filter(user => user._id === message['user']._id ? this.buildUnreadMessage(user) : user);
+            }
+        } else {
+            if (this.isUserSentMessage(message['user']._id)) {
+                this.unreadMessagesService.removeUserFromList(this.buildObjectUnread(message)).subscribe(result => {
+                    console.log("created unread msg");
+                });
+            }
+        }
+    }
+
+    isUserSentMessage(idMessageUser: string): boolean{
+        return this.user._id != idMessageUser;
+    }
+
+    buildUnreadMessage(base: BaseDomain): BaseDomain {
+        if (base.countMessage == null) {
+            base.countMessage = 0;
+        }
+        base.countMessage++;
+        base.isUnread = true;
+        return base;
+    }
+
+    buildMessagesUnread(): void {
+        let roomList = this.user.room.filter(room => room.isEnabled === true);
         for (const room of roomList) {
             this.unreadMessagesService.countByRoomAndUser(room._id, this.user._id).subscribe(count => {
                 let countMessages = count['count'];
-                if(countMessages > 0){
+                if (countMessages > 0) {
                     room.isUnread = true;
                     room.countMessage = countMessages;
                 }
@@ -97,6 +132,24 @@ export class ControlComponent implements OnInit {
             });
         }
     }
+
+    buildMessagesUnreadPrivate(): void {
+        let privateRooms = this.privateRooms.filter(room => room.isEnabled === true);
+        for (const room of privateRooms) {
+            this.unreadMessagesService.countByRoomAndUser(room._id, this.user._id).subscribe(count => {
+                let countMessages = count['count'];
+                if (countMessages > 0) {
+                    room.isUnread = true;
+                    room.countMessage = countMessages;
+                }
+                this.roomService.list.push(room);
+            });
+
+        }
+    }
+
+
+
 
     joinPrivateRoom(userRoom): void {
         this.roomService.findPrivateRoom(userRoom._id, this.user).subscribe(privateRoom => {
@@ -128,10 +181,10 @@ export class ControlComponent implements OnInit {
         return room;
     }
 
-    buildObjectUnread(message: any) {
+    buildObjectUnread(params: any) {
         return {
             user: this.user,
-            unreadmessages: message
+            unreadmessages: params
         }
     };
 

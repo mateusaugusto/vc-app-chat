@@ -13,6 +13,11 @@ roomRouter.get(uri + '/domainId/:domainId/accountId/:accountId/userRoom/:userRoo
     RoomController.findPrivateRoom(req, res);
 });
 
+roomRouter.get(uri + '/domainId/:domainId/accountId/:accountId/userId/:userId/all/private', (req: Request, res: Response) => {
+    console.log("find all ###########");
+    RoomController.findAllPrivateRoom(req, res);
+});
+
 roomRouter.put(uri, (req, res) => {
     console.log("criando sala");
     RoomController.create(req, res);

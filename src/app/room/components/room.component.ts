@@ -121,23 +121,37 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     createUnreadMessages(): void {
-        // Retrieve all user in room
-        this.userService.findAllUsersInRoom(this.room, this.user).subscribe(result => {
+       //Privare rooms has one user
+        if (this.room.privateRoom) {
             let unread = {
+                user: this.user,
+                room: this.room
+            };
+            this.saveUnreadMessages(unread);
+        } else {
+            // Retrieve all user in room
+            this.userService.findAllUsersInRoom(this.room, this.user).subscribe(result => {
+                let unread = {
                     user: result.filter(r => r._id != this.user._id),
                     room: this.room
                 };
-
-            // Create unread Message
-            this.unreadMessagesService.create(unread).subscribe(result => {
-                console.log("created unread msg");
-                //Send socket
-                this.messageService.sendControl(result);
+                // Create unread Message
+                this.saveUnreadMessages(unread);
             });
-        });
+        }
     }
 
-  cleanUnreadMessage(): void {
+    saveUnreadMessages(unread: any): void {
+        // Create unread Message
+        this.unreadMessagesService.create(unread).subscribe(result => {
+            console.log("created unread msg");
+            //Send socket
+            this.messageService.sendControl(result);
+        });
+
+    };
+
+    cleanUnreadMessage(): void {
         this.unreadMessagesService.removeUserByRoom(this.buildObjectRoom()).subscribe(result => {
             this.room.isUnread = false;
             this.room.countMessage = 0;

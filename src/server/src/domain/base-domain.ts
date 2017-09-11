@@ -5,4 +5,6 @@ export class BaseDomain {
     accountId: number;
     isEnabled: boolean;
     _id: String;
+    isUnread: boolean = false;
+    countMessage: number = 0;
 }

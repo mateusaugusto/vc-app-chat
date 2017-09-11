@@ -8,7 +8,7 @@ export class RoomController {
         var name = req.params.name;
         RoomModel.find({name}, (error, result) => {
             if (error) res.send({"error": "error"});
-            else if(null === result )
+            else if (null === result)
                 res.status(400).send('room not found');
             else {
                 res.send(result);
@@ -38,14 +38,35 @@ export class RoomController {
             $or: [
                 {usersRoom: [userRom, user]},
                 {usersRoom: [user, userRom]}
-            ]}, (error, result) => {
+            ]
+        }, (error, result) => {
             if (error) res.send({"error": "error"});
-            else if(null === result )
+            else if (null === result)
                 res.status(400).send('private room not found');
             else {
                 res.send(result);
             }
         }).where({isEnabled: true});
+    };
+
+    public static findAllPrivateRoom(req: express.Request, res: express.Response): void {
+        var userId = req.params.userId;
+        let domainId = req.params.domainId;
+        let accountId = req.params.accountId;
+
+        console.log(userId);
+
+        RoomModel.find({
+                domainId: domainId, accountId: accountId, privateRoom: true,
+                usersRoom: {$in: [userId]}
+            },(error, result) => {
+                if (error) res.send({"error": "error"});
+                else if (null === result)
+                    res.status(400).send('private room not found');
+                else {
+                    res.send(result);
+                }
+            }).where({isEnabled: true});
     };
 
 
@@ -57,7 +78,7 @@ export class RoomController {
         RoomModel.findOneAndUpdate({_id: room._id},
             {$pushAll: {usersRoom: [userRom, user]}}, (error, result) => {
                 if (error) res.send({"error": "error"});
-                else if(null === result )
+                else if (null === result)
                     res.status(400).send('not found');
                 else {
                     res.send(result);
@@ -69,7 +90,7 @@ export class RoomController {
         var room: IRoom = <IRoom>req.body;
         RoomModel.findOneAndUpdate({_id: room._id}, req.body, (error, result) => {
             if (error) res.send({"error": "error"});
-            else if(null === result )
+            else if (null === result)
                 res.status(400).send('not found');
             else res.send(result);
         });

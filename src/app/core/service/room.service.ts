@@ -53,6 +53,11 @@ export class RoomService extends BaseUrl {
             .map((response: Response) => response.json())
     }
 
+    // Get all posts from the API
+    findAllPrivateRoom(user: UserDomain): Observable<RoomDomain[]> {
+        return this.http.get(this.getBaseUrl() + `room/domainId/${user.domainId}/accountId/${user.accountId}/userId/${user['_id']}/all/private`, this.secureHttpService.getRequestOptions())
+            .map((response: Response) => response.json());
+    }
 
     // Join room
     join(room: RoomDomain): void {

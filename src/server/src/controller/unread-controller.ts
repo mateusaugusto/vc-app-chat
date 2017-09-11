@@ -9,14 +9,6 @@ export class UnreadController {
 
     public static create(req: express.Request, res: express.Response): void {
         var result =  req.body;
-    /*    var unread = new UnreadMessagesDomain();
-        unread.room = result.room;
-        unread.user = [];
-
-        for(let user of result.user){
-            unread.user.push(user);
-        }*/
-
         UnreadModel.create(result, (error, result) => {
             if (error) res.send({"error": "error"});
             else res.send(result);
@@ -41,9 +33,6 @@ export class UnreadController {
     public static contByRoomAdnUser(req: express.Request, res: express.Response): void {
         let userId = new ObjectId(req.params.userId);
         let roomId = new ObjectId(req.params.roomId);
-
-        console.log("userId" + userId);
-        console.log("roomId" + roomId);
 
         UnreadModel.count({room: roomId, user: { $in: [userId] }}, (error, result) => {
             if (error) res.send({"error": "error"});

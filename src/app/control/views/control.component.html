@@ -55,10 +55,10 @@
                       </span>
                                 <div class="chat-body clearfix">
                                     <div class="header_sec" >
-                                        <span class="primary-font" [ngClass]="{'unread-message': room.isUnread}">{{user.name}}</span>
+                                        <span class="primary-font" [ngClass]="{'unread-message': user.isUnread}">{{user.name}}</span>
                                     </div>
-                                    <div class="contact_sec" *ngIf="room.isUnread" >
-                                        <span class="badge pull-right">{{room.countMessage}}</span>
+                                    <div class="contact_sec" *ngIf="user.isUnread" >
+                                        <span class="badge pull-right">{{user.countMessage}}</span>
                                     </div>
                                 </div>
                             </li>
