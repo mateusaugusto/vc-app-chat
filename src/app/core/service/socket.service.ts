@@ -12,7 +12,7 @@ export class SocketService {
     }
 
     isConected(params: any): boolean {
-        let connections = this.socket.io.connecting.filter(room => room.nsp.split("/messages/",2)[1] === params.room.name );
+        let connections = this.socket.io.connecting.filter(room => room.nsp.split("/messages/", 2)[1] === params.room.name );
         if (connections.length > 0) {
             return true;
         } else {

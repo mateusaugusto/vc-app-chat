@@ -121,24 +121,23 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     createUnreadMessages(): void {
-       //Privare rooms has one user
+        //Privare rooms has one user do not need to retrieve it
         if (this.room.privateRoom) {
-            let unread = {
-                user: this.user,
-                room: this.room
-            };
-            this.saveUnreadMessages(unread);
+            this.saveUnreadMessages(this.buildUnreadObject(this.room.usersRoom));
         } else {
             // Retrieve all user in room
             this.userService.findAllUsersInRoom(this.room, this.user).subscribe(result => {
-                let unread = {
-                    user: result.filter(r => r._id != this.user._id),
-                    room: this.room
-                };
                 // Create unread Message
-                this.saveUnreadMessages(unread);
+                this.saveUnreadMessages(this.buildUnreadObject(result));
             });
         }
+    }
+
+    buildUnreadObject(list: any): any {
+        return {
+            user: list.filter(r => (r._id ? r._id : r) != this.user._id),
+            room: this.room
+        };
     }
 
     saveUnreadMessages(unread: any): void {
@@ -155,7 +154,19 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
         this.unreadMessagesService.removeUserByRoom(this.buildObjectRoom()).subscribe(result => {
             this.room.isUnread = false;
             this.room.countMessage = 0;
+
+            if(this.room.privateRoom){
+                this.cleanPrivateRoomList();
+            }
+
         });
+    }
+
+    cleanPrivateRoomList(): void {
+        let userInRoom = this.room.usersRoom.filter(u => u != this.user._id);
+        let userPrivate = this.userService.privateList.filter(user => user._id === userInRoom[0])[0];
+        userPrivate.isUnread = false;
+        userPrivate.countMessage = 0;
     }
 
     buildObjectRoom() {

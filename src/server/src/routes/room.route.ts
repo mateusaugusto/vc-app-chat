@@ -19,7 +19,6 @@ roomRouter.get(uri + '/domainId/:domainId/accountId/:accountId/userId/:userId/al
 });
 
 roomRouter.put(uri, (req, res) => {
-    console.log("criando sala");
     RoomController.create(req, res);
 });
 

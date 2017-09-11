@@ -41,12 +41,6 @@ export class ControlComponent implements OnInit {
             this.user = user;
             this.userService.user = user;
 
-            // Pesquisa todas as salas privadas do usuario
-            this.roomService.findAllPrivateRoom(this.user).subscribe(result => {
-                this.privateRooms = result;
-
-            });
-
             //Constroi lista e numero de mesnagens nao lidas por sala
             this.buildMessagesUnread();
 
@@ -60,18 +54,27 @@ export class ControlComponent implements OnInit {
             // recupera os cliente privados que vem no header
             if (user['privateUsers']) {
                 this.userService.findPrivateUsers(user).subscribe(privateUsers => {
-                    this.userService.privateList = privateUsers;
+                    // Pesquisa todas as salas privadas do usuario
+                    this.roomService.findAllPrivateRoom(this.user).subscribe(result => {
+                        this.privateRooms = result;
+                        this.userService.privateList = privateUsers;
+                        this.buildMessagesUnreadPrivate();
+                    });
+
                 });
-            };
+            }
+            ;
 
         });
 
         // Socket que controla o envio de mensagens não lidas
         this.socketService.getControl().subscribe(message => {
             let userIsConnectedInRoom = this.roomService.isConected(message);
-
             if (message['room'].privateRoom) {
-                this.controlListPrivateRoom(userIsConnectedInRoom, message);
+                // Verifica se a sala que recebe a mesnagem foi a mesmo que o user enviou
+                if (message['room'].usersRoom.filter(user => user === this.user._id).length > 0) {
+                    this.controlListPrivateRoom(userIsConnectedInRoom, message);
+                }
             } else {
                 this.controlListRoom(userIsConnectedInRoom, message);
             }
@@ -106,7 +109,7 @@ export class ControlComponent implements OnInit {
         }
     }
 
-    isUserSentMessage(idMessageUser: string): boolean{
+    isUserSentMessage(idMessageUser: string): boolean {
         return this.user._id != idMessageUser;
     }
 
@@ -135,28 +138,27 @@ export class ControlComponent implements OnInit {
 
     buildMessagesUnreadPrivate(): void {
         let privateRooms = this.privateRooms.filter(room => room.isEnabled === true);
+
         for (const room of privateRooms) {
             this.unreadMessagesService.countByRoomAndUser(room._id, this.user._id).subscribe(count => {
+
+                let userInRoom = room.usersRoom.filter(u => u != this.user._id);
+
+                let userPrivate = this.userService.privateList.filter(user => user._id === userInRoom[0])[0];
                 let countMessages = count['count'];
                 if (countMessages > 0) {
-                    room.isUnread = true;
-                    room.countMessage = countMessages;
+                    userPrivate.isUnread = true;
+                    userPrivate.countMessage = countMessages;
                 }
-                this.roomService.list.push(room);
             });
-
         }
     }
-
-
 
 
     joinPrivateRoom(userRoom): void {
         this.roomService.findPrivateRoom(userRoom._id, this.user).subscribe(privateRoom => {
             if (Object.keys(privateRoom).length != 0) {
-                // Seta o nome do user para a sala
-                privateRoom[0].nickName = userRoom.name;
-                this.join(privateRoom[0]);
+                this.join(this.setFieldsPrivateRoom(privateRoom[0], userRoom));
             } else {
                 let room = this.buildRoom(userRoom, this.user.name);
                 this.roomService.create(room).subscribe(newRoom => {
@@ -172,10 +174,20 @@ export class ControlComponent implements OnInit {
         });
     }
 
+    setFieldsPrivateRoom(privateRoom: RoomDomain, userRoom: any): RoomDomain {
+        // Seta o nome do user para a sala
+        privateRoom.nickName = userRoom.name;
+        if (userRoom.isUnread) {
+            privateRoom.isUnread = true;
+            privateRoom.countMessage = userRoom.countMessage;
+        }
+        return privateRoom;
+    };
+
     buildRoom(user: UserDomain, userPrivateName: String): RoomDomain {
         let room = new RoomDomain();
         room.privateRoom = true;
-        room.name = `${user.name}:${userPrivateName}`;
+        room.name = `${user.name}_${userPrivateName}`;
         room.accountId = user.accountId;
         room.domainId = user.domainId;
         return room;
@@ -200,8 +212,6 @@ export class ControlComponent implements OnInit {
 
         this.roomService.join(room);
         this.room = '';
-
-        //this.socketService.set();
     }
 
     // Remove room, when Remove-button is pressed and unset selected room

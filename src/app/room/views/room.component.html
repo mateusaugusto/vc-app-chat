@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <div class="alert alert-purple alert-dismissable" style="margin-top: 12% !important;">
+        <div class="alert alert-purple alert-dismissable" style="margin-top: 12% !important;" *ngIf="room.isUnread">
             <span class="glyphicon glyphicon-certificate"></span>
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="cleanUnreadMessage()">×</button>
             <strong>{{room.countMessage}}</strong> novas mensagens

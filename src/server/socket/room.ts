@@ -13,7 +13,6 @@ export class RoomSocket {
 
   constructor(private io: any) {
     this.nsp = this.io.of('/room');
-
     this.nsp.on('connection', (socket: any) => {
       console.log("conectado a sala");
       this.socket = socket;

@@ -28,7 +28,7 @@ export class RoomService extends BaseUrl {
 
     isConected(params: any): boolean{
         return this.socketService.isConected(params);
-    };
+    }
 
 
     addRoomToSocket(room: RoomDomain): Observable<any> {
