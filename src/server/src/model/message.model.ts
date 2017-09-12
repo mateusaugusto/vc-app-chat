@@ -39,7 +39,6 @@ export class Message {
 
     public static findOne(message: IMessage): Observable<Message> {
         return new Observable(observer => {
-            console.log("finding:" + message);
             MessageModel.findOne(message, (error, message) => {
                 if (!error && message) {
                     observer.next(new Message(message));

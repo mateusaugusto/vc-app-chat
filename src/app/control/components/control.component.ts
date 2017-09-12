@@ -29,6 +29,8 @@ export class ControlComponent implements OnInit {
                 private _notificationsService: NotificationsService,
                 private unreadMessagesService: UnreadMessagesService,
                 private tokenStoreService: TokenStoreService) {
+
+        this.authorizeNotification();
     }
 
     ngOnInit() {
@@ -65,8 +67,6 @@ export class ControlComponent implements OnInit {
 
                 });
             }
-            ;
-
         });
 
         // Socket que controla o envio de mensagens não lidas
@@ -87,7 +87,7 @@ export class ControlComponent implements OnInit {
     controlListRoom(userIsConnectedInRoom: boolean, message: any): void {
         if (!userIsConnectedInRoom) {
             this.roomService.list.filter(room => room._id === message['room']._id ? this.buildUnreadMessage(room) : room);
-            this.showNotificationMessage(message);
+            this.showNotification(message);
         } else {
             if (this.isUserSentMessage(message['user']._id)) {
                 this.unreadMessagesService.removeUserFromList(this.buildObjectUnread(message)).subscribe(result => {
@@ -101,7 +101,7 @@ export class ControlComponent implements OnInit {
         if (!userIsConnectedInRoom) {
             if (this.isUserSentMessage(message['user']._id)) {
                 this.userService.privateList.filter(user => user._id === message['user']._id ? this.buildUnreadMessage(user) : user);
-                this.showNotificationMessage(message);
+                this.showNotification(message);
             }
         } else {
             if (this.isUserSentMessage(message['user']._id)) {
@@ -127,10 +127,29 @@ export class ControlComponent implements OnInit {
         )
     }
 
-    buildTextNotification(param: any): string{
-        if(param.room.privateRoom){
+    showNotification(param: any) {
+        var options = {
+            body: this.buildTextNotification(param),
+            tag : param.room.name,
+            //icon: theIcon
+            //image: "http://www.themearmada.com/img/user-icon.png"
+        }
+
+        var notification = new Notification("Nova Mensagem", options);
+
+        notification.onclick = function () {
+            window.focus();
+        };
+
+        setTimeout(function() {
+            notification.close()
+        }, 4000);
+    }
+
+    buildTextNotification(param: any): string {
+        if (param.room.privateRoom) {
             return `${param.user.name} enviou uma mensagem`;
-        }else{
+        } else {
             return `${param.user.name} enviou uma nova mensagem na sala ${param.room.name}`;
         }
     }
@@ -245,5 +264,13 @@ export class ControlComponent implements OnInit {
         this.roomService.remove(this.room);
         this.room = '';
     }
+
+
+    authorizeNotification() {
+        Notification.requestPermission(function (perm) {
+        });
+    }
+
+
 
 }

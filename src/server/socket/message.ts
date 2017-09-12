@@ -6,13 +6,13 @@ export class MessageSocket {
     socket: any;
 
     constructor(io: any, public room: Room) {
-        console.log("tentando connectar no socker message");
         this.nsp = io.of("/messages/" + encodeURIComponent(this.room.name));
         this.nsp.on("connection", (socket: any) => {
             //disconecta antes de entrar no socket
-            this.nsp.on('disconnect', function(){ })
+            this.nsp.on('disconnect', function(){ });
             console.log("Client connected to room:", this.room.name);
             this.socket = socket;
+
             this.listen();
         });
     }
@@ -45,7 +45,7 @@ export class MessageSocket {
     private list(): void {
         console.log("listando socker message" );
         this.room.messages()
-            .map(messages => messages.reverse())
+            .map(messages => messages.reverse());
             .subscribe(messages => messages.map(message => this.socket.emit(message)));
     }
 }

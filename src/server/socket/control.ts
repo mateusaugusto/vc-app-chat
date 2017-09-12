@@ -25,7 +25,7 @@ export class ControlSocket {
   sent(params: IMessage): void{
 
     this.socket.adapter.clients((err, clients) => {
-      console.log("aqui" + clients); // an array containing all connected socket ids
+     // console.log("aqui" + clients); // an array containing all connected socket ids
     });
 
     this.nsp.emit('control', params);
