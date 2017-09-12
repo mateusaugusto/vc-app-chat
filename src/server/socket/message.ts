@@ -45,7 +45,7 @@ export class MessageSocket {
     private list(): void {
         console.log("listando socker message" );
         this.room.messages()
-            .map(messages => messages.reverse());
+            .map(messages => messages.reverse())
             .subscribe(messages => messages.map(message => this.socket.emit(message)));
     }
 }
