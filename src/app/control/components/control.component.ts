@@ -9,6 +9,7 @@ import {SocketService} from "../../core/service/socket.service";
 import {UnreadMessagesService} from "../../core/service/unreadmessages.service";
 import {count} from "rxjs/operator/count";
 import {BaseDomain} from "../../../server/src/domain/base-domain";
+import {NotificationsService} from "angular2-notifications/dist";
 
 @Component({
     selector: 'control',
@@ -25,6 +26,7 @@ export class ControlComponent implements OnInit {
     constructor(private roomService: RoomService,
                 private route: ActivatedRoute,
                 private userService: UserService,
+                private _notificationsService: NotificationsService,
                 private unreadMessagesService: UnreadMessagesService,
                 private tokenStoreService: TokenStoreService) {
     }
@@ -81,10 +83,11 @@ export class ControlComponent implements OnInit {
         });
     }
 
+
     controlListRoom(userIsConnectedInRoom: boolean, message: any): void {
         if (!userIsConnectedInRoom) {
-            this.roomService.list
-                .filter(room => room._id === message['room']._id ? this.buildUnreadMessage(room) : room);
+            this.roomService.list.filter(room => room._id === message['room']._id ? this.buildUnreadMessage(room) : room);
+            this.showNotificationMessage(message);
         } else {
             if (this.isUserSentMessage(message['user']._id)) {
                 this.unreadMessagesService.removeUserFromList(this.buildObjectUnread(message)).subscribe(result => {
@@ -97,8 +100,8 @@ export class ControlComponent implements OnInit {
     controlListPrivateRoom(userIsConnectedInRoom: boolean, message: any): void {
         if (!userIsConnectedInRoom) {
             if (this.isUserSentMessage(message['user']._id)) {
-                this.userService.privateList
-                    .filter(user => user._id === message['user']._id ? this.buildUnreadMessage(user) : user);
+                this.userService.privateList.filter(user => user._id === message['user']._id ? this.buildUnreadMessage(user) : user);
+                this.showNotificationMessage(message);
             }
         } else {
             if (this.isUserSentMessage(message['user']._id)) {
@@ -106,6 +109,29 @@ export class ControlComponent implements OnInit {
                     console.log("created unread msg");
                 });
             }
+        }
+    }
+
+    showNotificationMessage(param: any): void {
+        this._notificationsService.success(
+            'Nova menssagem:',
+            this.buildTextNotification(param),
+            {
+                position: ["bottom", "right"],
+                animate: "fromRight",
+                timeOut: 5000,
+                showProgressBar: true,
+                preventDuplicates: true,
+                preventLastDuplicates: true
+            }
+        )
+    }
+
+    buildTextNotification(param: any): string{
+        if(param.room.privateRoom){
+            return `${param.user.name} enviou uma mensagem`;
+        }else{
+            return `${param.user.name} enviou uma nova mensagem na sala ${param.room.name}`;
         }
     }
 

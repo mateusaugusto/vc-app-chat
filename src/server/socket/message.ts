@@ -8,9 +8,9 @@ export class MessageSocket {
     constructor(io: any, public room: Room) {
         console.log("tentando connectar no socker message");
         this.nsp = io.of("/messages/" + encodeURIComponent(this.room.name));
-        //disconecta antes de entrar no socket
-        this.nsp.on('disconnect', function(){ });
         this.nsp.on("connection", (socket: any) => {
+            //disconecta antes de entrar no socket
+            this.nsp.on('disconnect', function(){ })
             console.log("Client connected to room:", this.room.name);
             this.socket = socket;
             this.listen();

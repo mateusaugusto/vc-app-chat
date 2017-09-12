@@ -113,13 +113,6 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    // Handle keypress event, for sending chat message
-    eventHandler(event: KeyboardEvent): void {
-        if (event.key === 'Enter') {
-            this.send();
-        }
-    }
-
     createUnreadMessages(): void {
         //Privare rooms has one user do not need to retrieve it
         if (this.room.privateRoom) {
