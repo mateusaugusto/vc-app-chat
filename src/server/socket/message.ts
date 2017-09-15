@@ -7,12 +7,11 @@ export class MessageSocket {
 
     constructor(io: any, public room: Room) {
         this.nsp = io.of("/messages/" + encodeURIComponent(this.room.name));
+         //delete io.nsps['/messages/Demanda'];
+        this.nsp.removeAllListeners();
         this.nsp.on("connection", (socket: any) => {
-            //disconecta antes de entrar no socket
-            this.nsp.on('disconnect', function(){ });
             console.log("Client connected to room:", this.room.name);
             this.socket = socket;
-
             this.listen();
         });
     }

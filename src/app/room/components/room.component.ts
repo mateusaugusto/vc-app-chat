@@ -29,6 +29,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() room: IRoom;
 
     message: string = '';
+    unreadMessage: string = '';
     search: string = '';
     user: UserDomain;
     messages: IMessage[];
@@ -91,6 +92,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     // Send chat message, and reset message text input
     send(): void {
         if (this.message !== '') {
+            this.unreadMessage = this.message;
             this.messageService.send(this.message);
             this.createUnreadMessages();
             this.message = '';
@@ -129,7 +131,8 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     buildUnreadObject(list: any): any {
         return {
             user: list.filter(r => (r._id ? r._id : r) != this.user._id),
-            room: this.room
+            room: this.room,
+            message: this.unreadMessage
         };
     }
 

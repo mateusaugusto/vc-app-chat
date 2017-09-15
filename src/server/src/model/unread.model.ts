@@ -7,12 +7,14 @@ import {RoomDomain} from "../domain/room-domain";
 export class Unread {
     user: UserDomain[];
     room: RoomDomain;
+    message: String;
     _id: string;
 
     constructor(unread: IUnreadModel) {
         this._id = unread._id;
         this.user = unread.user;
         this.room = unread.room;
+        this.message = unread.message;
     }
 
     public static list(room: string): Observable<IUnreadModel[]> {

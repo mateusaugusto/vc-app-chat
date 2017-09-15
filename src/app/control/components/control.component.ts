@@ -9,7 +9,6 @@ import {SocketService} from "../../core/service/socket.service";
 import {UnreadMessagesService} from "../../core/service/unreadmessages.service";
 import {count} from "rxjs/operator/count";
 import {BaseDomain} from "../../../server/src/domain/base-domain";
-import {NotificationsService} from "angular2-notifications/dist";
 
 @Component({
     selector: 'control',
@@ -17,7 +16,7 @@ import {NotificationsService} from "angular2-notifications/dist";
     templateUrl: '../views/control.component.html'
 })
 export class ControlComponent implements OnInit {
-    room: string = '';
+    room: RoomDomain;
     user: UserDomain;
     privateRooms: RoomDomain[];
 
@@ -26,7 +25,6 @@ export class ControlComponent implements OnInit {
     constructor(private roomService: RoomService,
                 private route: ActivatedRoute,
                 private userService: UserService,
-                private _notificationsService: NotificationsService,
                 private unreadMessagesService: UnreadMessagesService,
                 private tokenStoreService: TokenStoreService) {
 
@@ -71,21 +69,18 @@ export class ControlComponent implements OnInit {
 
         // Socket que controla o envio de mensagens não lidas
         this.socketService.getControl().subscribe(message => {
-            let userIsConnectedInRoom = this.roomService.isConected(message);
             if (message['room'].privateRoom) {
-                // Verifica se a sala que recebe a mesnagem foi a mesmo que o user enviou
-                if (message['room'].usersRoom.filter(user => user === this.user._id).length > 0) {
-                    this.controlListPrivateRoom(userIsConnectedInRoom, message);
+                if (this.amIinRoom(message)) {
+                    this.controlListPrivateRoom(message);
                 }
             } else {
-                this.controlListRoom(userIsConnectedInRoom, message);
+                this.controlListRoom(message);
             }
         });
     }
 
-
-    controlListRoom(userIsConnectedInRoom: boolean, message: any): void {
-        if (!userIsConnectedInRoom) {
+    controlListRoom(message: any): void {
+        if (!this.userIsConnectedInRoom(message)) {
             this.roomService.list.filter(room => room._id === message['room']._id ? this.buildUnreadMessage(room) : room);
             this.showNotification(message);
         } else {
@@ -97,8 +92,8 @@ export class ControlComponent implements OnInit {
         }
     }
 
-    controlListPrivateRoom(userIsConnectedInRoom: boolean, message: any): void {
-        if (!userIsConnectedInRoom) {
+    controlListPrivateRoom(message: any): void {
+        if (!this.userIsConnectedInRoom(message)) {
             if (this.isUserSentMessage(message['user']._id)) {
                 this.userService.privateList.filter(user => user._id === message['user']._id ? this.buildUnreadMessage(user) : user);
                 this.showNotification(message);
@@ -112,30 +107,24 @@ export class ControlComponent implements OnInit {
         }
     }
 
-    showNotificationMessage(param: any): void {
-        this._notificationsService.success(
-            'Nova menssagem:',
-            this.buildTextNotification(param),
-            {
-                position: ["bottom", "right"],
-                animate: "fromRight",
-                timeOut: 5000,
-                showProgressBar: true,
-                preventDuplicates: true,
-                preventLastDuplicates: true
-            }
-        )
+    userIsConnectedInRoom(message: any): boolean {
+        return this.roomService.isConected(message) || (null != this.room ? this.room._id == message['room']._id: false);
+    }
+
+    //User is connected in Room
+    amIinRoom(message: any): boolean{
+        return  message['room'].usersRoom.filter(user => user === this.user._id).length > 0;
     }
 
     showNotification(param: any) {
         var options = {
-            body: this.buildTextNotification(param),
+            body: this.buildTextNotification(param).substring(0, 50).concat("..."),
             tag : param.room.name,
-            //icon: theIcon
-            //image: "http://www.themearmada.com/img/user-icon.png"
+            icon: "https://cdn4.iconfinder.com/data/icons/user-avatar-flat-icons/512/User_Avatar-31-64.png",
+            //image: ""
         }
 
-        var notification = new Notification("Nova Mensagem", options);
+        var notification = new Notification(`Nova mensagem de ${param.user.name}`, options);
 
         notification.onclick = function () {
             window.focus();
@@ -148,9 +137,9 @@ export class ControlComponent implements OnInit {
 
     buildTextNotification(param: any): string {
         if (param.room.privateRoom) {
-            return `${param.user.name} enviou uma mensagem`;
+            return `${param.user.name} diz: ${param.unread.message}`;
         } else {
-            return `${param.user.name} enviou uma nova mensagem na sala ${param.room.name}`;
+            return `Sala ${param.room.name} : ${param.unread.message}`;
         }
     }
 
@@ -256,15 +245,8 @@ export class ControlComponent implements OnInit {
         });
 
         this.roomService.join(room);
-        this.room = '';
+        this.room = room;
     }
-
-    // Remove room, when Remove-button is pressed and unset selected room
-    remove(): void {
-        this.roomService.remove(this.room);
-        this.room = '';
-    }
-
 
     authorizeNotification() {
         Notification.requestPermission(function (perm) {

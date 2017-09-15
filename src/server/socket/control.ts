@@ -7,6 +7,7 @@ export class ControlSocket {
 
   constructor(private io: any) {
     this.nsp = this.io.of('/control');
+    //this.nsp.removeAllListeners();
     this.nsp.on('connection', (socket: any) => {
       console.log("Entrou na applicacao connectou no socket");
       this.socket = socket;
