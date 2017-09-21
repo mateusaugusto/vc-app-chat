@@ -19,6 +19,7 @@ export class ControlComponent implements OnInit {
     room: RoomDomain;
     user: UserDomain;
     privateRooms: RoomDomain[];
+    roomId: string;
 
     private socketService: SocketService;
 
@@ -34,10 +35,12 @@ export class ControlComponent implements OnInit {
     ngOnInit() {
         this.socketService = new SocketService('control');
         let userParams: UserDomain = new UserDomain();
+        this.roomId = this.route.snapshot.params['roomId'];
 
         userParams.accountId = +this.route.snapshot.params['accountId'];
         userParams.domainId = +this.route.snapshot.params['domainId'];
         userParams.clientId = +this.route.snapshot.params['clientId'];
+
 
         this.userService.findOne(userParams).subscribe(user => {
             this.user = user;
@@ -80,7 +83,7 @@ export class ControlComponent implements OnInit {
     }
 
     controlListRoom(message: any): void {
-        if (!this.userIsConnectedInRoom(message)) {
+        if (!this.userIsConnectedInRoom(message) && this.userHasRoomMessage(message)) {
             this.roomService.list.filter(room => room._id === message['room']._id ? this.buildUnreadMessage(room) : room);
             this.showNotification(message);
         } else {
@@ -93,7 +96,7 @@ export class ControlComponent implements OnInit {
     }
 
     controlListPrivateRoom(message: any): void {
-        if (!this.userIsConnectedInRoom(message)) {
+        if (!this.userIsConnectedInRoom(message) && !this.userHasRoomMessage(message)) {
             if (this.isUserSentMessage(message['user']._id)) {
                 this.userService.privateList.filter(user => user._id === message['user']._id ? this.buildUnreadMessage(user) : user);
                 this.showNotification(message);
@@ -110,6 +113,11 @@ export class ControlComponent implements OnInit {
     userIsConnectedInRoom(message: any): boolean {
         return this.roomService.isConected(message) || (null != this.room ? this.room._id == message['room']._id: false);
     }
+
+    userHasRoomMessage(message: any): boolean {
+        return this.roomService.list.filter(room => room._id == message['room']._id).length > 0;
+    }
+
 
     //User is connected in Room
     amIinRoom(message: any): boolean{
@@ -157,17 +165,28 @@ export class ControlComponent implements OnInit {
     }
 
     buildMessagesUnread(): void {
+        // Se a rota vier com id da sala, filtra por sala
+        if(this.roomId){
+            this.join(this.user.room.filter(room => room._id == this.roomId)[0]);
+            return;
+        }
+
         let roomList = this.user.room.filter(room => room.isEnabled === true);
         for (const room of roomList) {
+            //Conta o numero de msg nao lidas por sala
             this.unreadMessagesService.countByRoomAndUser(room._id, this.user._id).subscribe(count => {
                 let countMessages = count['count'];
                 if (countMessages > 0) {
                     room.isUnread = true;
                     room.countMessage = countMessages;
                 }
+                // Inseri na lista de salas
                 this.roomService.list.push(room);
             });
         }
+
+
+
     }
 
     buildMessagesUnreadPrivate(): void {
@@ -177,10 +196,9 @@ export class ControlComponent implements OnInit {
             this.unreadMessagesService.countByRoomAndUser(room._id, this.user._id).subscribe(count => {
 
                 let userInRoom = room.usersRoom.filter(u => u != this.user._id);
-
                 let userPrivate = this.userService.privateList.filter(user => user._id === userInRoom[0])[0];
                 let countMessages = count['count'];
-                if (countMessages > 0) {
+                if (countMessages > 0 && userPrivate) {
                     userPrivate.isUnread = true;
                     userPrivate.countMessage = countMessages;
                 }

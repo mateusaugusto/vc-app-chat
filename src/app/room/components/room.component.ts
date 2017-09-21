@@ -44,12 +44,12 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
                 private unreadMessagesService: UnreadMessagesService,
                 private secureHttpService: SecureHttpService,
                 private cdr: ChangeDetectorRef) {
+
     }
 
     ngOnInit(): void {
 
         this.user = this.userService.user;
-
         this.messageService = new MessageService(this.userService, this.room, this.http, this.secureHttpService);
 
         this.messageService.findOne(this.room._id).subscribe(message => {

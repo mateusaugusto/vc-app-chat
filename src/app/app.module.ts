@@ -19,10 +19,8 @@ import {OAuth2Module} from "./oauth2/oauth2.module";
         HttpModule,
         OAuth2Module,
         RouterModule.forRoot([
-            {
-                path: 'user/domainId/:domainId/accountId/:accountId/clientId/:clientId',
-                component: ControlComponent
-            }
+            {path: 'user/domainId/:domainId/accountId/:accountId/clientId/:clientId', component: ControlComponent},
+            {path: 'user/domainId/:domainId/accountId/:accountId/clientId/:clientId/roomId/:roomId', component: ControlComponent}
         ]),
     ],
     declarations: [
