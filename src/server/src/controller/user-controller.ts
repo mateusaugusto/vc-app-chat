@@ -13,8 +13,11 @@ export class UserController {
     };
 
     public static insertUserToRoom(req: express.Request, res: express.Response): void {
-        var user: IUser = <IUser>req.body;
-        UserModel.findOneAndUpdate({domainId: user.domainId, accountId: user.accountId, clientId: user.clientId},
+        let clientId = req.params.clientId;
+        let domainId = req.params.domainId;
+        let accountId = req.params.accountId;
+
+        UserModel.findOneAndUpdate({domainId: domainId, accountId: accountId, clientId: clientId},
             {$push: {"room": req.params.roomId}}, (error, result) => {
                 if (error) res.send({"error": "error"});
                 else {

@@ -18,7 +18,7 @@ roomRouter.get(uri + '/domainId/:domainId/accountId/:accountId/userId/:userId/al
     RoomController.findAllPrivateRoom(req, res);
 });
 
-roomRouter.put(uri, (req, res) => {
+roomRouter.put(uri + '/domainId/:domainId/accountId/:accountId/name/:name/', (req, res) => {
     RoomController.create(req, res);
 });
 

@@ -4,7 +4,9 @@ import {UserController} from "../controller/user-controller";
 let uri = "/user";
 const userRouter: Router = Router();
 
-userRouter.get(uri + '/domainId/:domainId/accountId/:accountId/clientId/:clientId', (req, res) => {
+let fullUri = '/domainId/:domainId/accountId/:accountId/clientId/:clientId'
+
+userRouter.get(uri + fullUri, (req, res) => {
     UserController.findOneByDomainIdAndAccountIdAndClientId(req, res);
 });
 
@@ -20,7 +22,7 @@ userRouter.put(uri, (req, res) => {
     UserController.create(req, res);
 });
 
-userRouter.put(uri + "/add/room/:roomId", (req, res) => {
+userRouter.put(uri + fullUri + "/add/room/:roomId", (req, res) => {
     UserController.insertUserToRoom(req, res);
 });
 

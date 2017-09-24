@@ -66,6 +66,12 @@ export class Server {
         //Enable oauth 2 security
         //  this.app.use(jwt({ secret: publicKey, credentialsRequired: true }));
 
+        this.app.use(function(req, res, next) {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            next();
+        });
+
         router.get('/', (request: express.Request, result: express.Response) => {
             result.sendFile(path.join(root, '/index.html'));
         });

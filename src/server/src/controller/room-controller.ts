@@ -18,7 +18,12 @@ export class RoomController {
     };
 
     public static create(req: express.Request, res: express.Response): void {
-        var room: IRoom = <IRoom>req.body;
+        var room = {
+            name: req.params.name,
+            domainId: req.params.domainId,
+            accountId: req.params.accountId,
+        }
+
         RoomModel.create(room, (error, result) => {
             if (error) res.send({"error": "error"});
             else {
