@@ -36,14 +36,13 @@ private-users [1,5,4,6,9]
 
 ############### End Points Nodejs #########
 
-### Criar salas
-http://localhost:5000/api/room/domainId/1/accountId/1/name/postman111
+PUT - http://localhost:5000/api/room/domainId/1/accountId/1/name/postman111
 
 ### Criar usuarios
-localhost:5000/api/user/domainId/1/accountId/1/clientId/1/name/meunome
+PUT - localhost:5000/api/user/domainId/1/accountId/1/clientId/1/name/meunome
 
 ### Add Usuario na sala 
-localhost:5000/api/user/domainId/1/accountId/1/clientId/10/add/room/59c6ec42a035336cd22f95de
+PUT - localhost:5000/api/user/domainId/1/accountId/1/clientId/10/add/room/59c6ec42a035336cd22f95de
   
 ## Variaveis de ambiente : Inserir no /etc/enviroment
 
