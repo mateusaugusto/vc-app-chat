@@ -9,7 +9,7 @@ export class UserController {
             clientId: req.params.clientId,
             domainId: req.params.domainId,
             accountId: req.params.accountId,
-            name: req.params.accountId
+            name: req.params.name
         }
 
         UserModel.create(user, (error, result) => {
