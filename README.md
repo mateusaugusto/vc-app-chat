@@ -37,32 +37,13 @@ private-users [1,5,4,6,9]
 ############### End Points Nodejs #########
 
 ### Criar salas
-localhost:5000/api/room/ -> PUT
-
-{
-        "domainId": 1,
-        "accountId": 1,
-        "name": "sala 4",
-        "isEnabled": true
-    }
+http://localhost:5000/api/room/domainId/1/accountId/1/name/postman111
 
 ### Criar usuarios
-localhost:5000/api/user -> PUT
-
-{
-    "domainId": 1,
-    "accountId": 1, // account do cliente no vc
-    "clientId": 9, // Id do cliente no vc
-    "name": "mateus"
-  }
+localhost:5000/api/user/domainId/1/accountId/1/clientId/1/name/meunome
 
 ### Add Usuario na sala 
-localhost:5000/api/user/add/room/idSala -> PUT ex: localhost:5000/api/user/add/room/59a4e51c387a0a5f76a1a8c2
-
-{        "domainId": 1, // id do domino
-        "accountId": 1, // account do cliente no vc
-        "clientId": 9 // Id do cliente no vc
-  }
+localhost:5000/api/user/domainId/1/accountId/1/clientId/10/add/room/59c6ec42a035336cd22f95de
   
 ## Variaveis de ambiente : Inserir no /etc/enviroment
 

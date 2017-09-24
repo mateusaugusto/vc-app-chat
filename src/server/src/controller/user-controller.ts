@@ -5,7 +5,13 @@ var mongoose = require('mongoose');
 export class UserController {
 
     public static create(req: express.Request, res: express.Response): void {
-        var user: IUser = <IUser>req.body;
+        var user = {
+            clientId: req.params.clientId,
+            domainId: req.params.domainId,
+            accountId: req.params.accountId,
+            name: req.params.accountId
+        }
+
         UserModel.create(user, (error, result) => {
             if (error) res.send({"error": "error"});
             else res.send(result);

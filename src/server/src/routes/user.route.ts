@@ -18,7 +18,7 @@ userRouter.get(uri + '/domainId/:domainId/accountId/:accountId/roomId/:roomId', 
     UserController.findAllUsersInRoom(req, res);
 });
 
-userRouter.put(uri, (req, res) => {
+userRouter.put(uri + fullUri + "/name/:name", (req, res) => {
     UserController.create(req, res);
 });
 
