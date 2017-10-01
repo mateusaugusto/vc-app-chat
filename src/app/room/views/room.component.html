@@ -8,17 +8,15 @@
                 <div class="dropdown">
                     <div id="custom-search-input">
                         <div class="input-group col-md-12">
-                            <input type="text" class="  search-query form-control" placeholder="Pesquisar Sala" [(ngModel)]="search">
-                            <button class="btn btn-danger" type="button" (click)="searchMessage()">
-                                <span class=" glyphicon glyphicon-search"></span>
+                            <input type="text" class="  search-query form-control" (keypress)="searchMessage()" placeholder="Pesquisar Sala" [(ngModel)]="search">
+                            <button class="btn btn-danger" type="button" (click)="cleanSearchMessage()">
+                                <span class=" glyphicon glyphicon-trash"></span>
                             </button>
-
                             <div class="message" *ngFor="let item of listSearchMessage">
                                 <small>{{item.created | date : 'shortDate' }}</small>
                                 <small>&lt;{{item.user.name}}&gt;</small>
                                 {{item.message}}
                             </div>
-
                         </div>
                     </div>
 

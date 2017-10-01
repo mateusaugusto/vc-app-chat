@@ -43,7 +43,6 @@ export class UserController {
         });
     };
 
-
     public static findOneByDomainIdAndAccountIdAndClientId(req: express.Request, res: express.Response) {
         let clientId = req.params.clientId;
         let domainId = req.params.domainId;

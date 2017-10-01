@@ -4,14 +4,17 @@
         <div class="chat_container">
             <div class="col-sm-3 chat_sidebar">
                 <div class="row" style="height: 300px;">
-                 <!--   <div id="custom-search-input">
+                    <div id="custom-search-input">
                         <div class="input-group col-md-12">
-                            <input type="text" class="  search-query form-control" placeholder="Pesquisar Sala">
-                            <button class="btn btn-danger" type="button">
-                                <span class=" glyphicon glyphicon-search"></span>
+                            <input type="text" class="  search-query form-control" (keypress)="searchRoom()" placeholder="Pesquisar Sala" [(ngModel)]="search">
+                            <button class="btn btn-danger" type="button" (click)="cleanSearchRoom()">
+                                <span class=" glyphicon glyphicon-trash"></span>
                             </button>
+                            <div class="message"  style="cursor:pointer" *ngFor="let room of listSearchRoom">
+                                <small (click)="join(room)">{{room.name}}</small>
+                            </div>
                         </div>
-                    </div>-->
+                    </div>
                     <div class="dropdown all_conversation">
                         <button class="dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-weixin" aria-hidden="true"></i>

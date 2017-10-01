@@ -20,6 +20,8 @@ export class ControlComponent implements OnInit {
     user: UserDomain;
     privateRooms: RoomDomain[];
     roomId: string;
+    search = '';
+    listSearchRoom: RoomDomain[] = [];
 
     private socketService: SocketService;
 
@@ -82,6 +84,17 @@ export class ControlComponent implements OnInit {
         });
     }
 
+    searchRoom() {
+        if (this.search != '' && this.search.length >= 3) {
+            var search = new RegExp(this.search , "i");
+            this.listSearchRoom = this.roomService.list.filter(room => room.name.match(search));
+        }
+    }
+
+    cleanSearchRoom() {
+        this.listSearchRoom = [];
+    }
+
     controlListRoom(message: any): void {
         if (!this.userIsConnectedInRoom(message) && this.userHasRoomMessage(message)) {
             this.roomService.list.filter(room => room._id === message['room']._id ? this.buildUnreadMessage(room) : room);
@@ -117,7 +130,6 @@ export class ControlComponent implements OnInit {
     userHasRoomMessage(message: any): boolean {
         return this.roomService.list.filter(room => room._id == message['room']._id).length > 0;
     }
-
 
     //User is connected in Room
     amIinRoom(message: any): boolean{
@@ -206,7 +218,6 @@ export class ControlComponent implements OnInit {
         }
     }
 
-
     joinPrivateRoom(userRoom): void {
         this.roomService.findPrivateRoom(userRoom._id, this.user).subscribe(privateRoom => {
             if (Object.keys(privateRoom).length != 0) {
@@ -254,6 +265,9 @@ export class ControlComponent implements OnInit {
 
     // Join room, when Join-button is pressed
     join(room: RoomDomain): void {
+
+        this.cleanSearchRoom();
+
         if (!room.privateRoom) {
             room.nickName = room.name;
         }

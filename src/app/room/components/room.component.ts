@@ -67,9 +67,15 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     searchMessage() {
-        this.messageService.findMessages(this.room._id, this.search).subscribe(message => {
-            this.listSearchMessage = message;
-        });
+        if (this.search != "" && this.search.length >= 3) {
+            this.messageService.findMessages(this.room._id, this.search).subscribe(message => {
+                this.listSearchMessage = message;
+            });
+        }
+    }
+
+    cleanSearchMessage() {
+        this.listSearchMessage = [];
     }
 
     // After view initialized, focus on chat message text input
@@ -151,7 +157,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
             this.room.isUnread = false;
             this.room.countMessage = 0;
 
-            if(this.room.privateRoom){
+            if (this.room.privateRoom) {
                 this.cleanPrivateRoomList();
             }
 
