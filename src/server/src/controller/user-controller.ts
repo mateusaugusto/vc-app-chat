@@ -11,7 +11,7 @@ export class UserController {
             accountId: req.params.accountId,
             name: req.params.name
         }
-
+        console.log(user);
         UserModel.create(user, (error, result) => {
             if (error) res.send({"error": "error"});
             else res.send(result);
