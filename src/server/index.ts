@@ -20,7 +20,8 @@ declare var process, __dirname;
 
 //var publicKey = fs.readFileSync(process.env.PATH_PUBLIC_KEY);
 
-var publicKey = "/var/vc-api/public.cert";
+var publicKey = fs.readFileSync('/var/vc-api/public.cert');
+
 
 export class Server {
 
@@ -67,7 +68,7 @@ export class Server {
         this.app.use('/assets', serveStatic(path.resolve(root, 'assets')));
 
         //Enable oauth 2 security
-         //this.app.use(jwt({ secret: publicKey, credentialsRequired: true }));
+        //this.app.use(jwt({ secret: publicKey, credentialsRequired: true }));
 
         this.app.use(function(req, res, next) {
             res.header("Access-Control-Allow-Origin", "*");

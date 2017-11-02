@@ -22,8 +22,6 @@ export class ControlComponent implements OnInit {
     roomId: string;
     search = '';
     listSearchRoom: RoomDomain[] = [];
-    token: string;
-    listPrivateUsersParams: string[];
 
     private socketService: SocketService;
 
@@ -46,14 +44,6 @@ export class ControlComponent implements OnInit {
         userParams.clientId = +this.route.snapshot.params['clientId'];
 
 
-        this.route
-            .queryParams
-            .subscribe(params => {
-                this.token = params['access_token'];
-                this.listPrivateUsersParams = params['code'];
-            });
-
-
         this.userService.findOne(userParams).subscribe(user => {
             this.user = user;
             this.userService.user = user;
@@ -61,8 +51,8 @@ export class ControlComponent implements OnInit {
             //Constroi lista e numero de mesnagens nao lidas por sala
             this.buildMessagesUnread();
 
-            if (this.token) {
-                this.tokenStoreService.setToken(this.token);
+            if (user['token']) {
+                this.tokenStoreService.setToken(user['token']);
             } else {
                 // alert('Permission denied');
                 // return false;

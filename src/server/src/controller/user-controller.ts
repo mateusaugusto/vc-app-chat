@@ -64,9 +64,8 @@ export class UserController {
                 res.status(400).send('Client not found');
             else {
                 var obj = result.toObject();
-                // Se o token vier do header
-                //obj['privateUsers'] = listPrivateUsers;
-                //obj['token'] = token;
+                obj['privateUsers'] = listPrivateUsers;
+                obj['token'] = token;
                 res.send(obj);
             }
         }).populate("room").where({isEnabled: true});
