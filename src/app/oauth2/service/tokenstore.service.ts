@@ -1,5 +1,6 @@
 import {TokenInfo} from "../model/tokeninfo";
 import {EventEmitter, Injectable} from "@angular/core";
+import {MediaType} from "express";
 
 @Injectable()
 export class TokenStoreService {
@@ -9,7 +10,7 @@ export class TokenStoreService {
   invalidTokenRequired = new EventEmitter<boolean>();
 
   setToken(token: string): void {
-    sessionStorage.setItem(this.OAUTH_TOKEN, token);
+    sessionStorage.setItem(this.OAUTH_TOKEN, "Bearer " + token);
   }
 
   getToken(): string {

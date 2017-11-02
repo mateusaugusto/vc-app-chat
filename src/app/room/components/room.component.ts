@@ -34,6 +34,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
     user: UserDomain;
     messages: IMessage[];
     listSearchMessage: IMessage[];
+    usersInRoom: UserDomain[];
 
     private messageService: MessageService;
     private alreadyLeftChannel: boolean = false;
@@ -54,6 +55,10 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.messageService.findOne(this.room._id).subscribe(message => {
             this.messages = message;
+        });
+
+        this.userService.findAllUsersInRoom(this.room, this.user).subscribe(users => {
+            this.usersInRoom = users;
         });
 
         //Preenche a lista com as mensagens no socket
@@ -127,10 +132,7 @@ export class RoomComponent implements OnInit, AfterViewInit, OnDestroy {
             this.saveUnreadMessages(this.buildUnreadObject(this.room.usersRoom));
         } else {
             // Retrieve all user in room
-            this.userService.findAllUsersInRoom(this.room, this.user).subscribe(result => {
-                // Create unread Message
-                this.saveUnreadMessages(this.buildUnreadObject(result));
-            });
+            this.saveUnreadMessages(this.buildUnreadObject(this.usersInRoom));
         }
     }
 

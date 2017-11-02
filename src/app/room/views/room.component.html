@@ -1,32 +1,43 @@
 <div class="col-sm-9 message_section">
     <div class="row">
-        <div class="new_message_head">
-            <div class="pull-left">
-                <div><i class="fa fa-plus-square-o" aria-hidden="true"></i>{{room.nickName}}</div>
-            </div>
-            <div class="pull-right">
-                <div class="dropdown">
-                    <div id="custom-search-input">
-                        <div class="input-group col-md-12">
-                            <input type="text" class="  search-query form-control" (keypress)="searchMessage()" placeholder="Pesquisar Sala" [(ngModel)]="search">
-                            <button class="btn btn-danger" type="button" (click)="cleanSearchMessage()">
-                                <span class=" glyphicon glyphicon-trash"></span>
-                            </button>
-                            <div class="message" *ngFor="let item of listSearchMessage">
-                                <small>{{item.created | date : 'shortDate' }}</small>
-                                <small>&lt;{{item.user.name}}&gt;</small>
-                                {{item.message}}
-                            </div>
+        <div class="col-md-3">
+            <div aria-hidden="true">{{room.nickName}}</div>
+            <div><i class="glyphicon glyphicon-user" aria-hidden="true"></i>{{usersInRoom.length}}</div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="dropdown">
+                <div id="custom-search-input">
+                    <div class="input-group col-md-12">
+                        <input type="text" class="  search-query form-control" (keypress)="searchMessage()" placeholder="Pesquisar Sala" [(ngModel)]="search">
+                        <button class="btn btn-danger" type="button" (click)="cleanSearchMessage()">
+                            <span class=" glyphicon glyphicon-trash"></span>
+                        </button>
+                        <div class="message" *ngFor="let item of listSearchMessage">
+                            <small>{{item.created | date : 'shortDate' }}</small>
+                            <small>&lt;{{item.user.name}}&gt;</small>
+                            {{item.message}}
                         </div>
                     </div>
-
                 </div>
+
             </div>
         </div>
 
-        <div class="alert alert-purple alert-dismissable" style="margin-top: 12% !important;" *ngIf="null != room.isUnread ? room.isUnread : false">
+        <div class="col-md-3">
+            <div><i class="pull-right glyphicon glyphicon-star-empty btn-lg"></i></div>
+        </div>
+
+    </div>
+
+        <div style="text-align: center">Ver Detalhes</div>
+
+        <div class="alert alert-purple alert-dismissable" style="margin-top: 12% !important;"
+             *ngIf="null != room.isUnread ? room.isUnread : false">
             <span class="glyphicon glyphicon-certificate"></span>
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="cleanUnreadMessage()">×</button>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="cleanUnreadMessage()">
+                ×
+            </button>
             <strong>{{room.countMessage}}</strong> novas mensagens
         </div>
 
@@ -34,12 +45,13 @@
             <ul class="list-unstyled">
 
                 <form role="form" action="#" method="POST" name="form">
-                    <div >
+                    <div>
 
                         <div class="message" *ngFor="let item of messages">
                             <li class="left clearfix">
                      <span class="chat-img1 pull-left">
-                    <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
+                    <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg"
+                         class=" img-responsive ">
                      </span>
                                 <strong class="primary-font" (click)="removeUnreadMessage()" style="margin-left: 11px;">{{item.user.name}}:</strong>
                                 <div class="chat-body1 clearfix">
@@ -55,14 +67,15 @@
             </ul>
         </div>
 
-
         <div class="message_write">
             <textarea class="form-control" placeholder="escreva uma mensagem" #focus
                       [(ngModel)]="message" name="message" autocomplete="off"
                       (keydown.enter)="send();false"></textarea>
             <div class="clearfix"></div>
-            <div class="chat_bottom"><a href="#" class="pull-left upload_btn"><i class="fa fa-cloud-upload" aria-hidden="true"></i>Add Arquivo</a>
-                <button class="pull-right btn btn-success" (click)="send()"> Enviar</button></div>
+            <div class="chat_bottom"><a href="#" class="pull-left upload_btn"><i class="fa fa-cloud-upload"
+                                                                                 aria-hidden="true"></i>Add Arquivo</a>
+                <button class="pull-right btn btn-success" (click)="send()"> Enviar</button>
+            </div>
         </div>
-    </div>
+
 </div>

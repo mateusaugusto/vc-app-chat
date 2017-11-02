@@ -11,6 +11,7 @@ import userRouter = require("./src/routes/user.route");
 import roomRouter = require("./src/routes/room.route");
 import messageRouter = require("./src/routes/message.route");
 import unreadRouter = require("./src/routes/unread.route");
+import * as fs from "fs";
 
 var jwt = require('express-jwt');
 var bodyParser = require('body-parser');
@@ -18,6 +19,8 @@ var bodyParser = require('body-parser');
 declare var process, __dirname;
 
 //var publicKey = fs.readFileSync(process.env.PATH_PUBLIC_KEY);
+
+var publicKey = "/var/vc-api/public.cert";
 
 export class Server {
 
@@ -64,7 +67,7 @@ export class Server {
         this.app.use('/assets', serveStatic(path.resolve(root, 'assets')));
 
         //Enable oauth 2 security
-        //  this.app.use(jwt({ secret: publicKey, credentialsRequired: true }));
+         //this.app.use(jwt({ secret: publicKey, credentialsRequired: true }));
 
         this.app.use(function(req, res, next) {
             res.header("Access-Control-Allow-Origin", "*");
@@ -90,9 +93,10 @@ export class Server {
     private databases(): void {
         // MongoDB URL
         const MONGODB_URI = 'mongodb://localhost/chat';
+        //const MONGODB_URI = process.env.MONGODB_URI;
 
         // Get MongoDB handle
-        this.mongo = mongoose.connect(MONGODB_URI);
+        this.mongo = mongoose.connect(MONGODB_URI, { useMongoClient: true });
         (<any>mongoose).Promise = global.Promise;
     }
 
@@ -103,6 +107,8 @@ export class Server {
 
         // Set Redis adapter
         const REDIS_URL =  'redis://localhost:6379';
+        //const REDIS_URL = process.env.REDIS_URL;
+
         this.io.adapter(redis(REDIS_URL));
 
         // Set room socket
@@ -114,6 +120,7 @@ export class Server {
     public listen(): void {
         // Get port
         const port =  5000;
+        //const port = process.env.VC_APP_CHAT_PORT;
 
         // Start listening
         this.server.listen(port);
