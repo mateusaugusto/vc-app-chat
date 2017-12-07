@@ -20,9 +20,6 @@ declare var process, __dirname;
 
 //var publicKey = fs.readFileSync(process.env.PATH_PUBLIC_KEY);
 
-var publicKey = fs.readFileSync('/var/vc-api/public.cert');
-
-
 export class Server {
 
     private app: express.Application;
@@ -97,7 +94,7 @@ export class Server {
         //const MONGODB_URI = process.env.MONGODB_URI;
 
         // Get MongoDB handle
-        this.mongo = mongoose.connect(MONGODB_URI, { useMongoClient: true });
+        this.mongo = mongoose.connect(MONGODB_URI);
         (<any>mongoose).Promise = global.Promise;
     }
 
