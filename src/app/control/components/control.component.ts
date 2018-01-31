@@ -224,6 +224,7 @@ export class ControlComponent implements OnInit {
                 this.join(this.setFieldsPrivateRoom(privateRoom[0], userRoom));
             } else {
                 let room = this.buildRoom(userRoom, this.user.name);
+
                 this.roomService.create(room).subscribe(newRoom => {
                     // Add user to new private room
                     this.roomService.addUserToPrivateRoom(newRoom, userRoom._id, this.user['_id']).subscribe(newPrivateRoom => {
